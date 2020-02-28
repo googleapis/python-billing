@@ -27,7 +27,7 @@ with io.open(readme_filename, encoding="utf-8") as readme_file:
 
 setuptools.setup(
     name="google-cloud-billing",
-    version="0.1.0",
+    version = "0.1.0",
     long_description=readme,
     author="Google LLC",
     author_email="googleapis-packages@google.com",
