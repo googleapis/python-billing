@@ -76,8 +76,8 @@ Next Steps
    API to see other available methods on the client.
 -  Read the `Cloud Billing API Product documentation`_ to learn
    more about the product and see How-to Guides.
--  View this `repository’s main README`_ to see the full list of Cloud
+-  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
 .. _Cloud Billing API Product documentation:  https://cloud.google.com/billing
-.. _repository’s main README: https://github.com/googleapis/google-cloud-python/blob/master/README.rst
+.. _README: https://github.com/googleapis/google-cloud-python/blob/master/README.rst
