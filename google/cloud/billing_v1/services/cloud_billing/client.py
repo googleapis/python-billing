@@ -16,7 +16,7 @@
 #
 
 from collections import OrderedDict
-from typing import Dict, Iterable, Iterator, Sequence, Tuple, Type, Union
+from typing import Dict, Sequence, Tuple, Type, Union
 import pkg_resources
 
 import google.api_core.client_options as ClientOptions  # type: ignore
@@ -243,9 +243,6 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
 
         request = cloud_billing.ListBillingAccountsRequest(request)
 
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
-
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = gapic_v1.method.wrap_method(
@@ -329,6 +326,8 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
         # request, apply these.
         if name is not None:
             request.name = name
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
         if account is not None:
             request.account = account
 
@@ -679,6 +678,8 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
         # request, apply these.
         if name is not None:
             request.name = name
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
         if project_billing_info is not None:
             request.project_billing_info = project_billing_info
 
@@ -780,6 +781,7 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
         # so it must be constructed via keyword expansion.
         if isinstance(request, dict):
             request = iam_policy.GetIamPolicyRequest(**request)
+
         elif not request:
             request = iam_policy.GetIamPolicyRequest()
 
@@ -893,6 +895,7 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
         # so it must be constructed via keyword expansion.
         if isinstance(request, dict):
             request = iam_policy.SetIamPolicyRequest(**request)
+
         elif not request:
             request = iam_policy.SetIamPolicyRequest()
 
@@ -975,6 +978,7 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
         # so it must be constructed via keyword expansion.
         if isinstance(request, dict):
             request = iam_policy.TestIamPermissionsRequest(**request)
+
         elif not request:
             request = iam_policy.TestIamPermissionsRequest()
 

@@ -16,7 +16,7 @@
 #
 
 from collections import OrderedDict
-from typing import Dict, Iterable, Iterator, Sequence, Tuple, Type, Union
+from typing import Dict, Sequence, Tuple, Type, Union
 import pkg_resources
 
 import google.api_core.client_options as ClientOptions  # type: ignore
@@ -164,9 +164,6 @@ class CloudCatalogClient(metaclass=CloudCatalogClientMeta):
         # Create or coerce a protobuf request object.
 
         request = cloud_catalog.ListServicesRequest(request)
-
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
