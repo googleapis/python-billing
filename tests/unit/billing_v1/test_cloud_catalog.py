@@ -126,7 +126,7 @@ def test_list_services_pager():
         )
         results = [i for i in client.list_services(request={})]
         assert len(results) == 6
-        assert all([isinstance(i, cloud_catalog.Service) for i in results])
+        assert all(isinstance(i, cloud_catalog.Service) for i in results)
 
 
 def test_list_services_pages():
@@ -197,7 +197,7 @@ def test_list_skus_field_headers():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client._transport.list_skus), "__call__") as call:
         call.return_value = cloud_catalog.ListSkusResponse()
-        response = client.list_skus(request)
+        client.list_skus(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
@@ -259,7 +259,7 @@ def test_list_skus_pager():
         )
         results = [i for i in client.list_skus(request={})]
         assert len(results) == 6
-        assert all([isinstance(i, cloud_catalog.Sku) for i in results])
+        assert all(isinstance(i, cloud_catalog.Sku) for i in results)
 
 
 def test_list_skus_pages():
@@ -331,7 +331,7 @@ def test_cloud_catalog_auth_adc():
     # If no credentials are provided, we should use ADC credentials.
     with mock.patch.object(auth, "default") as adc:
         adc.return_value = (credentials.AnonymousCredentials(), None)
-        client = CloudCatalogClient()
+        CloudCatalogClient()
         adc.assert_called_once_with(
             scopes=("https://www.googleapis.com/auth/cloud-platform",)
         )
