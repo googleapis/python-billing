@@ -15,6 +15,7 @@
 # limitations under the License.
 #
 
+import os
 from unittest import mock
 
 import grpc
@@ -25,6 +26,7 @@ from google import auth
 from google.api_core import client_options
 from google.api_core import grpc_helpers
 from google.auth import credentials
+from google.auth.exceptions import MutualTLSChannelError
 from google.cloud.billing_v1.services.cloud_billing import CloudBillingClient
 from google.cloud.billing_v1.services.cloud_billing import pagers
 from google.cloud.billing_v1.services.cloud_billing import transports
@@ -82,6 +84,14 @@ def test_cloud_billing_client_from_service_account_file():
         assert client._transport._host == "cloudbilling.googleapis.com:443"
 
 
+def test_cloud_billing_client_get_transport_class():
+    transport = CloudBillingClient.get_transport_class()
+    assert transport == transports.CloudBillingGrpcTransport
+
+    transport = CloudBillingClient.get_transport_class("grpc")
+    assert transport == transports.CloudBillingGrpcTransport
+
+
 def test_cloud_billing_client_client_options():
     # Check that if channel is provided we won't create a new one.
     with mock.patch(
@@ -93,19 +103,14 @@ def test_cloud_billing_client_client_options():
         client = CloudBillingClient(transport=transport)
         gtc.assert_not_called()
 
-    # Check mTLS is not triggered with empty client options.
-    options = client_options.ClientOptions()
+    # Check that if channel is provided via str we will create a new one.
     with mock.patch(
         "google.cloud.billing_v1.services.cloud_billing.CloudBillingClient.get_transport_class"
     ) as gtc:
-        transport = gtc.return_value = mock.MagicMock()
-        client = CloudBillingClient(client_options=options)
-        transport.assert_called_once_with(
-            credentials=None, host=client.DEFAULT_ENDPOINT
-        )
+        client = CloudBillingClient(transport="grpc")
+        gtc.assert_called()
 
-    # Check mTLS is not triggered if api_endpoint is provided but
-    # client_cert_source is None.
+    # Check the case api_endpoint is provided.
     options = client_options.ClientOptions(api_endpoint="squid.clam.whelk")
     with mock.patch(
         "google.cloud.billing_v1.services.cloud_billing.transports.CloudBillingGrpcTransport.__init__"
@@ -113,13 +118,45 @@ def test_cloud_billing_client_client_options():
         grpc_transport.return_value = None
         client = CloudBillingClient(client_options=options)
         grpc_transport.assert_called_once_with(
-            api_mtls_endpoint=None,
+            api_mtls_endpoint="squid.clam.whelk",
             client_cert_source=None,
             credentials=None,
             host="squid.clam.whelk",
         )
 
-    # Check mTLS is triggered if client_cert_source is provided.
+    # Check the case api_endpoint is not provided and GOOGLE_API_USE_MTLS is
+    # "never".
+    os.environ["GOOGLE_API_USE_MTLS"] = "never"
+    with mock.patch(
+        "google.cloud.billing_v1.services.cloud_billing.transports.CloudBillingGrpcTransport.__init__"
+    ) as grpc_transport:
+        grpc_transport.return_value = None
+        client = CloudBillingClient()
+        grpc_transport.assert_called_once_with(
+            api_mtls_endpoint=client.DEFAULT_ENDPOINT,
+            client_cert_source=None,
+            credentials=None,
+            host=client.DEFAULT_ENDPOINT,
+        )
+
+    # Check the case api_endpoint is not provided and GOOGLE_API_USE_MTLS is
+    # "always".
+    os.environ["GOOGLE_API_USE_MTLS"] = "always"
+    with mock.patch(
+        "google.cloud.billing_v1.services.cloud_billing.transports.CloudBillingGrpcTransport.__init__"
+    ) as grpc_transport:
+        grpc_transport.return_value = None
+        client = CloudBillingClient()
+        grpc_transport.assert_called_once_with(
+            api_mtls_endpoint=client.DEFAULT_MTLS_ENDPOINT,
+            client_cert_source=None,
+            credentials=None,
+            host=client.DEFAULT_MTLS_ENDPOINT,
+        )
+
+    # Check the case api_endpoint is not provided, GOOGLE_API_USE_MTLS is
+    # "auto", and client_cert_source is provided.
+    os.environ["GOOGLE_API_USE_MTLS"] = "auto"
     options = client_options.ClientOptions(
         client_cert_source=client_cert_source_callback
     )
@@ -132,24 +169,54 @@ def test_cloud_billing_client_client_options():
             api_mtls_endpoint=client.DEFAULT_MTLS_ENDPOINT,
             client_cert_source=client_cert_source_callback,
             credentials=None,
-            host=client.DEFAULT_ENDPOINT,
+            host=client.DEFAULT_MTLS_ENDPOINT,
         )
 
-    # Check mTLS is triggered if api_endpoint and client_cert_source are provided.
-    options = client_options.ClientOptions(
-        api_endpoint="squid.clam.whelk", client_cert_source=client_cert_source_callback
-    )
+    # Check the case api_endpoint is not provided, GOOGLE_API_USE_MTLS is
+    # "auto", and default_client_cert_source is provided.
+    os.environ["GOOGLE_API_USE_MTLS"] = "auto"
     with mock.patch(
         "google.cloud.billing_v1.services.cloud_billing.transports.CloudBillingGrpcTransport.__init__"
     ) as grpc_transport:
-        grpc_transport.return_value = None
-        client = CloudBillingClient(client_options=options)
-        grpc_transport.assert_called_once_with(
-            api_mtls_endpoint="squid.clam.whelk",
-            client_cert_source=client_cert_source_callback,
-            credentials=None,
-            host="squid.clam.whelk",
-        )
+        with mock.patch(
+            "google.auth.transport.mtls.has_default_client_cert_source",
+            return_value=True,
+        ):
+            grpc_transport.return_value = None
+            client = CloudBillingClient()
+            grpc_transport.assert_called_once_with(
+                api_mtls_endpoint=client.DEFAULT_MTLS_ENDPOINT,
+                client_cert_source=None,
+                credentials=None,
+                host=client.DEFAULT_MTLS_ENDPOINT,
+            )
+
+    # Check the case api_endpoint is not provided, GOOGLE_API_USE_MTLS is
+    # "auto", but client_cert_source and default_client_cert_source are None.
+    os.environ["GOOGLE_API_USE_MTLS"] = "auto"
+    with mock.patch(
+        "google.cloud.billing_v1.services.cloud_billing.transports.CloudBillingGrpcTransport.__init__"
+    ) as grpc_transport:
+        with mock.patch(
+            "google.auth.transport.mtls.has_default_client_cert_source",
+            return_value=False,
+        ):
+            grpc_transport.return_value = None
+            client = CloudBillingClient()
+            grpc_transport.assert_called_once_with(
+                api_mtls_endpoint=client.DEFAULT_ENDPOINT,
+                client_cert_source=None,
+                credentials=None,
+                host=client.DEFAULT_ENDPOINT,
+            )
+
+    # Check the case api_endpoint is not provided and GOOGLE_API_USE_MTLS has
+    # unsupported value.
+    os.environ["GOOGLE_API_USE_MTLS"] = "Unsupported"
+    with pytest.raises(MutualTLSChannelError):
+        client = CloudBillingClient()
+
+    del os.environ["GOOGLE_API_USE_MTLS"]
 
 
 def test_cloud_billing_client_client_options_from_dict():
@@ -159,7 +226,7 @@ def test_cloud_billing_client_client_options_from_dict():
         grpc_transport.return_value = None
         client = CloudBillingClient(client_options={"api_endpoint": "squid.clam.whelk"})
         grpc_transport.assert_called_once_with(
-            api_mtls_endpoint=None,
+            api_mtls_endpoint="squid.clam.whelk",
             client_cert_source=None,
             credentials=None,
             host="squid.clam.whelk",
@@ -209,13 +276,15 @@ def test_get_billing_account_field_headers():
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = cloud_billing.GetBillingAccountRequest(name="name/value")
+    request = cloud_billing.GetBillingAccountRequest()
+    request.name = "name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
         type(client._transport.get_billing_account), "__call__"
     ) as call:
         call.return_value = cloud_billing.BillingAccount()
+
         client.get_billing_account(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -240,7 +309,7 @@ def test_get_billing_account_flattened():
 
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = client.get_billing_account(name="name_value")
+        client.get_billing_account(name="name_value")
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -401,6 +470,32 @@ def test_update_billing_account(transport: str = "grpc"):
     assert response.master_billing_account == "master_billing_account_value"
 
 
+def test_update_billing_account_field_headers():
+    client = CloudBillingClient(credentials=credentials.AnonymousCredentials())
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = cloud_billing.UpdateBillingAccountRequest()
+    request.name = "name/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client._transport.update_billing_account), "__call__"
+    ) as call:
+        call.return_value = cloud_billing.BillingAccount()
+
+        client.update_billing_account(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "name=name/value") in kw["metadata"]
+
+
 def test_update_billing_account_flattened():
     client = CloudBillingClient(credentials=credentials.AnonymousCredentials())
 
@@ -413,7 +508,7 @@ def test_update_billing_account_flattened():
 
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = client.update_billing_account(
+        client.update_billing_account(
             name="name_value", account=cloud_billing.BillingAccount(name="name_value")
         )
 
@@ -488,7 +583,7 @@ def test_create_billing_account_flattened():
 
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = client.create_billing_account(
+        client.create_billing_account(
             billing_account=cloud_billing.BillingAccount(name="name_value")
         )
 
@@ -549,13 +644,15 @@ def test_list_project_billing_info_field_headers():
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = cloud_billing.ListProjectBillingInfoRequest(name="name/value")
+    request = cloud_billing.ListProjectBillingInfoRequest()
+    request.name = "name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
         type(client._transport.list_project_billing_info), "__call__"
     ) as call:
         call.return_value = cloud_billing.ListProjectBillingInfoResponse()
+
         client.list_project_billing_info(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -580,7 +677,7 @@ def test_list_project_billing_info_flattened():
 
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = client.list_project_billing_info(name="name_value")
+        client.list_project_billing_info(name="name_value")
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -717,13 +814,15 @@ def test_get_project_billing_info_field_headers():
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = cloud_billing.GetProjectBillingInfoRequest(name="name/value")
+    request = cloud_billing.GetProjectBillingInfoRequest()
+    request.name = "name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
         type(client._transport.get_project_billing_info), "__call__"
     ) as call:
         call.return_value = cloud_billing.ProjectBillingInfo()
+
         client.get_project_billing_info(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -748,7 +847,7 @@ def test_get_project_billing_info_flattened():
 
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = client.get_project_billing_info(name="name_value")
+        client.get_project_billing_info(name="name_value")
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -806,6 +905,32 @@ def test_update_project_billing_info(transport: str = "grpc"):
     assert response.billing_enabled is True
 
 
+def test_update_project_billing_info_field_headers():
+    client = CloudBillingClient(credentials=credentials.AnonymousCredentials())
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = cloud_billing.UpdateProjectBillingInfoRequest()
+    request.name = "name/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client._transport.update_project_billing_info), "__call__"
+    ) as call:
+        call.return_value = cloud_billing.ProjectBillingInfo()
+
+        client.update_project_billing_info(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "name=name/value") in kw["metadata"]
+
+
 def test_update_project_billing_info_flattened():
     client = CloudBillingClient(credentials=credentials.AnonymousCredentials())
 
@@ -818,7 +943,7 @@ def test_update_project_billing_info_flattened():
 
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = client.update_project_billing_info(
+        client.update_project_billing_info(
             name="name_value",
             project_billing_info=cloud_billing.ProjectBillingInfo(name="name_value"),
         )
@@ -879,11 +1004,13 @@ def test_get_iam_policy_field_headers():
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = iam_policy.GetIamPolicyRequest(resource="resource/value")
+    request = iam_policy.GetIamPolicyRequest()
+    request.resource = "resource/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client._transport.get_iam_policy), "__call__") as call:
         call.return_value = policy.Policy()
+
         client.get_iam_policy(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -922,7 +1049,7 @@ def test_get_iam_policy_flattened():
 
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = client.get_iam_policy(resource="resource_value")
+        client.get_iam_policy(resource="resource_value")
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -970,6 +1097,30 @@ def test_set_iam_policy(transport: str = "grpc"):
     assert response.etag == b"etag_blob"
 
 
+def test_set_iam_policy_field_headers():
+    client = CloudBillingClient(credentials=credentials.AnonymousCredentials())
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = iam_policy.SetIamPolicyRequest()
+    request.resource = "resource/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client._transport.set_iam_policy), "__call__") as call:
+        call.return_value = policy.Policy()
+
+        client.set_iam_policy(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "resource=resource/value") in kw["metadata"]
+
+
 def test_set_iam_policy_from_dict():
     client = CloudBillingClient(credentials=credentials.AnonymousCredentials())
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -993,7 +1144,7 @@ def test_set_iam_policy_flattened():
 
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = client.set_iam_policy(resource="resource_value")
+        client.set_iam_policy(resource="resource_value")
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1044,6 +1195,32 @@ def test_test_iam_permissions(transport: str = "grpc"):
     assert response.permissions == ["permissions_value"]
 
 
+def test_test_iam_permissions_field_headers():
+    client = CloudBillingClient(credentials=credentials.AnonymousCredentials())
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = iam_policy.TestIamPermissionsRequest()
+    request.resource = "resource/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client._transport.test_iam_permissions), "__call__"
+    ) as call:
+        call.return_value = iam_policy.TestIamPermissionsResponse()
+
+        client.test_iam_permissions(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "resource=resource/value") in kw["metadata"]
+
+
 def test_test_iam_permissions_from_dict():
     client = CloudBillingClient(credentials=credentials.AnonymousCredentials())
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1071,7 +1248,7 @@ def test_test_iam_permissions_flattened():
 
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = client.test_iam_permissions(
+        client.test_iam_permissions(
             resource="resource_value", permissions=["permissions_value"]
         )
 
@@ -1157,13 +1334,23 @@ def test_cloud_billing_auth_adc():
         )
 
 
+def test_cloud_billing_transport_auth_adc():
+    # If credentials and host are not provided, the transport class should use
+    # ADC credentials.
+    with mock.patch.object(auth, "default") as adc:
+        adc.return_value = (credentials.AnonymousCredentials(), None)
+        transports.CloudBillingGrpcTransport(host="squid.clam.whelk")
+        adc.assert_called_once_with(
+            scopes=("https://www.googleapis.com/auth/cloud-platform",)
+        )
+
+
 def test_cloud_billing_host_no_port():
     client = CloudBillingClient(
         credentials=credentials.AnonymousCredentials(),
         client_options=client_options.ClientOptions(
             api_endpoint="cloudbilling.googleapis.com"
         ),
-        transport="grpc",
     )
     assert client._transport._host == "cloudbilling.googleapis.com:443"
 
@@ -1174,7 +1361,6 @@ def test_cloud_billing_host_with_port():
         client_options=client_options.ClientOptions(
             api_endpoint="cloudbilling.googleapis.com:8000"
         ),
-        transport="grpc",
     )
     assert client._transport._host == "cloudbilling.googleapis.com:8000"
 

@@ -15,6 +15,7 @@
 # limitations under the License.
 #
 
+import os
 from unittest import mock
 
 import grpc
@@ -25,6 +26,7 @@ from google import auth
 from google.api_core import client_options
 from google.api_core import grpc_helpers
 from google.auth import credentials
+from google.auth.exceptions import MutualTLSChannelError
 from google.cloud.billing_v1.services.cloud_catalog import CloudCatalogClient
 from google.cloud.billing_v1.services.cloud_catalog import pagers
 from google.cloud.billing_v1.services.cloud_catalog import transports
@@ -78,6 +80,14 @@ def test_cloud_catalog_client_from_service_account_file():
         assert client._transport._host == "cloudbilling.googleapis.com:443"
 
 
+def test_cloud_catalog_client_get_transport_class():
+    transport = CloudCatalogClient.get_transport_class()
+    assert transport == transports.CloudCatalogGrpcTransport
+
+    transport = CloudCatalogClient.get_transport_class("grpc")
+    assert transport == transports.CloudCatalogGrpcTransport
+
+
 def test_cloud_catalog_client_client_options():
     # Check that if channel is provided we won't create a new one.
     with mock.patch(
@@ -89,19 +99,14 @@ def test_cloud_catalog_client_client_options():
         client = CloudCatalogClient(transport=transport)
         gtc.assert_not_called()
 
-    # Check mTLS is not triggered with empty client options.
-    options = client_options.ClientOptions()
+    # Check that if channel is provided via str we will create a new one.
     with mock.patch(
         "google.cloud.billing_v1.services.cloud_catalog.CloudCatalogClient.get_transport_class"
     ) as gtc:
-        transport = gtc.return_value = mock.MagicMock()
-        client = CloudCatalogClient(client_options=options)
-        transport.assert_called_once_with(
-            credentials=None, host=client.DEFAULT_ENDPOINT
-        )
+        client = CloudCatalogClient(transport="grpc")
+        gtc.assert_called()
 
-    # Check mTLS is not triggered if api_endpoint is provided but
-    # client_cert_source is None.
+    # Check the case api_endpoint is provided.
     options = client_options.ClientOptions(api_endpoint="squid.clam.whelk")
     with mock.patch(
         "google.cloud.billing_v1.services.cloud_catalog.transports.CloudCatalogGrpcTransport.__init__"
@@ -109,13 +114,45 @@ def test_cloud_catalog_client_client_options():
         grpc_transport.return_value = None
         client = CloudCatalogClient(client_options=options)
         grpc_transport.assert_called_once_with(
-            api_mtls_endpoint=None,
+            api_mtls_endpoint="squid.clam.whelk",
             client_cert_source=None,
             credentials=None,
             host="squid.clam.whelk",
         )
 
-    # Check mTLS is triggered if client_cert_source is provided.
+    # Check the case api_endpoint is not provided and GOOGLE_API_USE_MTLS is
+    # "never".
+    os.environ["GOOGLE_API_USE_MTLS"] = "never"
+    with mock.patch(
+        "google.cloud.billing_v1.services.cloud_catalog.transports.CloudCatalogGrpcTransport.__init__"
+    ) as grpc_transport:
+        grpc_transport.return_value = None
+        client = CloudCatalogClient()
+        grpc_transport.assert_called_once_with(
+            api_mtls_endpoint=client.DEFAULT_ENDPOINT,
+            client_cert_source=None,
+            credentials=None,
+            host=client.DEFAULT_ENDPOINT,
+        )
+
+    # Check the case api_endpoint is not provided and GOOGLE_API_USE_MTLS is
+    # "always".
+    os.environ["GOOGLE_API_USE_MTLS"] = "always"
+    with mock.patch(
+        "google.cloud.billing_v1.services.cloud_catalog.transports.CloudCatalogGrpcTransport.__init__"
+    ) as grpc_transport:
+        grpc_transport.return_value = None
+        client = CloudCatalogClient()
+        grpc_transport.assert_called_once_with(
+            api_mtls_endpoint=client.DEFAULT_MTLS_ENDPOINT,
+            client_cert_source=None,
+            credentials=None,
+            host=client.DEFAULT_MTLS_ENDPOINT,
+        )
+
+    # Check the case api_endpoint is not provided, GOOGLE_API_USE_MTLS is
+    # "auto", and client_cert_source is provided.
+    os.environ["GOOGLE_API_USE_MTLS"] = "auto"
     options = client_options.ClientOptions(
         client_cert_source=client_cert_source_callback
     )
@@ -128,24 +165,54 @@ def test_cloud_catalog_client_client_options():
             api_mtls_endpoint=client.DEFAULT_MTLS_ENDPOINT,
             client_cert_source=client_cert_source_callback,
             credentials=None,
-            host=client.DEFAULT_ENDPOINT,
+            host=client.DEFAULT_MTLS_ENDPOINT,
         )
 
-    # Check mTLS is triggered if api_endpoint and client_cert_source are provided.
-    options = client_options.ClientOptions(
-        api_endpoint="squid.clam.whelk", client_cert_source=client_cert_source_callback
-    )
+    # Check the case api_endpoint is not provided, GOOGLE_API_USE_MTLS is
+    # "auto", and default_client_cert_source is provided.
+    os.environ["GOOGLE_API_USE_MTLS"] = "auto"
     with mock.patch(
         "google.cloud.billing_v1.services.cloud_catalog.transports.CloudCatalogGrpcTransport.__init__"
     ) as grpc_transport:
-        grpc_transport.return_value = None
-        client = CloudCatalogClient(client_options=options)
-        grpc_transport.assert_called_once_with(
-            api_mtls_endpoint="squid.clam.whelk",
-            client_cert_source=client_cert_source_callback,
-            credentials=None,
-            host="squid.clam.whelk",
-        )
+        with mock.patch(
+            "google.auth.transport.mtls.has_default_client_cert_source",
+            return_value=True,
+        ):
+            grpc_transport.return_value = None
+            client = CloudCatalogClient()
+            grpc_transport.assert_called_once_with(
+                api_mtls_endpoint=client.DEFAULT_MTLS_ENDPOINT,
+                client_cert_source=None,
+                credentials=None,
+                host=client.DEFAULT_MTLS_ENDPOINT,
+            )
+
+    # Check the case api_endpoint is not provided, GOOGLE_API_USE_MTLS is
+    # "auto", but client_cert_source and default_client_cert_source are None.
+    os.environ["GOOGLE_API_USE_MTLS"] = "auto"
+    with mock.patch(
+        "google.cloud.billing_v1.services.cloud_catalog.transports.CloudCatalogGrpcTransport.__init__"
+    ) as grpc_transport:
+        with mock.patch(
+            "google.auth.transport.mtls.has_default_client_cert_source",
+            return_value=False,
+        ):
+            grpc_transport.return_value = None
+            client = CloudCatalogClient()
+            grpc_transport.assert_called_once_with(
+                api_mtls_endpoint=client.DEFAULT_ENDPOINT,
+                client_cert_source=None,
+                credentials=None,
+                host=client.DEFAULT_ENDPOINT,
+            )
+
+    # Check the case api_endpoint is not provided and GOOGLE_API_USE_MTLS has
+    # unsupported value.
+    os.environ["GOOGLE_API_USE_MTLS"] = "Unsupported"
+    with pytest.raises(MutualTLSChannelError):
+        client = CloudCatalogClient()
+
+    del os.environ["GOOGLE_API_USE_MTLS"]
 
 
 def test_cloud_catalog_client_client_options_from_dict():
@@ -155,7 +222,7 @@ def test_cloud_catalog_client_client_options_from_dict():
         grpc_transport.return_value = None
         client = CloudCatalogClient(client_options={"api_endpoint": "squid.clam.whelk"})
         grpc_transport.assert_called_once_with(
-            api_mtls_endpoint=None,
+            api_mtls_endpoint="squid.clam.whelk",
             client_cert_source=None,
             credentials=None,
             host="squid.clam.whelk",
@@ -283,11 +350,13 @@ def test_list_skus_field_headers():
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = cloud_catalog.ListSkusRequest(parent="parent/value")
+    request = cloud_catalog.ListSkusRequest()
+    request.parent = "parent/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client._transport.list_skus), "__call__") as call:
         call.return_value = cloud_catalog.ListSkusResponse()
+
         client.list_skus(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -310,7 +379,7 @@ def test_list_skus_flattened():
 
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = client.list_skus(parent="parent_value")
+        client.list_skus(parent="parent_value")
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -428,13 +497,23 @@ def test_cloud_catalog_auth_adc():
         )
 
 
+def test_cloud_catalog_transport_auth_adc():
+    # If credentials and host are not provided, the transport class should use
+    # ADC credentials.
+    with mock.patch.object(auth, "default") as adc:
+        adc.return_value = (credentials.AnonymousCredentials(), None)
+        transports.CloudCatalogGrpcTransport(host="squid.clam.whelk")
+        adc.assert_called_once_with(
+            scopes=("https://www.googleapis.com/auth/cloud-platform",)
+        )
+
+
 def test_cloud_catalog_host_no_port():
     client = CloudCatalogClient(
         credentials=credentials.AnonymousCredentials(),
         client_options=client_options.ClientOptions(
             api_endpoint="cloudbilling.googleapis.com"
         ),
-        transport="grpc",
     )
     assert client._transport._host == "cloudbilling.googleapis.com:443"
 
@@ -445,7 +524,6 @@ def test_cloud_catalog_host_with_port():
         client_options=client_options.ClientOptions(
             api_endpoint="cloudbilling.googleapis.com:8000"
         ),
-        transport="grpc",
     )
     assert client._transport._host == "cloudbilling.googleapis.com:8000"
 

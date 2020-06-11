@@ -18,6 +18,7 @@
 from typing import Callable, Dict, Tuple
 
 from google.api_core import grpc_helpers  # type: ignore
+from google import auth  # type: ignore
 from google.auth import credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 
@@ -76,7 +77,7 @@ class CloudBillingGrpcTransport(CloudBillingTransport):
                 is None.
 
         Raises:
-          google.auth.exceptions.MutualTlsChannelError: If mutual TLS transport
+          google.auth.exceptions.MutualTLSChannelError: If mutual TLS transport
               creation failed for any reason.
         """
         if channel:
@@ -92,6 +93,9 @@ class CloudBillingGrpcTransport(CloudBillingTransport):
                 if ":" in api_mtls_endpoint
                 else api_mtls_endpoint + ":443"
             )
+
+            if credentials is None:
+                credentials, _ = auth.default(scopes=self.AUTH_SCOPES)
 
             # Create SSL credentials with client_cert_source or application
             # default SSL credentials.
