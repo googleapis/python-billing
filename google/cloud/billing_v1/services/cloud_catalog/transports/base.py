@@ -61,7 +61,7 @@ class CloudCatalogTransport(abc.ABC):
 
     @property
     def list_services(
-        self
+        self,
     ) -> typing.Callable[
         [cloud_catalog.ListServicesRequest],
         typing.Union[
@@ -73,7 +73,7 @@ class CloudCatalogTransport(abc.ABC):
 
     @property
     def list_skus(
-        self
+        self,
     ) -> typing.Callable[
         [cloud_catalog.ListSkusRequest],
         typing.Union[

@@ -234,7 +234,7 @@ def test_cloud_billing_client_client_options_from_dict():
 
 def test_get_billing_account(transport: str = "grpc"):
     client = CloudBillingClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport
+        credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -273,7 +273,7 @@ def test_get_billing_account(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_get_billing_account_async(transport: str = "grpc_asyncio"):
     client = CloudBillingAsyncClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport
+        credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -312,7 +312,7 @@ async def test_get_billing_account_async(transport: str = "grpc_asyncio"):
 
 
 def test_get_billing_account_field_headers():
-    client = CloudBillingClient(credentials=credentials.AnonymousCredentials())
+    client = CloudBillingClient(credentials=credentials.AnonymousCredentials(),)
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -334,12 +334,12 @@ def test_get_billing_account_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value") in kw["metadata"]
+    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_get_billing_account_field_headers_async():
-    client = CloudBillingAsyncClient(credentials=credentials.AnonymousCredentials())
+    client = CloudBillingAsyncClient(credentials=credentials.AnonymousCredentials(),)
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -363,11 +363,11 @@ async def test_get_billing_account_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value") in kw["metadata"]
+    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
 
 
 def test_get_billing_account_flattened():
-    client = CloudBillingClient(credentials=credentials.AnonymousCredentials())
+    client = CloudBillingClient(credentials=credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -378,7 +378,7 @@ def test_get_billing_account_flattened():
 
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.get_billing_account(name="name_value")
+        client.get_billing_account(name="name_value",)
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -388,19 +388,19 @@ def test_get_billing_account_flattened():
 
 
 def test_get_billing_account_flattened_error():
-    client = CloudBillingClient(credentials=credentials.AnonymousCredentials())
+    client = CloudBillingClient(credentials=credentials.AnonymousCredentials(),)
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.get_billing_account(
-            cloud_billing.GetBillingAccountRequest(), name="name_value"
+            cloud_billing.GetBillingAccountRequest(), name="name_value",
         )
 
 
 @pytest.mark.asyncio
 async def test_get_billing_account_flattened_async():
-    client = CloudBillingAsyncClient(credentials=credentials.AnonymousCredentials())
+    client = CloudBillingAsyncClient(credentials=credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -414,7 +414,7 @@ async def test_get_billing_account_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.get_billing_account(name="name_value")
+        response = await client.get_billing_account(name="name_value",)
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -425,19 +425,19 @@ async def test_get_billing_account_flattened_async():
 
 @pytest.mark.asyncio
 async def test_get_billing_account_flattened_error_async():
-    client = CloudBillingAsyncClient(credentials=credentials.AnonymousCredentials())
+    client = CloudBillingAsyncClient(credentials=credentials.AnonymousCredentials(),)
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         await client.get_billing_account(
-            cloud_billing.GetBillingAccountRequest(), name="name_value"
+            cloud_billing.GetBillingAccountRequest(), name="name_value",
         )
 
 
 def test_list_billing_accounts(transport: str = "grpc"):
     client = CloudBillingClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport
+        credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -450,7 +450,7 @@ def test_list_billing_accounts(transport: str = "grpc"):
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = cloud_billing.ListBillingAccountsResponse(
-            next_page_token="next_page_token_value"
+            next_page_token="next_page_token_value",
         )
 
         response = client.list_billing_accounts(request)
@@ -469,7 +469,7 @@ def test_list_billing_accounts(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_billing_accounts_async(transport: str = "grpc_asyncio"):
     client = CloudBillingAsyncClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport
+        credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -483,7 +483,7 @@ async def test_list_billing_accounts_async(transport: str = "grpc_asyncio"):
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             cloud_billing.ListBillingAccountsResponse(
-                next_page_token="next_page_token_value"
+                next_page_token="next_page_token_value",
             )
         )
 
@@ -501,7 +501,7 @@ async def test_list_billing_accounts_async(transport: str = "grpc_asyncio"):
 
 
 def test_list_billing_accounts_pager():
-    client = CloudBillingClient(credentials=credentials.AnonymousCredentials)
+    client = CloudBillingClient(credentials=credentials.AnonymousCredentials,)
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -518,26 +518,27 @@ def test_list_billing_accounts_pager():
                 next_page_token="abc",
             ),
             cloud_billing.ListBillingAccountsResponse(
-                billing_accounts=[], next_page_token="def"
+                billing_accounts=[], next_page_token="def",
             ),
             cloud_billing.ListBillingAccountsResponse(
-                billing_accounts=[cloud_billing.BillingAccount()], next_page_token="ghi"
+                billing_accounts=[cloud_billing.BillingAccount(),],
+                next_page_token="ghi",
             ),
             cloud_billing.ListBillingAccountsResponse(
                 billing_accounts=[
                     cloud_billing.BillingAccount(),
                     cloud_billing.BillingAccount(),
-                ]
+                ],
             ),
             RuntimeError,
         )
-        results = [i for i in client.list_billing_accounts(request={})]
+        results = [i for i in client.list_billing_accounts(request={},)]
         assert len(results) == 6
         assert all(isinstance(i, cloud_billing.BillingAccount) for i in results)
 
 
 def test_list_billing_accounts_pages():
-    client = CloudBillingClient(credentials=credentials.AnonymousCredentials)
+    client = CloudBillingClient(credentials=credentials.AnonymousCredentials,)
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -554,16 +555,17 @@ def test_list_billing_accounts_pages():
                 next_page_token="abc",
             ),
             cloud_billing.ListBillingAccountsResponse(
-                billing_accounts=[], next_page_token="def"
+                billing_accounts=[], next_page_token="def",
             ),
             cloud_billing.ListBillingAccountsResponse(
-                billing_accounts=[cloud_billing.BillingAccount()], next_page_token="ghi"
+                billing_accounts=[cloud_billing.BillingAccount(),],
+                next_page_token="ghi",
             ),
             cloud_billing.ListBillingAccountsResponse(
                 billing_accounts=[
                     cloud_billing.BillingAccount(),
                     cloud_billing.BillingAccount(),
-                ]
+                ],
             ),
             RuntimeError,
         )
@@ -574,7 +576,7 @@ def test_list_billing_accounts_pages():
 
 @pytest.mark.asyncio
 async def test_list_billing_accounts_async_pager():
-    client = CloudBillingAsyncClient(credentials=credentials.AnonymousCredentials)
+    client = CloudBillingAsyncClient(credentials=credentials.AnonymousCredentials,)
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -593,20 +595,21 @@ async def test_list_billing_accounts_async_pager():
                 next_page_token="abc",
             ),
             cloud_billing.ListBillingAccountsResponse(
-                billing_accounts=[], next_page_token="def"
+                billing_accounts=[], next_page_token="def",
             ),
             cloud_billing.ListBillingAccountsResponse(
-                billing_accounts=[cloud_billing.BillingAccount()], next_page_token="ghi"
+                billing_accounts=[cloud_billing.BillingAccount(),],
+                next_page_token="ghi",
             ),
             cloud_billing.ListBillingAccountsResponse(
                 billing_accounts=[
                     cloud_billing.BillingAccount(),
                     cloud_billing.BillingAccount(),
-                ]
+                ],
             ),
             RuntimeError,
         )
-        async_pager = await client.list_billing_accounts(request={})
+        async_pager = await client.list_billing_accounts(request={},)
         assert async_pager.next_page_token == "abc"
         responses = []
         async for response in async_pager:
@@ -618,7 +621,7 @@ async def test_list_billing_accounts_async_pager():
 
 @pytest.mark.asyncio
 async def test_list_billing_accounts_async_pages():
-    client = CloudBillingAsyncClient(credentials=credentials.AnonymousCredentials)
+    client = CloudBillingAsyncClient(credentials=credentials.AnonymousCredentials,)
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -637,16 +640,17 @@ async def test_list_billing_accounts_async_pages():
                 next_page_token="abc",
             ),
             cloud_billing.ListBillingAccountsResponse(
-                billing_accounts=[], next_page_token="def"
+                billing_accounts=[], next_page_token="def",
             ),
             cloud_billing.ListBillingAccountsResponse(
-                billing_accounts=[cloud_billing.BillingAccount()], next_page_token="ghi"
+                billing_accounts=[cloud_billing.BillingAccount(),],
+                next_page_token="ghi",
             ),
             cloud_billing.ListBillingAccountsResponse(
                 billing_accounts=[
                     cloud_billing.BillingAccount(),
                     cloud_billing.BillingAccount(),
-                ]
+                ],
             ),
             RuntimeError,
         )
@@ -659,7 +663,7 @@ async def test_list_billing_accounts_async_pages():
 
 def test_update_billing_account(transport: str = "grpc"):
     client = CloudBillingClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport
+        credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -698,7 +702,7 @@ def test_update_billing_account(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_update_billing_account_async(transport: str = "grpc_asyncio"):
     client = CloudBillingAsyncClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport
+        credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -737,7 +741,7 @@ async def test_update_billing_account_async(transport: str = "grpc_asyncio"):
 
 
 def test_update_billing_account_field_headers():
-    client = CloudBillingClient(credentials=credentials.AnonymousCredentials())
+    client = CloudBillingClient(credentials=credentials.AnonymousCredentials(),)
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -759,12 +763,12 @@ def test_update_billing_account_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value") in kw["metadata"]
+    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_update_billing_account_field_headers_async():
-    client = CloudBillingAsyncClient(credentials=credentials.AnonymousCredentials())
+    client = CloudBillingAsyncClient(credentials=credentials.AnonymousCredentials(),)
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -788,11 +792,11 @@ async def test_update_billing_account_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value") in kw["metadata"]
+    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
 
 
 def test_update_billing_account_flattened():
-    client = CloudBillingClient(credentials=credentials.AnonymousCredentials())
+    client = CloudBillingClient(credentials=credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -804,7 +808,7 @@ def test_update_billing_account_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.update_billing_account(
-            name="name_value", account=cloud_billing.BillingAccount(name="name_value")
+            name="name_value", account=cloud_billing.BillingAccount(name="name_value"),
         )
 
         # Establish that the underlying call was made with the expected
@@ -816,7 +820,7 @@ def test_update_billing_account_flattened():
 
 
 def test_update_billing_account_flattened_error():
-    client = CloudBillingClient(credentials=credentials.AnonymousCredentials())
+    client = CloudBillingClient(credentials=credentials.AnonymousCredentials(),)
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -830,7 +834,7 @@ def test_update_billing_account_flattened_error():
 
 @pytest.mark.asyncio
 async def test_update_billing_account_flattened_async():
-    client = CloudBillingAsyncClient(credentials=credentials.AnonymousCredentials())
+    client = CloudBillingAsyncClient(credentials=credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -845,7 +849,7 @@ async def test_update_billing_account_flattened_async():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.update_billing_account(
-            name="name_value", account=cloud_billing.BillingAccount(name="name_value")
+            name="name_value", account=cloud_billing.BillingAccount(name="name_value"),
         )
 
         # Establish that the underlying call was made with the expected
@@ -858,7 +862,7 @@ async def test_update_billing_account_flattened_async():
 
 @pytest.mark.asyncio
 async def test_update_billing_account_flattened_error_async():
-    client = CloudBillingAsyncClient(credentials=credentials.AnonymousCredentials())
+    client = CloudBillingAsyncClient(credentials=credentials.AnonymousCredentials(),)
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -872,7 +876,7 @@ async def test_update_billing_account_flattened_error_async():
 
 def test_create_billing_account(transport: str = "grpc"):
     client = CloudBillingClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport
+        credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -911,7 +915,7 @@ def test_create_billing_account(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_create_billing_account_async(transport: str = "grpc_asyncio"):
     client = CloudBillingAsyncClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport
+        credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -950,7 +954,7 @@ async def test_create_billing_account_async(transport: str = "grpc_asyncio"):
 
 
 def test_create_billing_account_flattened():
-    client = CloudBillingClient(credentials=credentials.AnonymousCredentials())
+    client = CloudBillingClient(credentials=credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -962,7 +966,7 @@ def test_create_billing_account_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.create_billing_account(
-            billing_account=cloud_billing.BillingAccount(name="name_value")
+            billing_account=cloud_billing.BillingAccount(name="name_value"),
         )
 
         # Establish that the underlying call was made with the expected
@@ -975,7 +979,7 @@ def test_create_billing_account_flattened():
 
 
 def test_create_billing_account_flattened_error():
-    client = CloudBillingClient(credentials=credentials.AnonymousCredentials())
+    client = CloudBillingClient(credentials=credentials.AnonymousCredentials(),)
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -988,7 +992,7 @@ def test_create_billing_account_flattened_error():
 
 @pytest.mark.asyncio
 async def test_create_billing_account_flattened_async():
-    client = CloudBillingAsyncClient(credentials=credentials.AnonymousCredentials())
+    client = CloudBillingAsyncClient(credentials=credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1003,7 +1007,7 @@ async def test_create_billing_account_flattened_async():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.create_billing_account(
-            billing_account=cloud_billing.BillingAccount(name="name_value")
+            billing_account=cloud_billing.BillingAccount(name="name_value"),
         )
 
         # Establish that the underlying call was made with the expected
@@ -1017,7 +1021,7 @@ async def test_create_billing_account_flattened_async():
 
 @pytest.mark.asyncio
 async def test_create_billing_account_flattened_error_async():
-    client = CloudBillingAsyncClient(credentials=credentials.AnonymousCredentials())
+    client = CloudBillingAsyncClient(credentials=credentials.AnonymousCredentials(),)
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -1030,7 +1034,7 @@ async def test_create_billing_account_flattened_error_async():
 
 def test_list_project_billing_info(transport: str = "grpc"):
     client = CloudBillingClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport
+        credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1043,7 +1047,7 @@ def test_list_project_billing_info(transport: str = "grpc"):
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = cloud_billing.ListProjectBillingInfoResponse(
-            next_page_token="next_page_token_value"
+            next_page_token="next_page_token_value",
         )
 
         response = client.list_project_billing_info(request)
@@ -1062,7 +1066,7 @@ def test_list_project_billing_info(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_project_billing_info_async(transport: str = "grpc_asyncio"):
     client = CloudBillingAsyncClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport
+        credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1076,7 +1080,7 @@ async def test_list_project_billing_info_async(transport: str = "grpc_asyncio"):
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             cloud_billing.ListProjectBillingInfoResponse(
-                next_page_token="next_page_token_value"
+                next_page_token="next_page_token_value",
             )
         )
 
@@ -1094,7 +1098,7 @@ async def test_list_project_billing_info_async(transport: str = "grpc_asyncio"):
 
 
 def test_list_project_billing_info_field_headers():
-    client = CloudBillingClient(credentials=credentials.AnonymousCredentials())
+    client = CloudBillingClient(credentials=credentials.AnonymousCredentials(),)
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1116,12 +1120,12 @@ def test_list_project_billing_info_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value") in kw["metadata"]
+    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_list_project_billing_info_field_headers_async():
-    client = CloudBillingAsyncClient(credentials=credentials.AnonymousCredentials())
+    client = CloudBillingAsyncClient(credentials=credentials.AnonymousCredentials(),)
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1145,11 +1149,11 @@ async def test_list_project_billing_info_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value") in kw["metadata"]
+    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
 
 
 def test_list_project_billing_info_flattened():
-    client = CloudBillingClient(credentials=credentials.AnonymousCredentials())
+    client = CloudBillingClient(credentials=credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1160,7 +1164,7 @@ def test_list_project_billing_info_flattened():
 
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.list_project_billing_info(name="name_value")
+        client.list_project_billing_info(name="name_value",)
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1170,19 +1174,19 @@ def test_list_project_billing_info_flattened():
 
 
 def test_list_project_billing_info_flattened_error():
-    client = CloudBillingClient(credentials=credentials.AnonymousCredentials())
+    client = CloudBillingClient(credentials=credentials.AnonymousCredentials(),)
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.list_project_billing_info(
-            cloud_billing.ListProjectBillingInfoRequest(), name="name_value"
+            cloud_billing.ListProjectBillingInfoRequest(), name="name_value",
         )
 
 
 @pytest.mark.asyncio
 async def test_list_project_billing_info_flattened_async():
-    client = CloudBillingAsyncClient(credentials=credentials.AnonymousCredentials())
+    client = CloudBillingAsyncClient(credentials=credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1196,7 +1200,7 @@ async def test_list_project_billing_info_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.list_project_billing_info(name="name_value")
+        response = await client.list_project_billing_info(name="name_value",)
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1207,18 +1211,18 @@ async def test_list_project_billing_info_flattened_async():
 
 @pytest.mark.asyncio
 async def test_list_project_billing_info_flattened_error_async():
-    client = CloudBillingAsyncClient(credentials=credentials.AnonymousCredentials())
+    client = CloudBillingAsyncClient(credentials=credentials.AnonymousCredentials(),)
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         await client.list_project_billing_info(
-            cloud_billing.ListProjectBillingInfoRequest(), name="name_value"
+            cloud_billing.ListProjectBillingInfoRequest(), name="name_value",
         )
 
 
 def test_list_project_billing_info_pager():
-    client = CloudBillingClient(credentials=credentials.AnonymousCredentials)
+    client = CloudBillingClient(credentials=credentials.AnonymousCredentials,)
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1235,27 +1239,27 @@ def test_list_project_billing_info_pager():
                 next_page_token="abc",
             ),
             cloud_billing.ListProjectBillingInfoResponse(
-                project_billing_info=[], next_page_token="def"
+                project_billing_info=[], next_page_token="def",
             ),
             cloud_billing.ListProjectBillingInfoResponse(
-                project_billing_info=[cloud_billing.ProjectBillingInfo()],
+                project_billing_info=[cloud_billing.ProjectBillingInfo(),],
                 next_page_token="ghi",
             ),
             cloud_billing.ListProjectBillingInfoResponse(
                 project_billing_info=[
                     cloud_billing.ProjectBillingInfo(),
                     cloud_billing.ProjectBillingInfo(),
-                ]
+                ],
             ),
             RuntimeError,
         )
-        results = [i for i in client.list_project_billing_info(request={})]
+        results = [i for i in client.list_project_billing_info(request={},)]
         assert len(results) == 6
         assert all(isinstance(i, cloud_billing.ProjectBillingInfo) for i in results)
 
 
 def test_list_project_billing_info_pages():
-    client = CloudBillingClient(credentials=credentials.AnonymousCredentials)
+    client = CloudBillingClient(credentials=credentials.AnonymousCredentials,)
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1272,17 +1276,17 @@ def test_list_project_billing_info_pages():
                 next_page_token="abc",
             ),
             cloud_billing.ListProjectBillingInfoResponse(
-                project_billing_info=[], next_page_token="def"
+                project_billing_info=[], next_page_token="def",
             ),
             cloud_billing.ListProjectBillingInfoResponse(
-                project_billing_info=[cloud_billing.ProjectBillingInfo()],
+                project_billing_info=[cloud_billing.ProjectBillingInfo(),],
                 next_page_token="ghi",
             ),
             cloud_billing.ListProjectBillingInfoResponse(
                 project_billing_info=[
                     cloud_billing.ProjectBillingInfo(),
                     cloud_billing.ProjectBillingInfo(),
-                ]
+                ],
             ),
             RuntimeError,
         )
@@ -1293,7 +1297,7 @@ def test_list_project_billing_info_pages():
 
 @pytest.mark.asyncio
 async def test_list_project_billing_info_async_pager():
-    client = CloudBillingAsyncClient(credentials=credentials.AnonymousCredentials)
+    client = CloudBillingAsyncClient(credentials=credentials.AnonymousCredentials,)
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1312,21 +1316,21 @@ async def test_list_project_billing_info_async_pager():
                 next_page_token="abc",
             ),
             cloud_billing.ListProjectBillingInfoResponse(
-                project_billing_info=[], next_page_token="def"
+                project_billing_info=[], next_page_token="def",
             ),
             cloud_billing.ListProjectBillingInfoResponse(
-                project_billing_info=[cloud_billing.ProjectBillingInfo()],
+                project_billing_info=[cloud_billing.ProjectBillingInfo(),],
                 next_page_token="ghi",
             ),
             cloud_billing.ListProjectBillingInfoResponse(
                 project_billing_info=[
                     cloud_billing.ProjectBillingInfo(),
                     cloud_billing.ProjectBillingInfo(),
-                ]
+                ],
             ),
             RuntimeError,
         )
-        async_pager = await client.list_project_billing_info(request={})
+        async_pager = await client.list_project_billing_info(request={},)
         assert async_pager.next_page_token == "abc"
         responses = []
         async for response in async_pager:
@@ -1338,7 +1342,7 @@ async def test_list_project_billing_info_async_pager():
 
 @pytest.mark.asyncio
 async def test_list_project_billing_info_async_pages():
-    client = CloudBillingAsyncClient(credentials=credentials.AnonymousCredentials)
+    client = CloudBillingAsyncClient(credentials=credentials.AnonymousCredentials,)
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1357,17 +1361,17 @@ async def test_list_project_billing_info_async_pages():
                 next_page_token="abc",
             ),
             cloud_billing.ListProjectBillingInfoResponse(
-                project_billing_info=[], next_page_token="def"
+                project_billing_info=[], next_page_token="def",
             ),
             cloud_billing.ListProjectBillingInfoResponse(
-                project_billing_info=[cloud_billing.ProjectBillingInfo()],
+                project_billing_info=[cloud_billing.ProjectBillingInfo(),],
                 next_page_token="ghi",
             ),
             cloud_billing.ListProjectBillingInfoResponse(
                 project_billing_info=[
                     cloud_billing.ProjectBillingInfo(),
                     cloud_billing.ProjectBillingInfo(),
-                ]
+                ],
             ),
             RuntimeError,
         )
@@ -1380,7 +1384,7 @@ async def test_list_project_billing_info_async_pages():
 
 def test_get_project_billing_info(transport: str = "grpc"):
     client = CloudBillingClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport
+        credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1419,7 +1423,7 @@ def test_get_project_billing_info(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_get_project_billing_info_async(transport: str = "grpc_asyncio"):
     client = CloudBillingAsyncClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport
+        credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1458,7 +1462,7 @@ async def test_get_project_billing_info_async(transport: str = "grpc_asyncio"):
 
 
 def test_get_project_billing_info_field_headers():
-    client = CloudBillingClient(credentials=credentials.AnonymousCredentials())
+    client = CloudBillingClient(credentials=credentials.AnonymousCredentials(),)
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1480,12 +1484,12 @@ def test_get_project_billing_info_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value") in kw["metadata"]
+    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_get_project_billing_info_field_headers_async():
-    client = CloudBillingAsyncClient(credentials=credentials.AnonymousCredentials())
+    client = CloudBillingAsyncClient(credentials=credentials.AnonymousCredentials(),)
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1509,11 +1513,11 @@ async def test_get_project_billing_info_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value") in kw["metadata"]
+    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
 
 
 def test_get_project_billing_info_flattened():
-    client = CloudBillingClient(credentials=credentials.AnonymousCredentials())
+    client = CloudBillingClient(credentials=credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1524,7 +1528,7 @@ def test_get_project_billing_info_flattened():
 
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.get_project_billing_info(name="name_value")
+        client.get_project_billing_info(name="name_value",)
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1534,19 +1538,19 @@ def test_get_project_billing_info_flattened():
 
 
 def test_get_project_billing_info_flattened_error():
-    client = CloudBillingClient(credentials=credentials.AnonymousCredentials())
+    client = CloudBillingClient(credentials=credentials.AnonymousCredentials(),)
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.get_project_billing_info(
-            cloud_billing.GetProjectBillingInfoRequest(), name="name_value"
+            cloud_billing.GetProjectBillingInfoRequest(), name="name_value",
         )
 
 
 @pytest.mark.asyncio
 async def test_get_project_billing_info_flattened_async():
-    client = CloudBillingAsyncClient(credentials=credentials.AnonymousCredentials())
+    client = CloudBillingAsyncClient(credentials=credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1560,7 +1564,7 @@ async def test_get_project_billing_info_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.get_project_billing_info(name="name_value")
+        response = await client.get_project_billing_info(name="name_value",)
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1571,19 +1575,19 @@ async def test_get_project_billing_info_flattened_async():
 
 @pytest.mark.asyncio
 async def test_get_project_billing_info_flattened_error_async():
-    client = CloudBillingAsyncClient(credentials=credentials.AnonymousCredentials())
+    client = CloudBillingAsyncClient(credentials=credentials.AnonymousCredentials(),)
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         await client.get_project_billing_info(
-            cloud_billing.GetProjectBillingInfoRequest(), name="name_value"
+            cloud_billing.GetProjectBillingInfoRequest(), name="name_value",
         )
 
 
 def test_update_project_billing_info(transport: str = "grpc"):
     client = CloudBillingClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport
+        credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1622,7 +1626,7 @@ def test_update_project_billing_info(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_update_project_billing_info_async(transport: str = "grpc_asyncio"):
     client = CloudBillingAsyncClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport
+        credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1661,7 +1665,7 @@ async def test_update_project_billing_info_async(transport: str = "grpc_asyncio"
 
 
 def test_update_project_billing_info_field_headers():
-    client = CloudBillingClient(credentials=credentials.AnonymousCredentials())
+    client = CloudBillingClient(credentials=credentials.AnonymousCredentials(),)
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1683,12 +1687,12 @@ def test_update_project_billing_info_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value") in kw["metadata"]
+    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_update_project_billing_info_field_headers_async():
-    client = CloudBillingAsyncClient(credentials=credentials.AnonymousCredentials())
+    client = CloudBillingAsyncClient(credentials=credentials.AnonymousCredentials(),)
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1712,11 +1716,11 @@ async def test_update_project_billing_info_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value") in kw["metadata"]
+    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
 
 
 def test_update_project_billing_info_flattened():
-    client = CloudBillingClient(credentials=credentials.AnonymousCredentials())
+    client = CloudBillingClient(credentials=credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1743,7 +1747,7 @@ def test_update_project_billing_info_flattened():
 
 
 def test_update_project_billing_info_flattened_error():
-    client = CloudBillingClient(credentials=credentials.AnonymousCredentials())
+    client = CloudBillingClient(credentials=credentials.AnonymousCredentials(),)
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -1757,7 +1761,7 @@ def test_update_project_billing_info_flattened_error():
 
 @pytest.mark.asyncio
 async def test_update_project_billing_info_flattened_async():
-    client = CloudBillingAsyncClient(credentials=credentials.AnonymousCredentials())
+    client = CloudBillingAsyncClient(credentials=credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1788,7 +1792,7 @@ async def test_update_project_billing_info_flattened_async():
 
 @pytest.mark.asyncio
 async def test_update_project_billing_info_flattened_error_async():
-    client = CloudBillingAsyncClient(credentials=credentials.AnonymousCredentials())
+    client = CloudBillingAsyncClient(credentials=credentials.AnonymousCredentials(),)
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -1802,7 +1806,7 @@ async def test_update_project_billing_info_flattened_error_async():
 
 def test_get_iam_policy(transport: str = "grpc"):
     client = CloudBillingClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport
+        credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1812,7 +1816,7 @@ def test_get_iam_policy(transport: str = "grpc"):
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client._transport.get_iam_policy), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = policy.Policy(version=774, etag=b"etag_blob")
+        call.return_value = policy.Policy(version=774, etag=b"etag_blob",)
 
         response = client.get_iam_policy(request)
 
@@ -1831,7 +1835,7 @@ def test_get_iam_policy(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_get_iam_policy_async(transport: str = "grpc_asyncio"):
     client = CloudBillingAsyncClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport
+        credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1844,7 +1848,7 @@ async def test_get_iam_policy_async(transport: str = "grpc_asyncio"):
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            policy.Policy(version=774, etag=b"etag_blob")
+            policy.Policy(version=774, etag=b"etag_blob",)
         )
 
         response = await client.get_iam_policy(request)
@@ -1862,7 +1866,7 @@ async def test_get_iam_policy_async(transport: str = "grpc_asyncio"):
 
 
 def test_get_iam_policy_field_headers():
-    client = CloudBillingClient(credentials=credentials.AnonymousCredentials())
+    client = CloudBillingClient(credentials=credentials.AnonymousCredentials(),)
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1882,12 +1886,12 @@ def test_get_iam_policy_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "resource=resource/value") in kw["metadata"]
+    assert ("x-goog-request-params", "resource=resource/value",) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_get_iam_policy_field_headers_async():
-    client = CloudBillingAsyncClient(credentials=credentials.AnonymousCredentials())
+    client = CloudBillingAsyncClient(credentials=credentials.AnonymousCredentials(),)
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1909,11 +1913,11 @@ async def test_get_iam_policy_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "resource=resource/value") in kw["metadata"]
+    assert ("x-goog-request-params", "resource=resource/value",) in kw["metadata"]
 
 
 def test_get_iam_policy_from_dict():
-    client = CloudBillingClient(credentials=credentials.AnonymousCredentials())
+    client = CloudBillingClient(credentials=credentials.AnonymousCredentials(),)
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client._transport.get_iam_policy), "__call__") as call:
         # Designate an appropriate return value for the call.
@@ -1929,7 +1933,7 @@ def test_get_iam_policy_from_dict():
 
 
 def test_get_iam_policy_flattened():
-    client = CloudBillingClient(credentials=credentials.AnonymousCredentials())
+    client = CloudBillingClient(credentials=credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client._transport.get_iam_policy), "__call__") as call:
@@ -1938,7 +1942,7 @@ def test_get_iam_policy_flattened():
 
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.get_iam_policy(resource="resource_value")
+        client.get_iam_policy(resource="resource_value",)
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1948,19 +1952,19 @@ def test_get_iam_policy_flattened():
 
 
 def test_get_iam_policy_flattened_error():
-    client = CloudBillingClient(credentials=credentials.AnonymousCredentials())
+    client = CloudBillingClient(credentials=credentials.AnonymousCredentials(),)
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.get_iam_policy(
-            iam_policy.GetIamPolicyRequest(), resource="resource_value"
+            iam_policy.GetIamPolicyRequest(), resource="resource_value",
         )
 
 
 @pytest.mark.asyncio
 async def test_get_iam_policy_flattened_async():
-    client = CloudBillingAsyncClient(credentials=credentials.AnonymousCredentials())
+    client = CloudBillingAsyncClient(credentials=credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1972,7 +1976,7 @@ async def test_get_iam_policy_flattened_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(policy.Policy())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.get_iam_policy(resource="resource_value")
+        response = await client.get_iam_policy(resource="resource_value",)
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1983,19 +1987,19 @@ async def test_get_iam_policy_flattened_async():
 
 @pytest.mark.asyncio
 async def test_get_iam_policy_flattened_error_async():
-    client = CloudBillingAsyncClient(credentials=credentials.AnonymousCredentials())
+    client = CloudBillingAsyncClient(credentials=credentials.AnonymousCredentials(),)
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         await client.get_iam_policy(
-            iam_policy.GetIamPolicyRequest(), resource="resource_value"
+            iam_policy.GetIamPolicyRequest(), resource="resource_value",
         )
 
 
 def test_set_iam_policy(transport: str = "grpc"):
     client = CloudBillingClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport
+        credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2005,7 +2009,7 @@ def test_set_iam_policy(transport: str = "grpc"):
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client._transport.set_iam_policy), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = policy.Policy(version=774, etag=b"etag_blob")
+        call.return_value = policy.Policy(version=774, etag=b"etag_blob",)
 
         response = client.set_iam_policy(request)
 
@@ -2024,7 +2028,7 @@ def test_set_iam_policy(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_set_iam_policy_async(transport: str = "grpc_asyncio"):
     client = CloudBillingAsyncClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport
+        credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2037,7 +2041,7 @@ async def test_set_iam_policy_async(transport: str = "grpc_asyncio"):
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            policy.Policy(version=774, etag=b"etag_blob")
+            policy.Policy(version=774, etag=b"etag_blob",)
         )
 
         response = await client.set_iam_policy(request)
@@ -2055,7 +2059,7 @@ async def test_set_iam_policy_async(transport: str = "grpc_asyncio"):
 
 
 def test_set_iam_policy_field_headers():
-    client = CloudBillingClient(credentials=credentials.AnonymousCredentials())
+    client = CloudBillingClient(credentials=credentials.AnonymousCredentials(),)
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -2075,12 +2079,12 @@ def test_set_iam_policy_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "resource=resource/value") in kw["metadata"]
+    assert ("x-goog-request-params", "resource=resource/value",) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_set_iam_policy_field_headers_async():
-    client = CloudBillingAsyncClient(credentials=credentials.AnonymousCredentials())
+    client = CloudBillingAsyncClient(credentials=credentials.AnonymousCredentials(),)
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -2102,24 +2106,27 @@ async def test_set_iam_policy_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "resource=resource/value") in kw["metadata"]
+    assert ("x-goog-request-params", "resource=resource/value",) in kw["metadata"]
 
 
 def test_set_iam_policy_from_dict():
-    client = CloudBillingClient(credentials=credentials.AnonymousCredentials())
+    client = CloudBillingClient(credentials=credentials.AnonymousCredentials(),)
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client._transport.set_iam_policy), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = policy.Policy()
 
         response = client.set_iam_policy(
-            request={"resource": "resource_value", "policy": policy.Policy(version=774)}
+            request={
+                "resource": "resource_value",
+                "policy": policy.Policy(version=774),
+            }
         )
         call.assert_called()
 
 
 def test_set_iam_policy_flattened():
-    client = CloudBillingClient(credentials=credentials.AnonymousCredentials())
+    client = CloudBillingClient(credentials=credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client._transport.set_iam_policy), "__call__") as call:
@@ -2128,7 +2135,7 @@ def test_set_iam_policy_flattened():
 
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.set_iam_policy(resource="resource_value")
+        client.set_iam_policy(resource="resource_value",)
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -2138,19 +2145,19 @@ def test_set_iam_policy_flattened():
 
 
 def test_set_iam_policy_flattened_error():
-    client = CloudBillingClient(credentials=credentials.AnonymousCredentials())
+    client = CloudBillingClient(credentials=credentials.AnonymousCredentials(),)
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.set_iam_policy(
-            iam_policy.SetIamPolicyRequest(), resource="resource_value"
+            iam_policy.SetIamPolicyRequest(), resource="resource_value",
         )
 
 
 @pytest.mark.asyncio
 async def test_set_iam_policy_flattened_async():
-    client = CloudBillingAsyncClient(credentials=credentials.AnonymousCredentials())
+    client = CloudBillingAsyncClient(credentials=credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2162,7 +2169,7 @@ async def test_set_iam_policy_flattened_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(policy.Policy())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.set_iam_policy(resource="resource_value")
+        response = await client.set_iam_policy(resource="resource_value",)
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -2173,19 +2180,19 @@ async def test_set_iam_policy_flattened_async():
 
 @pytest.mark.asyncio
 async def test_set_iam_policy_flattened_error_async():
-    client = CloudBillingAsyncClient(credentials=credentials.AnonymousCredentials())
+    client = CloudBillingAsyncClient(credentials=credentials.AnonymousCredentials(),)
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         await client.set_iam_policy(
-            iam_policy.SetIamPolicyRequest(), resource="resource_value"
+            iam_policy.SetIamPolicyRequest(), resource="resource_value",
         )
 
 
 def test_test_iam_permissions(transport: str = "grpc"):
     client = CloudBillingClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport
+        credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2198,7 +2205,7 @@ def test_test_iam_permissions(transport: str = "grpc"):
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = iam_policy.TestIamPermissionsResponse(
-            permissions=["permissions_value"]
+            permissions=["permissions_value"],
         )
 
         response = client.test_iam_permissions(request)
@@ -2217,7 +2224,7 @@ def test_test_iam_permissions(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_test_iam_permissions_async(transport: str = "grpc_asyncio"):
     client = CloudBillingAsyncClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport
+        credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2230,7 +2237,7 @@ async def test_test_iam_permissions_async(transport: str = "grpc_asyncio"):
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            iam_policy.TestIamPermissionsResponse(permissions=["permissions_value"])
+            iam_policy.TestIamPermissionsResponse(permissions=["permissions_value"],)
         )
 
         response = await client.test_iam_permissions(request)
@@ -2247,7 +2254,7 @@ async def test_test_iam_permissions_async(transport: str = "grpc_asyncio"):
 
 
 def test_test_iam_permissions_field_headers():
-    client = CloudBillingClient(credentials=credentials.AnonymousCredentials())
+    client = CloudBillingClient(credentials=credentials.AnonymousCredentials(),)
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -2269,12 +2276,12 @@ def test_test_iam_permissions_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "resource=resource/value") in kw["metadata"]
+    assert ("x-goog-request-params", "resource=resource/value",) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_test_iam_permissions_field_headers_async():
-    client = CloudBillingAsyncClient(credentials=credentials.AnonymousCredentials())
+    client = CloudBillingAsyncClient(credentials=credentials.AnonymousCredentials(),)
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -2298,11 +2305,11 @@ async def test_test_iam_permissions_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "resource=resource/value") in kw["metadata"]
+    assert ("x-goog-request-params", "resource=resource/value",) in kw["metadata"]
 
 
 def test_test_iam_permissions_from_dict():
-    client = CloudBillingClient(credentials=credentials.AnonymousCredentials())
+    client = CloudBillingClient(credentials=credentials.AnonymousCredentials(),)
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
         type(client._transport.test_iam_permissions), "__call__"
@@ -2311,13 +2318,16 @@ def test_test_iam_permissions_from_dict():
         call.return_value = iam_policy.TestIamPermissionsResponse()
 
         response = client.test_iam_permissions(
-            request={"resource": "resource_value", "permissions": ["permissions_value"]}
+            request={
+                "resource": "resource_value",
+                "permissions": ["permissions_value"],
+            }
         )
         call.assert_called()
 
 
 def test_test_iam_permissions_flattened():
-    client = CloudBillingClient(credentials=credentials.AnonymousCredentials())
+    client = CloudBillingClient(credentials=credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2329,7 +2339,7 @@ def test_test_iam_permissions_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.test_iam_permissions(
-            resource="resource_value", permissions=["permissions_value"]
+            resource="resource_value", permissions=["permissions_value"],
         )
 
         # Establish that the underlying call was made with the expected
@@ -2341,7 +2351,7 @@ def test_test_iam_permissions_flattened():
 
 
 def test_test_iam_permissions_flattened_error():
-    client = CloudBillingClient(credentials=credentials.AnonymousCredentials())
+    client = CloudBillingClient(credentials=credentials.AnonymousCredentials(),)
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -2355,7 +2365,7 @@ def test_test_iam_permissions_flattened_error():
 
 @pytest.mark.asyncio
 async def test_test_iam_permissions_flattened_async():
-    client = CloudBillingAsyncClient(credentials=credentials.AnonymousCredentials())
+    client = CloudBillingAsyncClient(credentials=credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2370,7 +2380,7 @@ async def test_test_iam_permissions_flattened_async():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.test_iam_permissions(
-            resource="resource_value", permissions=["permissions_value"]
+            resource="resource_value", permissions=["permissions_value"],
         )
 
         # Establish that the underlying call was made with the expected
@@ -2383,7 +2393,7 @@ async def test_test_iam_permissions_flattened_async():
 
 @pytest.mark.asyncio
 async def test_test_iam_permissions_flattened_error_async():
-    client = CloudBillingAsyncClient(credentials=credentials.AnonymousCredentials())
+    client = CloudBillingAsyncClient(credentials=credentials.AnonymousCredentials(),)
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -2398,18 +2408,18 @@ async def test_test_iam_permissions_flattened_error_async():
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.CloudBillingGrpcTransport(
-        credentials=credentials.AnonymousCredentials()
+        credentials=credentials.AnonymousCredentials(),
     )
     with pytest.raises(ValueError):
         client = CloudBillingClient(
-            credentials=credentials.AnonymousCredentials(), transport=transport
+            credentials=credentials.AnonymousCredentials(), transport=transport,
         )
 
 
 def test_transport_instance():
     # A client may be instantiated with a custom transport instance.
     transport = transports.CloudBillingGrpcTransport(
-        credentials=credentials.AnonymousCredentials()
+        credentials=credentials.AnonymousCredentials(),
     )
     client = CloudBillingClient(transport=transport)
     assert client._transport is transport
@@ -2418,13 +2428,13 @@ def test_transport_instance():
 def test_transport_get_channel():
     # A client may be instantiated with a custom transport instance.
     transport = transports.CloudBillingGrpcTransport(
-        credentials=credentials.AnonymousCredentials()
+        credentials=credentials.AnonymousCredentials(),
     )
     channel = transport.grpc_channel
     assert channel
 
     transport = transports.CloudBillingGrpcAsyncIOTransport(
-        credentials=credentials.AnonymousCredentials()
+        credentials=credentials.AnonymousCredentials(),
     )
     channel = transport.grpc_channel
     assert channel
@@ -2432,14 +2442,14 @@ def test_transport_get_channel():
 
 def test_transport_grpc_default():
     # A client should use the gRPC transport by default.
-    client = CloudBillingClient(credentials=credentials.AnonymousCredentials())
-    assert isinstance(client._transport, transports.CloudBillingGrpcTransport)
+    client = CloudBillingClient(credentials=credentials.AnonymousCredentials(),)
+    assert isinstance(client._transport, transports.CloudBillingGrpcTransport,)
 
 
 def test_cloud_billing_base_transport():
     # Instantiate the base transport.
     transport = transports.CloudBillingTransport(
-        credentials=credentials.AnonymousCredentials()
+        credentials=credentials.AnonymousCredentials(),
     )
 
     # Every method on the transport should just blindly

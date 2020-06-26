@@ -158,7 +158,7 @@ class CloudCatalogGrpcAsyncIOTransport(CloudCatalogTransport):
         # have one.
         if not hasattr(self, "_grpc_channel"):
             self._grpc_channel = self.create_channel(
-                self._host, credentials=self._credentials
+                self._host, credentials=self._credentials,
             )
 
         # Return the channel from cache.
@@ -166,7 +166,7 @@ class CloudCatalogGrpcAsyncIOTransport(CloudCatalogTransport):
 
     @property
     def list_services(
-        self
+        self,
     ) -> Callable[
         [cloud_catalog.ListServicesRequest],
         Awaitable[cloud_catalog.ListServicesResponse],
@@ -195,7 +195,7 @@ class CloudCatalogGrpcAsyncIOTransport(CloudCatalogTransport):
 
     @property
     def list_skus(
-        self
+        self,
     ) -> Callable[
         [cloud_catalog.ListSkusRequest], Awaitable[cloud_catalog.ListSkusResponse]
     ]:

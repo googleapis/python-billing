@@ -52,7 +52,7 @@ class CloudBillingClientMeta(type):
     _transport_registry["grpc"] = CloudBillingGrpcTransport
     _transport_registry["grpc_asyncio"] = CloudBillingGrpcAsyncIOTransport
 
-    def get_transport_class(cls, label: str = None) -> Type[CloudBillingTransport]:
+    def get_transport_class(cls, label: str = None,) -> Type[CloudBillingTransport]:
         """Return an appropriate transport class.
 
         Args:
@@ -282,7 +282,7 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata)
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
         # Done; return the response.
         return response
@@ -331,12 +331,12 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata)
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListBillingAccountsPager(
-            method=rpc, request=request, response=response
+            method=rpc, request=request, response=response,
         )
 
         # Done; return the response.
@@ -424,7 +424,7 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata)
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
         # Done; return the response.
         return response
@@ -503,7 +503,7 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata)
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
         # Done; return the response.
         return response
@@ -581,12 +581,12 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata)
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListProjectBillingInfoPager(
-            method=rpc, request=request, response=response
+            method=rpc, request=request, response=response,
         )
 
         # Done; return the response.
@@ -664,7 +664,7 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata)
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
         # Done; return the response.
         return response
@@ -784,7 +784,7 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata)
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
         # Done; return the response.
         return response
@@ -929,7 +929,7 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata)
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
         # Done; return the response.
         return response
@@ -1075,7 +1075,7 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata)
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
         # Done; return the response.
         return response
@@ -1168,7 +1168,7 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata)
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
         # Done; return the response.
         return response
@@ -1176,7 +1176,7 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
 
 try:
     _client_info = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution("google-cloud-billing").version
+        gapic_version=pkg_resources.get_distribution("google-cloud-billing",).version,
     )
 except pkg_resources.DistributionNotFound:
     _client_info = gapic_v1.client_info.ClientInfo()

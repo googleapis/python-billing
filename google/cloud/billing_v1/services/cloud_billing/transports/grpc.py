@@ -161,7 +161,7 @@ class CloudBillingGrpcTransport(CloudBillingTransport):
         # have one.
         if not hasattr(self, "_grpc_channel"):
             self._grpc_channel = self.create_channel(
-                self._host, credentials=self._credentials
+                self._host, credentials=self._credentials,
             )
 
         # Return the channel from cache.
@@ -169,7 +169,7 @@ class CloudBillingGrpcTransport(CloudBillingTransport):
 
     @property
     def get_billing_account(
-        self
+        self,
     ) -> Callable[
         [cloud_billing.GetBillingAccountRequest], cloud_billing.BillingAccount
     ]:
@@ -199,7 +199,7 @@ class CloudBillingGrpcTransport(CloudBillingTransport):
 
     @property
     def list_billing_accounts(
-        self
+        self,
     ) -> Callable[
         [cloud_billing.ListBillingAccountsRequest],
         cloud_billing.ListBillingAccountsResponse,
@@ -230,7 +230,7 @@ class CloudBillingGrpcTransport(CloudBillingTransport):
 
     @property
     def update_billing_account(
-        self
+        self,
     ) -> Callable[
         [cloud_billing.UpdateBillingAccountRequest], cloud_billing.BillingAccount
     ]:
@@ -263,7 +263,7 @@ class CloudBillingGrpcTransport(CloudBillingTransport):
 
     @property
     def create_billing_account(
-        self
+        self,
     ) -> Callable[
         [cloud_billing.CreateBillingAccountRequest], cloud_billing.BillingAccount
     ]:
@@ -300,7 +300,7 @@ class CloudBillingGrpcTransport(CloudBillingTransport):
 
     @property
     def list_project_billing_info(
-        self
+        self,
     ) -> Callable[
         [cloud_billing.ListProjectBillingInfoRequest],
         cloud_billing.ListProjectBillingInfoResponse,
@@ -333,7 +333,7 @@ class CloudBillingGrpcTransport(CloudBillingTransport):
 
     @property
     def get_project_billing_info(
-        self
+        self,
     ) -> Callable[
         [cloud_billing.GetProjectBillingInfoRequest], cloud_billing.ProjectBillingInfo
     ]:
@@ -363,7 +363,7 @@ class CloudBillingGrpcTransport(CloudBillingTransport):
 
     @property
     def update_project_billing_info(
-        self
+        self,
     ) -> Callable[
         [cloud_billing.UpdateProjectBillingInfoRequest],
         cloud_billing.ProjectBillingInfo,
@@ -427,7 +427,7 @@ class CloudBillingGrpcTransport(CloudBillingTransport):
 
     @property
     def get_iam_policy(
-        self
+        self,
     ) -> Callable[[iam_policy.GetIamPolicyRequest], policy.Policy]:
         r"""Return a callable for the get iam policy method over gRPC.
 
@@ -456,7 +456,7 @@ class CloudBillingGrpcTransport(CloudBillingTransport):
 
     @property
     def set_iam_policy(
-        self
+        self,
     ) -> Callable[[iam_policy.SetIamPolicyRequest], policy.Policy]:
         r"""Return a callable for the set iam policy method over gRPC.
 
@@ -486,7 +486,7 @@ class CloudBillingGrpcTransport(CloudBillingTransport):
 
     @property
     def test_iam_permissions(
-        self
+        self,
     ) -> Callable[
         [iam_policy.TestIamPermissionsRequest], iam_policy.TestIamPermissionsResponse
     ]:

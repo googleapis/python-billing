@@ -63,7 +63,7 @@ class CloudBillingTransport(abc.ABC):
 
     @property
     def get_billing_account(
-        self
+        self,
     ) -> typing.Callable[
         [cloud_billing.GetBillingAccountRequest],
         typing.Union[
@@ -74,7 +74,7 @@ class CloudBillingTransport(abc.ABC):
 
     @property
     def list_billing_accounts(
-        self
+        self,
     ) -> typing.Callable[
         [cloud_billing.ListBillingAccountsRequest],
         typing.Union[
@@ -86,7 +86,7 @@ class CloudBillingTransport(abc.ABC):
 
     @property
     def update_billing_account(
-        self
+        self,
     ) -> typing.Callable[
         [cloud_billing.UpdateBillingAccountRequest],
         typing.Union[
@@ -97,7 +97,7 @@ class CloudBillingTransport(abc.ABC):
 
     @property
     def create_billing_account(
-        self
+        self,
     ) -> typing.Callable[
         [cloud_billing.CreateBillingAccountRequest],
         typing.Union[
@@ -108,7 +108,7 @@ class CloudBillingTransport(abc.ABC):
 
     @property
     def list_project_billing_info(
-        self
+        self,
     ) -> typing.Callable[
         [cloud_billing.ListProjectBillingInfoRequest],
         typing.Union[
@@ -120,7 +120,7 @@ class CloudBillingTransport(abc.ABC):
 
     @property
     def get_project_billing_info(
-        self
+        self,
     ) -> typing.Callable[
         [cloud_billing.GetProjectBillingInfoRequest],
         typing.Union[
@@ -132,7 +132,7 @@ class CloudBillingTransport(abc.ABC):
 
     @property
     def update_project_billing_info(
-        self
+        self,
     ) -> typing.Callable[
         [cloud_billing.UpdateProjectBillingInfoRequest],
         typing.Union[
@@ -144,7 +144,7 @@ class CloudBillingTransport(abc.ABC):
 
     @property
     def get_iam_policy(
-        self
+        self,
     ) -> typing.Callable[
         [iam_policy.GetIamPolicyRequest],
         typing.Union[policy.Policy, typing.Awaitable[policy.Policy]],
@@ -153,7 +153,7 @@ class CloudBillingTransport(abc.ABC):
 
     @property
     def set_iam_policy(
-        self
+        self,
     ) -> typing.Callable[
         [iam_policy.SetIamPolicyRequest],
         typing.Union[policy.Policy, typing.Awaitable[policy.Policy]],
@@ -162,7 +162,7 @@ class CloudBillingTransport(abc.ABC):
 
     @property
     def test_iam_permissions(
-        self
+        self,
     ) -> typing.Callable[
         [iam_policy.TestIamPermissionsRequest],
         typing.Union[

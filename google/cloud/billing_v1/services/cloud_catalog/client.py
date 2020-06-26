@@ -50,7 +50,7 @@ class CloudCatalogClientMeta(type):
     _transport_registry["grpc"] = CloudCatalogGrpcTransport
     _transport_registry["grpc_asyncio"] = CloudCatalogGrpcAsyncIOTransport
 
-    def get_transport_class(cls, label: str = None) -> Type[CloudCatalogTransport]:
+    def get_transport_class(cls, label: str = None,) -> Type[CloudCatalogTransport]:
         """Return an appropriate transport class.
 
         Args:
@@ -252,12 +252,12 @@ class CloudCatalogClient(metaclass=CloudCatalogClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata)
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListServicesPager(
-            method=rpc, request=request, response=response
+            method=rpc, request=request, response=response,
         )
 
         # Done; return the response.
@@ -319,7 +319,7 @@ class CloudCatalogClient(metaclass=CloudCatalogClientMeta):
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = gapic_v1.method.wrap_method(
-            self._transport.list_skus, default_timeout=None, client_info=_client_info
+            self._transport.list_skus, default_timeout=None, client_info=_client_info,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -329,11 +329,11 @@ class CloudCatalogClient(metaclass=CloudCatalogClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata)
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
-        response = pagers.ListSkusPager(method=rpc, request=request, response=response)
+        response = pagers.ListSkusPager(method=rpc, request=request, response=response,)
 
         # Done; return the response.
         return response
@@ -341,7 +341,7 @@ class CloudCatalogClient(metaclass=CloudCatalogClientMeta):
 
 try:
     _client_info = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution("google-cloud-billing").version
+        gapic_version=pkg_resources.get_distribution("google-cloud-billing",).version,
     )
 except pkg_resources.DistributionNotFound:
     _client_info = gapic_v1.client_info.ClientInfo()
