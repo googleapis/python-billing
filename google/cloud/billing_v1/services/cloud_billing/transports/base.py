@@ -26,7 +26,7 @@ from google.iam.v1 import iam_policy_pb2 as iam_policy  # type: ignore
 from google.iam.v1 import policy_pb2 as policy  # type: ignore
 
 
-class CloudBillingTransport(metaclass=abc.ABCMeta):
+class CloudBillingTransport(abc.ABC):
     """Abstract transport class for CloudBilling."""
 
     AUTH_SCOPES = ("https://www.googleapis.com/auth/cloud-platform",)
@@ -36,6 +36,7 @@ class CloudBillingTransport(metaclass=abc.ABCMeta):
         *,
         host: str = "cloudbilling.googleapis.com",
         credentials: credentials.Credentials = None,
+        **kwargs,
     ) -> None:
         """Instantiate the transport.
 
@@ -64,80 +65,112 @@ class CloudBillingTransport(metaclass=abc.ABCMeta):
     def get_billing_account(
         self
     ) -> typing.Callable[
-        [cloud_billing.GetBillingAccountRequest], cloud_billing.BillingAccount
+        [cloud_billing.GetBillingAccountRequest],
+        typing.Union[
+            cloud_billing.BillingAccount, typing.Awaitable[cloud_billing.BillingAccount]
+        ],
     ]:
-        raise NotImplementedError
+        raise NotImplementedError()
 
     @property
     def list_billing_accounts(
         self
     ) -> typing.Callable[
         [cloud_billing.ListBillingAccountsRequest],
-        cloud_billing.ListBillingAccountsResponse,
+        typing.Union[
+            cloud_billing.ListBillingAccountsResponse,
+            typing.Awaitable[cloud_billing.ListBillingAccountsResponse],
+        ],
     ]:
-        raise NotImplementedError
+        raise NotImplementedError()
 
     @property
     def update_billing_account(
         self
     ) -> typing.Callable[
-        [cloud_billing.UpdateBillingAccountRequest], cloud_billing.BillingAccount
+        [cloud_billing.UpdateBillingAccountRequest],
+        typing.Union[
+            cloud_billing.BillingAccount, typing.Awaitable[cloud_billing.BillingAccount]
+        ],
     ]:
-        raise NotImplementedError
+        raise NotImplementedError()
 
     @property
     def create_billing_account(
         self
     ) -> typing.Callable[
-        [cloud_billing.CreateBillingAccountRequest], cloud_billing.BillingAccount
+        [cloud_billing.CreateBillingAccountRequest],
+        typing.Union[
+            cloud_billing.BillingAccount, typing.Awaitable[cloud_billing.BillingAccount]
+        ],
     ]:
-        raise NotImplementedError
+        raise NotImplementedError()
 
     @property
     def list_project_billing_info(
         self
     ) -> typing.Callable[
         [cloud_billing.ListProjectBillingInfoRequest],
-        cloud_billing.ListProjectBillingInfoResponse,
+        typing.Union[
+            cloud_billing.ListProjectBillingInfoResponse,
+            typing.Awaitable[cloud_billing.ListProjectBillingInfoResponse],
+        ],
     ]:
-        raise NotImplementedError
+        raise NotImplementedError()
 
     @property
     def get_project_billing_info(
         self
     ) -> typing.Callable[
-        [cloud_billing.GetProjectBillingInfoRequest], cloud_billing.ProjectBillingInfo
+        [cloud_billing.GetProjectBillingInfoRequest],
+        typing.Union[
+            cloud_billing.ProjectBillingInfo,
+            typing.Awaitable[cloud_billing.ProjectBillingInfo],
+        ],
     ]:
-        raise NotImplementedError
+        raise NotImplementedError()
 
     @property
     def update_project_billing_info(
         self
     ) -> typing.Callable[
         [cloud_billing.UpdateProjectBillingInfoRequest],
-        cloud_billing.ProjectBillingInfo,
+        typing.Union[
+            cloud_billing.ProjectBillingInfo,
+            typing.Awaitable[cloud_billing.ProjectBillingInfo],
+        ],
     ]:
-        raise NotImplementedError
+        raise NotImplementedError()
 
     @property
     def get_iam_policy(
         self
-    ) -> typing.Callable[[iam_policy.GetIamPolicyRequest], policy.Policy]:
-        raise NotImplementedError
+    ) -> typing.Callable[
+        [iam_policy.GetIamPolicyRequest],
+        typing.Union[policy.Policy, typing.Awaitable[policy.Policy]],
+    ]:
+        raise NotImplementedError()
 
     @property
     def set_iam_policy(
         self
-    ) -> typing.Callable[[iam_policy.SetIamPolicyRequest], policy.Policy]:
-        raise NotImplementedError
+    ) -> typing.Callable[
+        [iam_policy.SetIamPolicyRequest],
+        typing.Union[policy.Policy, typing.Awaitable[policy.Policy]],
+    ]:
+        raise NotImplementedError()
 
     @property
     def test_iam_permissions(
         self
     ) -> typing.Callable[
-        [iam_policy.TestIamPermissionsRequest], iam_policy.TestIamPermissionsResponse
+        [iam_policy.TestIamPermissionsRequest],
+        typing.Union[
+            iam_policy.TestIamPermissionsResponse,
+            typing.Awaitable[iam_policy.TestIamPermissionsResponse],
+        ],
     ]:
-        raise NotImplementedError
+        raise NotImplementedError()
 
 
 __all__ = ("CloudBillingTransport",)

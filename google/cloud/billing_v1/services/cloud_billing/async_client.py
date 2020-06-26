@@ -16,9 +16,9 @@
 #
 
 from collections import OrderedDict
-import os
+import functools
 import re
-from typing import Callable, Dict, Sequence, Tuple, Type, Union
+from typing import Dict, Sequence, Tuple, Type, Union
 import pkg_resources
 
 import google.api_core.client_options as ClientOptions  # type: ignore
@@ -26,8 +26,6 @@ from google.api_core import exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
 from google.auth import credentials  # type: ignore
-from google.auth.transport import mtls  # type: ignore
-from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
 from google.cloud.billing_v1.services.cloud_billing import pagers
@@ -36,105 +34,32 @@ from google.iam.v1 import iam_policy_pb2 as iam_policy  # type: ignore
 from google.iam.v1 import policy_pb2 as policy  # type: ignore
 
 from .transports.base import CloudBillingTransport
-from .transports.grpc import CloudBillingGrpcTransport
 from .transports.grpc_asyncio import CloudBillingGrpcAsyncIOTransport
+from .client import CloudBillingClient
 
 
-class CloudBillingClientMeta(type):
-    """Metaclass for the CloudBilling client.
-
-    This provides class-level methods for building and retrieving
-    support objects (e.g. transport) without polluting the client instance
-    objects.
-    """
-
-    _transport_registry = OrderedDict()  # type: Dict[str, Type[CloudBillingTransport]]
-    _transport_registry["grpc"] = CloudBillingGrpcTransport
-    _transport_registry["grpc_asyncio"] = CloudBillingGrpcAsyncIOTransport
-
-    def get_transport_class(cls, label: str = None) -> Type[CloudBillingTransport]:
-        """Return an appropriate transport class.
-
-        Args:
-            label: The name of the desired transport. If none is
-                provided, then the first transport in the registry is used.
-
-        Returns:
-            The transport class to use.
-        """
-        # If a specific transport is requested, return that one.
-        if label:
-            return cls._transport_registry[label]
-
-        # No transport is requested; return the default (that is, the first one
-        # in the dictionary).
-        return next(iter(cls._transport_registry.values()))
-
-
-class CloudBillingClient(metaclass=CloudBillingClientMeta):
+class CloudBillingAsyncClient:
     """Retrieves GCP Console billing accounts and associates them
     with projects.
     """
 
-    @staticmethod
-    def _get_default_mtls_endpoint(api_endpoint):
-        """Convert api endpoint to mTLS endpoint.
-        Convert "*.sandbox.googleapis.com" and "*.googleapis.com" to
-        "*.mtls.sandbox.googleapis.com" and "*.mtls.googleapis.com" respectively.
-        Args:
-            api_endpoint (Optional[str]): the api endpoint to convert.
-        Returns:
-            str: converted mTLS api endpoint.
-        """
-        if not api_endpoint:
-            return api_endpoint
+    _client: CloudBillingClient
 
-        mtls_endpoint_re = re.compile(
-            r"(?P<name>[^.]+)(?P<mtls>\.mtls)?(?P<sandbox>\.sandbox)?(?P<googledomain>\.googleapis\.com)?"
-        )
+    DEFAULT_ENDPOINT = CloudBillingClient.DEFAULT_ENDPOINT
+    DEFAULT_MTLS_ENDPOINT = CloudBillingClient.DEFAULT_MTLS_ENDPOINT
 
-        m = mtls_endpoint_re.match(api_endpoint)
-        name, mtls, sandbox, googledomain = m.groups()
-        if mtls or not googledomain:
-            return api_endpoint
-
-        if sandbox:
-            return api_endpoint.replace(
-                "sandbox.googleapis.com", "mtls.sandbox.googleapis.com"
-            )
-
-        return api_endpoint.replace(".googleapis.com", ".mtls.googleapis.com")
-
-    DEFAULT_ENDPOINT = "cloudbilling.googleapis.com"
-    DEFAULT_MTLS_ENDPOINT = _get_default_mtls_endpoint.__func__(  # type: ignore
-        DEFAULT_ENDPOINT
-    )
-
-    @classmethod
-    def from_service_account_file(cls, filename: str, *args, **kwargs):
-        """Creates an instance of this client using the provided credentials
-        file.
-
-        Args:
-            filename (str): The path to the service account private key json
-                file.
-            args: Additional arguments to pass to the constructor.
-            kwargs: Additional arguments to pass to the constructor.
-
-        Returns:
-            {@api.name}: The constructed client.
-        """
-        credentials = service_account.Credentials.from_service_account_file(filename)
-        kwargs["credentials"] = credentials
-        return cls(*args, **kwargs)
-
+    from_service_account_file = CloudBillingClient.from_service_account_file
     from_service_account_json = from_service_account_file
+
+    get_transport_class = functools.partial(
+        type(CloudBillingClient).get_transport_class, type(CloudBillingClient)
+    )
 
     def __init__(
         self,
         *,
         credentials: credentials.Credentials = None,
-        transport: Union[str, CloudBillingTransport] = None,
+        transport: Union[str, CloudBillingTransport] = "grpc_asyncio",
         client_options: ClientOptions = None,
     ) -> None:
         """Instantiate the cloud billing client.
@@ -163,56 +88,15 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
                 default SSL credentials will be used if present.
 
         Raises:
-            google.auth.exceptions.MutualTLSChannelError: If mutual TLS transport
+            google.auth.exceptions.MutualTlsChannelError: If mutual TLS transport
                 creation failed for any reason.
         """
-        if isinstance(client_options, dict):
-            client_options = ClientOptions.from_dict(client_options)
-        if client_options is None:
-            client_options = ClientOptions.ClientOptions()
 
-        if client_options.api_endpoint is None:
-            use_mtls_env = os.getenv("GOOGLE_API_USE_MTLS", "never")
-            if use_mtls_env == "never":
-                client_options.api_endpoint = self.DEFAULT_ENDPOINT
-            elif use_mtls_env == "always":
-                client_options.api_endpoint = self.DEFAULT_MTLS_ENDPOINT
-            elif use_mtls_env == "auto":
-                has_client_cert_source = (
-                    client_options.client_cert_source is not None
-                    or mtls.has_default_client_cert_source()
-                )
-                client_options.api_endpoint = (
-                    self.DEFAULT_MTLS_ENDPOINT
-                    if has_client_cert_source
-                    else self.DEFAULT_ENDPOINT
-                )
-            else:
-                raise MutualTLSChannelError(
-                    "Unsupported GOOGLE_API_USE_MTLS value. Accepted values: never, auto, always"
-                )
+        self._client = CloudBillingClient(
+            credentials=credentials, transport=transport, client_options=client_options
+        )
 
-        # Save or instantiate the transport.
-        # Ordinarily, we provide the transport, but allowing a custom transport
-        # instance provides an extensibility point for unusual situations.
-        if isinstance(transport, CloudBillingTransport):
-            # transport is a CloudBillingTransport instance.
-            if credentials:
-                raise ValueError(
-                    "When providing a transport instance, "
-                    "provide its credentials directly."
-                )
-            self._transport = transport
-        else:
-            Transport = type(self).get_transport_class(transport)
-            self._transport = Transport(
-                credentials=credentials,
-                host=client_options.api_endpoint,
-                api_mtls_endpoint=client_options.api_endpoint,
-                client_cert_source=client_options.client_cert_source,
-            )
-
-    def get_billing_account(
+    async def get_billing_account(
         self,
         request: cloud_billing.GetBillingAccountRequest = None,
         *,
@@ -269,8 +153,8 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method.wrap_method(
-            self._transport.get_billing_account,
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.get_billing_account,
             default_timeout=None,
             client_info=_client_info,
         )
@@ -282,19 +166,19 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata)
+        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata)
 
         # Done; return the response.
         return response
 
-    def list_billing_accounts(
+    async def list_billing_accounts(
         self,
         request: cloud_billing.ListBillingAccountsRequest = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> pagers.ListBillingAccountsPager:
+    ) -> pagers.ListBillingAccountsAsyncPager:
         r"""Lists the billing accounts that the current authenticated user
         has permission to
         `view <https://cloud.google.com/billing/docs/how-to/billing-access>`__.
@@ -311,7 +195,7 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.pagers.ListBillingAccountsPager:
+            ~.pagers.ListBillingAccountsAsyncPager:
                 Response message for ``ListBillingAccounts``.
 
                 Iterating over this object will yield results and
@@ -324,25 +208,25 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method.wrap_method(
-            self._transport.list_billing_accounts,
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.list_billing_accounts,
             default_timeout=None,
             client_info=_client_info,
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata)
+        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata)
 
         # This method is paged; wrap the response in a pager, which provides
-        # an `__iter__` convenience method.
-        response = pagers.ListBillingAccountsPager(
+        # an `__aiter__` convenience method.
+        response = pagers.ListBillingAccountsAsyncPager(
             method=rpc, request=request, response=response
         )
 
         # Done; return the response.
         return response
 
-    def update_billing_account(
+    async def update_billing_account(
         self,
         request: cloud_billing.UpdateBillingAccountRequest = None,
         *,
@@ -411,8 +295,8 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method.wrap_method(
-            self._transport.update_billing_account,
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.update_billing_account,
             default_timeout=None,
             client_info=_client_info,
         )
@@ -424,12 +308,12 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata)
+        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata)
 
         # Done; return the response.
         return response
 
-    def create_billing_account(
+    async def create_billing_account(
         self,
         request: cloud_billing.CreateBillingAccountRequest = None,
         *,
@@ -496,19 +380,19 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method.wrap_method(
-            self._transport.create_billing_account,
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.create_billing_account,
             default_timeout=None,
             client_info=_client_info,
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata)
+        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata)
 
         # Done; return the response.
         return response
 
-    def list_project_billing_info(
+    async def list_project_billing_info(
         self,
         request: cloud_billing.ListProjectBillingInfoRequest = None,
         *,
@@ -516,7 +400,7 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> pagers.ListProjectBillingInfoPager:
+    ) -> pagers.ListProjectBillingInfoAsyncPager:
         r"""Lists the projects associated with a billing account. The
         current authenticated user must have the
         ``billing.resourceAssociations.list`` IAM permission, which is
@@ -542,7 +426,7 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.pagers.ListProjectBillingInfoPager:
+            ~.pagers.ListProjectBillingInfoAsyncPager:
                 Request message for ``ListProjectBillingInfoResponse``.
 
                 Iterating over this object will yield results and
@@ -568,8 +452,8 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method.wrap_method(
-            self._transport.list_project_billing_info,
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.list_project_billing_info,
             default_timeout=None,
             client_info=_client_info,
         )
@@ -581,18 +465,18 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata)
+        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata)
 
         # This method is paged; wrap the response in a pager, which provides
-        # an `__iter__` convenience method.
-        response = pagers.ListProjectBillingInfoPager(
+        # an `__aiter__` convenience method.
+        response = pagers.ListProjectBillingInfoAsyncPager(
             method=rpc, request=request, response=response
         )
 
         # Done; return the response.
         return response
 
-    def get_project_billing_info(
+    async def get_project_billing_info(
         self,
         request: cloud_billing.GetProjectBillingInfoRequest = None,
         *,
@@ -651,8 +535,8 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method.wrap_method(
-            self._transport.get_project_billing_info,
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.get_project_billing_info,
             default_timeout=None,
             client_info=_client_info,
         )
@@ -664,12 +548,12 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata)
+        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata)
 
         # Done; return the response.
         return response
 
-    def update_project_billing_info(
+    async def update_project_billing_info(
         self,
         request: cloud_billing.UpdateProjectBillingInfoRequest = None,
         *,
@@ -771,8 +655,8 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method.wrap_method(
-            self._transport.update_project_billing_info,
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.update_project_billing_info,
             default_timeout=None,
             client_info=_client_info,
         )
@@ -784,12 +668,12 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata)
+        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata)
 
         # Done; return the response.
         return response
 
-    def get_iam_policy(
+    async def get_iam_policy(
         self,
         request: iam_policy.GetIamPolicyRequest = None,
         *,
@@ -916,8 +800,8 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method.wrap_method(
-            self._transport.get_iam_policy,
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.get_iam_policy,
             default_timeout=None,
             client_info=_client_info,
         )
@@ -929,12 +813,12 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata)
+        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata)
 
         # Done; return the response.
         return response
 
-    def set_iam_policy(
+    async def set_iam_policy(
         self,
         request: iam_policy.SetIamPolicyRequest = None,
         *,
@@ -1062,8 +946,8 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method.wrap_method(
-            self._transport.set_iam_policy,
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.set_iam_policy,
             default_timeout=None,
             client_info=_client_info,
         )
@@ -1075,12 +959,12 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata)
+        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata)
 
         # Done; return the response.
         return response
 
-    def test_iam_permissions(
+    async def test_iam_permissions(
         self,
         request: iam_policy.TestIamPermissionsRequest = None,
         *,
@@ -1155,8 +1039,8 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method.wrap_method(
-            self._transport.test_iam_permissions,
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.test_iam_permissions,
             default_timeout=None,
             client_info=_client_info,
         )
@@ -1168,7 +1052,7 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata)
+        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata)
 
         # Done; return the response.
         return response
@@ -1182,4 +1066,4 @@ except pkg_resources.DistributionNotFound:
     _client_info = gapic_v1.client_info.ClientInfo()
 
 
-__all__ = ("CloudBillingClient",)
+__all__ = ("CloudBillingAsyncClient",)

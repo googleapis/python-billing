@@ -24,7 +24,7 @@ from google.auth import credentials  # type: ignore
 from google.cloud.billing_v1.types import cloud_catalog
 
 
-class CloudCatalogTransport(metaclass=abc.ABCMeta):
+class CloudCatalogTransport(abc.ABC):
     """Abstract transport class for CloudCatalog."""
 
     AUTH_SCOPES = ("https://www.googleapis.com/auth/cloud-platform",)
@@ -34,6 +34,7 @@ class CloudCatalogTransport(metaclass=abc.ABCMeta):
         *,
         host: str = "cloudbilling.googleapis.com",
         credentials: credentials.Credentials = None,
+        **kwargs,
     ) -> None:
         """Instantiate the transport.
 
@@ -62,17 +63,25 @@ class CloudCatalogTransport(metaclass=abc.ABCMeta):
     def list_services(
         self
     ) -> typing.Callable[
-        [cloud_catalog.ListServicesRequest], cloud_catalog.ListServicesResponse
+        [cloud_catalog.ListServicesRequest],
+        typing.Union[
+            cloud_catalog.ListServicesResponse,
+            typing.Awaitable[cloud_catalog.ListServicesResponse],
+        ],
     ]:
-        raise NotImplementedError
+        raise NotImplementedError()
 
     @property
     def list_skus(
         self
     ) -> typing.Callable[
-        [cloud_catalog.ListSkusRequest], cloud_catalog.ListSkusResponse
+        [cloud_catalog.ListSkusRequest],
+        typing.Union[
+            cloud_catalog.ListSkusResponse,
+            typing.Awaitable[cloud_catalog.ListSkusResponse],
+        ],
     ]:
-        raise NotImplementedError
+        raise NotImplementedError()
 
 
 __all__ = ("CloudCatalogTransport",)

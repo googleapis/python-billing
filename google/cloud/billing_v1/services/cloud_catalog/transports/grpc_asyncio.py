@@ -15,23 +15,23 @@
 # limitations under the License.
 #
 
-from typing import Callable, Dict, Optional, Sequence, Tuple
+from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple
 
-from google.api_core import grpc_helpers  # type: ignore
-from google import auth  # type: ignore
+from google.api_core import grpc_helpers_async  # type: ignore
 from google.auth import credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 
-
 import grpc  # type: ignore
+from grpc.experimental import aio  # type: ignore
 
 from google.cloud.billing_v1.types import cloud_catalog
 
 from .base import CloudCatalogTransport
+from .grpc import CloudCatalogGrpcTransport
 
 
-class CloudCatalogGrpcTransport(CloudCatalogTransport):
-    """gRPC backend transport for CloudCatalog.
+class CloudCatalogGrpcAsyncIOTransport(CloudCatalogTransport):
+    """gRPC AsyncIO backend transport for CloudCatalog.
 
     A catalog of Google Cloud Platform services and SKUs.
     Provides pricing information and metadata on Google Cloud
@@ -45,14 +45,44 @@ class CloudCatalogGrpcTransport(CloudCatalogTransport):
     top of HTTP/2); the ``grpcio`` package must be installed.
     """
 
-    _stubs: Dict[str, Callable]
+    _grpc_channel: aio.Channel
+    _stubs: Dict[str, Callable] = {}
+
+    @classmethod
+    def create_channel(
+        cls,
+        host: str = "cloudbilling.googleapis.com",
+        credentials: credentials.Credentials = None,
+        scopes: Optional[Sequence[str]] = None,
+        **kwargs
+    ) -> aio.Channel:
+        """Create and return a gRPC AsyncIO channel object.
+        Args:
+            address (Optional[str]): The host for the channel to use.
+            credentials (Optional[~.Credentials]): The
+                authorization credentials to attach to requests. These
+                credentials identify this application to the service. If
+                none are specified, the client will attempt to ascertain
+                the credentials from the environment.
+            scopes (Optional[Sequence[str]]): A optional list of scopes needed for this
+                service. These are only used when credentials are not specified and
+                are passed to :func:`google.auth.default`.
+            kwargs (Optional[dict]): Keyword arguments, which are passed to the
+                channel creation.
+        Returns:
+            aio.Channel: A gRPC AsyncIO channel object.
+        """
+        scopes = scopes or cls.AUTH_SCOPES
+        return grpc_helpers_async.create_channel(
+            host, credentials=credentials, scopes=scopes, **kwargs
+        )
 
     def __init__(
         self,
         *,
         host: str = "cloudbilling.googleapis.com",
         credentials: credentials.Credentials = None,
-        channel: grpc.Channel = None,
+        channel: aio.Channel = None,
         api_mtls_endpoint: str = None,
         client_cert_source: Callable[[], Tuple[bytes, bytes]] = None
     ) -> None:
@@ -66,7 +96,7 @@ class CloudCatalogGrpcTransport(CloudCatalogTransport):
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
                 This argument is ignored if ``channel`` is provided.
-            channel (Optional[grpc.Channel]): A ``Channel`` instance through
+            channel (Optional[aio.Channel]): A ``Channel`` instance through
                 which to make calls.
             api_mtls_endpoint (Optional[str]): The mutual TLS endpoint. If
                 provided, it overrides the ``host`` argument and tries to create
@@ -78,8 +108,8 @@ class CloudCatalogGrpcTransport(CloudCatalogTransport):
                 is None.
 
         Raises:
-            google.auth.exceptions.MutualTlsChannelError: If mutual TLS transport
-                creation failed for any reason.
+          google.auth.exceptions.MutualTlsChannelError: If mutual TLS transport
+              creation failed for any reason.
         """
         if channel:
             # Sanity check: Ensure that channel and credentials are not both
@@ -94,9 +124,6 @@ class CloudCatalogGrpcTransport(CloudCatalogTransport):
                 if ":" in api_mtls_endpoint
                 else api_mtls_endpoint + ":443"
             )
-
-            if credentials is None:
-                credentials, _ = auth.default(scopes=self.AUTH_SCOPES)
 
             # Create SSL credentials with client_cert_source or application
             # default SSL credentials.
@@ -118,39 +145,10 @@ class CloudCatalogGrpcTransport(CloudCatalogTransport):
 
         # Run the base constructor.
         super().__init__(host=host, credentials=credentials)
-        self._stubs = {}  # type: Dict[str, Callable]
-
-    @classmethod
-    def create_channel(
-        cls,
-        host: str = "cloudbilling.googleapis.com",
-        credentials: credentials.Credentials = None,
-        scopes: Optional[Sequence[str]] = None,
-        **kwargs
-    ) -> grpc.Channel:
-        """Create and return a gRPC channel object.
-        Args:
-            address (Optionsl[str]): The host for the channel to use.
-            credentials (Optional[~.Credentials]): The
-                authorization credentials to attach to requests. These
-                credentials identify this application to the service. If
-                none are specified, the client will attempt to ascertain
-                the credentials from the environment.
-            scopes (Optional[Sequence[str]]): A optional list of scopes needed for this
-                service. These are only used when credentials are not specified and
-                are passed to :func:`google.auth.default`.
-            kwargs (Optional[dict]): Keyword arguments, which are passed to the
-                channel creation.
-        Returns:
-            grpc.Channel: A gRPC channel object.
-        """
-        scopes = scopes or cls.AUTH_SCOPES
-        return grpc_helpers.create_channel(
-            host, credentials=credentials, scopes=scopes, **kwargs
-        )
+        self._stubs = {}
 
     @property
-    def grpc_channel(self) -> grpc.Channel:
+    def grpc_channel(self) -> aio.Channel:
         """Create the channel designed to connect to this service.
 
         This property caches on the instance; repeated calls return
@@ -170,7 +168,8 @@ class CloudCatalogGrpcTransport(CloudCatalogTransport):
     def list_services(
         self
     ) -> Callable[
-        [cloud_catalog.ListServicesRequest], cloud_catalog.ListServicesResponse
+        [cloud_catalog.ListServicesRequest],
+        Awaitable[cloud_catalog.ListServicesResponse],
     ]:
         r"""Return a callable for the list services method over gRPC.
 
@@ -178,7 +177,7 @@ class CloudCatalogGrpcTransport(CloudCatalogTransport):
 
         Returns:
             Callable[[~.ListServicesRequest],
-                    ~.ListServicesResponse]:
+                    Awaitable[~.ListServicesResponse]]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -197,7 +196,9 @@ class CloudCatalogGrpcTransport(CloudCatalogTransport):
     @property
     def list_skus(
         self
-    ) -> Callable[[cloud_catalog.ListSkusRequest], cloud_catalog.ListSkusResponse]:
+    ) -> Callable[
+        [cloud_catalog.ListSkusRequest], Awaitable[cloud_catalog.ListSkusResponse]
+    ]:
         r"""Return a callable for the list skus method over gRPC.
 
         Lists all publicly available SKUs for a given cloud
@@ -205,7 +206,7 @@ class CloudCatalogGrpcTransport(CloudCatalogTransport):
 
         Returns:
             Callable[[~.ListSkusRequest],
-                    ~.ListSkusResponse]:
+                    Awaitable[~.ListSkusResponse]]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -222,4 +223,4 @@ class CloudCatalogGrpcTransport(CloudCatalogTransport):
         return self._stubs["list_skus"]
 
 
-__all__ = ("CloudCatalogGrpcTransport",)
+__all__ = ("CloudCatalogGrpcAsyncIOTransport",)
