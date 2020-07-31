@@ -258,7 +258,7 @@ class ListProjectBillingInfoAsyncPager:
 
     @property
     async def pages(
-        self
+        self,
     ) -> AsyncIterable[cloud_billing.ListProjectBillingInfoResponse]:
         yield self._response
         while self._response.next_page_token:

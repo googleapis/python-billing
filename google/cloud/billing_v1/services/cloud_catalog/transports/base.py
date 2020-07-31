@@ -30,7 +30,7 @@ from google.cloud.billing_v1.types import cloud_catalog
 
 try:
     _client_info = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution("google-cloud-billing").version
+        gapic_version=pkg_resources.get_distribution("google-cloud-billing",).version,
     )
 except pkg_resources.DistributionNotFound:
     _client_info = gapic_v1.client_info.ClientInfo()
@@ -99,16 +99,16 @@ class CloudCatalogTransport(abc.ABC):
         # Precompute the wrapped methods.
         self._wrapped_methods = {
             self.list_services: gapic_v1.method.wrap_method(
-                self.list_services, default_timeout=None, client_info=_client_info
+                self.list_services, default_timeout=None, client_info=_client_info,
             ),
             self.list_skus: gapic_v1.method.wrap_method(
-                self.list_skus, default_timeout=None, client_info=_client_info
+                self.list_skus, default_timeout=None, client_info=_client_info,
             ),
         }
 
     @property
     def list_services(
-        self
+        self,
     ) -> typing.Callable[
         [cloud_catalog.ListServicesRequest],
         typing.Union[
@@ -120,7 +120,7 @@ class CloudCatalogTransport(abc.ABC):
 
     @property
     def list_skus(
-        self
+        self,
     ) -> typing.Callable[
         [cloud_catalog.ListSkusRequest],
         typing.Union[

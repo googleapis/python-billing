@@ -193,7 +193,7 @@ class CloudBillingGrpcAsyncIOTransport(CloudBillingTransport):
         # have one.
         if not hasattr(self, "_grpc_channel"):
             self._grpc_channel = self.create_channel(
-                self._host, credentials=self._credentials
+                self._host, credentials=self._credentials,
             )
 
         # Return the channel from cache.
@@ -201,7 +201,7 @@ class CloudBillingGrpcAsyncIOTransport(CloudBillingTransport):
 
     @property
     def get_billing_account(
-        self
+        self,
     ) -> Callable[
         [cloud_billing.GetBillingAccountRequest],
         Awaitable[cloud_billing.BillingAccount],
@@ -232,7 +232,7 @@ class CloudBillingGrpcAsyncIOTransport(CloudBillingTransport):
 
     @property
     def list_billing_accounts(
-        self
+        self,
     ) -> Callable[
         [cloud_billing.ListBillingAccountsRequest],
         Awaitable[cloud_billing.ListBillingAccountsResponse],
@@ -263,7 +263,7 @@ class CloudBillingGrpcAsyncIOTransport(CloudBillingTransport):
 
     @property
     def update_billing_account(
-        self
+        self,
     ) -> Callable[
         [cloud_billing.UpdateBillingAccountRequest],
         Awaitable[cloud_billing.BillingAccount],
@@ -297,7 +297,7 @@ class CloudBillingGrpcAsyncIOTransport(CloudBillingTransport):
 
     @property
     def create_billing_account(
-        self
+        self,
     ) -> Callable[
         [cloud_billing.CreateBillingAccountRequest],
         Awaitable[cloud_billing.BillingAccount],
@@ -335,7 +335,7 @@ class CloudBillingGrpcAsyncIOTransport(CloudBillingTransport):
 
     @property
     def list_project_billing_info(
-        self
+        self,
     ) -> Callable[
         [cloud_billing.ListProjectBillingInfoRequest],
         Awaitable[cloud_billing.ListProjectBillingInfoResponse],
@@ -368,7 +368,7 @@ class CloudBillingGrpcAsyncIOTransport(CloudBillingTransport):
 
     @property
     def get_project_billing_info(
-        self
+        self,
     ) -> Callable[
         [cloud_billing.GetProjectBillingInfoRequest],
         Awaitable[cloud_billing.ProjectBillingInfo],
@@ -399,7 +399,7 @@ class CloudBillingGrpcAsyncIOTransport(CloudBillingTransport):
 
     @property
     def update_project_billing_info(
-        self
+        self,
     ) -> Callable[
         [cloud_billing.UpdateProjectBillingInfoRequest],
         Awaitable[cloud_billing.ProjectBillingInfo],
@@ -463,7 +463,7 @@ class CloudBillingGrpcAsyncIOTransport(CloudBillingTransport):
 
     @property
     def get_iam_policy(
-        self
+        self,
     ) -> Callable[[iam_policy.GetIamPolicyRequest], Awaitable[policy.Policy]]:
         r"""Return a callable for the get iam policy method over gRPC.
 
@@ -492,7 +492,7 @@ class CloudBillingGrpcAsyncIOTransport(CloudBillingTransport):
 
     @property
     def set_iam_policy(
-        self
+        self,
     ) -> Callable[[iam_policy.SetIamPolicyRequest], Awaitable[policy.Policy]]:
         r"""Return a callable for the set iam policy method over gRPC.
 
@@ -522,7 +522,7 @@ class CloudBillingGrpcAsyncIOTransport(CloudBillingTransport):
 
     @property
     def test_iam_permissions(
-        self
+        self,
     ) -> Callable[
         [iam_policy.TestIamPermissionsRequest],
         Awaitable[iam_policy.TestIamPermissionsResponse],

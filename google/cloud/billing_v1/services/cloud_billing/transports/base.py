@@ -32,7 +32,7 @@ from google.iam.v1 import policy_pb2 as policy  # type: ignore
 
 try:
     _client_info = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution("google-cloud-billing").version
+        gapic_version=pkg_resources.get_distribution("google-cloud-billing",).version,
     )
 except pkg_resources.DistributionNotFound:
     _client_info = gapic_v1.client_info.ClientInfo()
@@ -101,7 +101,9 @@ class CloudBillingTransport(abc.ABC):
         # Precompute the wrapped methods.
         self._wrapped_methods = {
             self.get_billing_account: gapic_v1.method.wrap_method(
-                self.get_billing_account, default_timeout=None, client_info=_client_info
+                self.get_billing_account,
+                default_timeout=None,
+                client_info=_client_info,
             ),
             self.list_billing_accounts: gapic_v1.method.wrap_method(
                 self.list_billing_accounts,
@@ -134,10 +136,10 @@ class CloudBillingTransport(abc.ABC):
                 client_info=_client_info,
             ),
             self.get_iam_policy: gapic_v1.method.wrap_method(
-                self.get_iam_policy, default_timeout=None, client_info=_client_info
+                self.get_iam_policy, default_timeout=None, client_info=_client_info,
             ),
             self.set_iam_policy: gapic_v1.method.wrap_method(
-                self.set_iam_policy, default_timeout=None, client_info=_client_info
+                self.set_iam_policy, default_timeout=None, client_info=_client_info,
             ),
             self.test_iam_permissions: gapic_v1.method.wrap_method(
                 self.test_iam_permissions,
@@ -148,7 +150,7 @@ class CloudBillingTransport(abc.ABC):
 
     @property
     def get_billing_account(
-        self
+        self,
     ) -> typing.Callable[
         [cloud_billing.GetBillingAccountRequest],
         typing.Union[
@@ -159,7 +161,7 @@ class CloudBillingTransport(abc.ABC):
 
     @property
     def list_billing_accounts(
-        self
+        self,
     ) -> typing.Callable[
         [cloud_billing.ListBillingAccountsRequest],
         typing.Union[
@@ -171,7 +173,7 @@ class CloudBillingTransport(abc.ABC):
 
     @property
     def update_billing_account(
-        self
+        self,
     ) -> typing.Callable[
         [cloud_billing.UpdateBillingAccountRequest],
         typing.Union[
@@ -182,7 +184,7 @@ class CloudBillingTransport(abc.ABC):
 
     @property
     def create_billing_account(
-        self
+        self,
     ) -> typing.Callable[
         [cloud_billing.CreateBillingAccountRequest],
         typing.Union[
@@ -193,7 +195,7 @@ class CloudBillingTransport(abc.ABC):
 
     @property
     def list_project_billing_info(
-        self
+        self,
     ) -> typing.Callable[
         [cloud_billing.ListProjectBillingInfoRequest],
         typing.Union[
@@ -205,7 +207,7 @@ class CloudBillingTransport(abc.ABC):
 
     @property
     def get_project_billing_info(
-        self
+        self,
     ) -> typing.Callable[
         [cloud_billing.GetProjectBillingInfoRequest],
         typing.Union[
@@ -217,7 +219,7 @@ class CloudBillingTransport(abc.ABC):
 
     @property
     def update_project_billing_info(
-        self
+        self,
     ) -> typing.Callable[
         [cloud_billing.UpdateProjectBillingInfoRequest],
         typing.Union[
@@ -229,7 +231,7 @@ class CloudBillingTransport(abc.ABC):
 
     @property
     def get_iam_policy(
-        self
+        self,
     ) -> typing.Callable[
         [iam_policy.GetIamPolicyRequest],
         typing.Union[policy.Policy, typing.Awaitable[policy.Policy]],
@@ -238,7 +240,7 @@ class CloudBillingTransport(abc.ABC):
 
     @property
     def set_iam_policy(
-        self
+        self,
     ) -> typing.Callable[
         [iam_policy.SetIamPolicyRequest],
         typing.Union[policy.Policy, typing.Awaitable[policy.Policy]],
@@ -247,7 +249,7 @@ class CloudBillingTransport(abc.ABC):
 
     @property
     def test_iam_permissions(
-        self
+        self,
     ) -> typing.Callable[
         [iam_policy.TestIamPermissionsRequest],
         typing.Union[
