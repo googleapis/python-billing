@@ -21,14 +21,14 @@ import re
 from typing import Callable, Dict, Sequence, Tuple, Type, Union
 import pkg_resources
 
-import google.api_core.client_options as ClientOptions # type: ignore
-from google.api_core import exceptions                 # type: ignore
-from google.api_core import gapic_v1                   # type: ignore
-from google.api_core import retry as retries           # type: ignore
-from google.auth import credentials                    # type: ignore
-from google.auth.transport import mtls                 # type: ignore
+import google.api_core.client_options as ClientOptions  # type: ignore
+from google.api_core import exceptions  # type: ignore
+from google.api_core import gapic_v1  # type: ignore
+from google.api_core import retry as retries  # type: ignore
+from google.auth import credentials  # type: ignore
+from google.auth.transport import mtls  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
-from google.oauth2 import service_account              # type: ignore
+from google.oauth2 import service_account  # type: ignore
 
 from google.cloud.billing_v1.services.cloud_catalog import pagers
 from google.cloud.billing_v1.types import cloud_catalog
@@ -45,13 +45,12 @@ class CloudCatalogClientMeta(type):
     support objects (e.g. transport) without polluting the client instance
     objects.
     """
-    _transport_registry = OrderedDict()  # type: Dict[str, Type[CloudCatalogTransport]]
-    _transport_registry['grpc'] = CloudCatalogGrpcTransport
-    _transport_registry['grpc_asyncio'] = CloudCatalogGrpcAsyncIOTransport
 
-    def get_transport_class(cls,
-            label: str = None,
-        ) -> Type[CloudCatalogTransport]:
+    _transport_registry = OrderedDict()  # type: Dict[str, Type[CloudCatalogTransport]]
+    _transport_registry["grpc"] = CloudCatalogGrpcTransport
+    _transport_registry["grpc_asyncio"] = CloudCatalogGrpcAsyncIOTransport
+
+    def get_transport_class(cls, label: str = None,) -> Type[CloudCatalogTransport]:
         """Return an appropriate transport class.
 
         Args:
@@ -105,7 +104,7 @@ class CloudCatalogClient(metaclass=CloudCatalogClientMeta):
 
         return api_endpoint.replace(".googleapis.com", ".mtls.googleapis.com")
 
-    DEFAULT_ENDPOINT = 'cloudbilling.googleapis.com'
+    DEFAULT_ENDPOINT = "cloudbilling.googleapis.com"
     DEFAULT_MTLS_ENDPOINT = _get_default_mtls_endpoint.__func__(  # type: ignore
         DEFAULT_ENDPOINT
     )
@@ -124,18 +123,19 @@ class CloudCatalogClient(metaclass=CloudCatalogClientMeta):
         Returns:
             {@api.name}: The constructed client.
         """
-        credentials = service_account.Credentials.from_service_account_file(
-            filename)
-        kwargs['credentials'] = credentials
+        credentials = service_account.Credentials.from_service_account_file(filename)
+        kwargs["credentials"] = credentials
         return cls(*args, **kwargs)
 
     from_service_account_json = from_service_account_file
 
-    def __init__(self, *,
-            credentials: credentials.Credentials = None,
-            transport: Union[str, CloudCatalogTransport] = None,
-            client_options: ClientOptions = None,
-            ) -> None:
+    def __init__(
+        self,
+        *,
+        credentials: credentials.Credentials = None,
+        transport: Union[str, CloudCatalogTransport] = None,
+        client_options: ClientOptions = None,
+    ) -> None:
         """Instantiate the cloud catalog client.
 
         Args:
@@ -182,7 +182,9 @@ class CloudCatalogClient(metaclass=CloudCatalogClientMeta):
                     or mtls.has_default_client_cert_source()
                 )
                 client_options.api_endpoint = (
-                    self.DEFAULT_MTLS_ENDPOINT if has_client_cert_source else self.DEFAULT_ENDPOINT
+                    self.DEFAULT_MTLS_ENDPOINT
+                    if has_client_cert_source
+                    else self.DEFAULT_ENDPOINT
                 )
             else:
                 raise MutualTLSChannelError(
@@ -195,8 +197,10 @@ class CloudCatalogClient(metaclass=CloudCatalogClientMeta):
         if isinstance(transport, CloudCatalogTransport):
             # transport is a CloudCatalogTransport instance.
             if credentials or client_options.credentials_file:
-                raise ValueError('When providing a transport instance, '
-                                 'provide its credentials directly.')
+                raise ValueError(
+                    "When providing a transport instance, "
+                    "provide its credentials directly."
+                )
             if client_options.scopes:
                 raise ValueError(
                     "When providing a transport instance, "
@@ -215,13 +219,14 @@ class CloudCatalogClient(metaclass=CloudCatalogClientMeta):
                 quota_project_id=client_options.quota_project_id,
             )
 
-    def list_services(self,
-            request: cloud_catalog.ListServicesRequest = None,
-            *,
-            retry: retries.Retry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
-            metadata: Sequence[Tuple[str, str]] = (),
-            ) -> pagers.ListServicesPager:
+    def list_services(
+        self,
+        request: cloud_catalog.ListServicesRequest = None,
+        *,
+        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.ListServicesPager:
         r"""Lists all public cloud services.
 
         Args:
@@ -256,33 +261,26 @@ class CloudCatalogClient(metaclass=CloudCatalogClientMeta):
         rpc = self._transport._wrapped_methods[self._transport.list_services]
 
         # Send the request.
-        response = rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListServicesPager(
-            method=rpc,
-            request=request,
-            response=response,
-            metadata=metadata,
+            method=rpc, request=request, response=response, metadata=metadata,
         )
 
         # Done; return the response.
         return response
 
-    def list_skus(self,
-            request: cloud_catalog.ListSkusRequest = None,
-            *,
-            parent: str = None,
-            retry: retries.Retry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
-            metadata: Sequence[Tuple[str, str]] = (),
-            ) -> pagers.ListSkusPager:
+    def list_skus(
+        self,
+        request: cloud_catalog.ListSkusRequest = None,
+        *,
+        parent: str = None,
+        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.ListSkusPager:
         r"""Lists all publicly available SKUs for a given cloud
         service.
 
@@ -315,8 +313,10 @@ class CloudCatalogClient(metaclass=CloudCatalogClientMeta):
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
-            raise ValueError('If the `request` argument is set, then none of '
-                             'the individual field arguments should be set.')
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
 
         # Minor optimization to avoid making a copy if the user passes
         # in a cloud_catalog.ListSkusRequest.
@@ -338,47 +338,28 @@ class CloudCatalogClient(metaclass=CloudCatalogClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ('parent', request.parent),
-            )),
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
         )
 
         # Send the request.
-        response = rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListSkusPager(
-            method=rpc,
-            request=request,
-            response=response,
-            metadata=metadata,
+            method=rpc, request=request, response=response, metadata=metadata,
         )
 
         # Done; return the response.
         return response
 
 
-
-
-
-
-
 try:
     _client_info = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution(
-            'google-cloud-billing',
-        ).version,
+        gapic_version=pkg_resources.get_distribution("google-cloud-billing",).version,
     )
 except pkg_resources.DistributionNotFound:
     _client_info = gapic_v1.client_info.ClientInfo()
 
 
-__all__ = (
-    'CloudCatalogClient',
-)
+__all__ = ("CloudCatalogClient",)

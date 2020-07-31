@@ -17,9 +17,9 @@
 
 from typing import Callable, Dict, Optional, Sequence, Tuple
 
-from google.api_core import grpc_helpers   # type: ignore
-from google import auth                    # type: ignore
-from google.auth import credentials        # type: ignore
+from google.api_core import grpc_helpers  # type: ignore
+from google import auth  # type: ignore
+from google.auth import credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 
 
@@ -45,17 +45,21 @@ class CloudBillingGrpcTransport(CloudBillingTransport):
     It sends protocol buffers over the wire using gRPC (which is built on
     top of HTTP/2); the ``grpcio`` package must be installed.
     """
+
     _stubs: Dict[str, Callable]
 
-    def __init__(self, *,
-            host: str = 'cloudbilling.googleapis.com',
-            credentials: credentials.Credentials = None,
-            credentials_file: str = None,
-            scopes: Sequence[str] = None,
-            channel: grpc.Channel = None,
-            api_mtls_endpoint: str = None,
-            client_cert_source: Callable[[], Tuple[bytes, bytes]] = None,
-            quota_project_id: Optional[str] = None) -> None:
+    def __init__(
+        self,
+        *,
+        host: str = "cloudbilling.googleapis.com",
+        credentials: credentials.Credentials = None,
+        credentials_file: str = None,
+        scopes: Sequence[str] = None,
+        channel: grpc.Channel = None,
+        api_mtls_endpoint: str = None,
+        client_cert_source: Callable[[], Tuple[bytes, bytes]] = None,
+        quota_project_id: Optional[str] = None
+    ) -> None:
         """Instantiate the transport.
 
         Args:
@@ -98,10 +102,16 @@ class CloudBillingGrpcTransport(CloudBillingTransport):
             # If a channel was explicitly provided, set it.
             self._grpc_channel = channel
         elif api_mtls_endpoint:
-            host = api_mtls_endpoint if ":" in api_mtls_endpoint else api_mtls_endpoint + ":443"
+            host = (
+                api_mtls_endpoint
+                if ":" in api_mtls_endpoint
+                else api_mtls_endpoint + ":443"
+            )
 
             if credentials is None:
-                credentials, _ = auth.default(scopes=self.AUTH_SCOPES, quota_project_id=quota_project_id)
+                credentials, _ = auth.default(
+                    scopes=self.AUTH_SCOPES, quota_project_id=quota_project_id
+                )
 
             # Create SSL credentials with client_cert_source or application
             # default SSL credentials.
@@ -135,13 +145,15 @@ class CloudBillingGrpcTransport(CloudBillingTransport):
         )
 
     @classmethod
-    def create_channel(cls,
-                       host: str = 'cloudbilling.googleapis.com',
-                       credentials: credentials.Credentials = None,
-                       credentials_file: str = None,
-                       scopes: Optional[Sequence[str]] = None,
-                       quota_project_id: Optional[str] = None,
-                       **kwargs) -> grpc.Channel:
+    def create_channel(
+        cls,
+        host: str = "cloudbilling.googleapis.com",
+        credentials: credentials.Credentials = None,
+        credentials_file: str = None,
+        scopes: Optional[Sequence[str]] = None,
+        quota_project_id: Optional[str] = None,
+        **kwargs
+    ) -> grpc.Channel:
         """Create and return a gRPC channel object.
         Args:
             address (Optionsl[str]): The host for the channel to use.
@@ -186,19 +198,20 @@ class CloudBillingGrpcTransport(CloudBillingTransport):
         """
         # Sanity check: Only create a new channel if we do not already
         # have one.
-        if not hasattr(self, '_grpc_channel'):
+        if not hasattr(self, "_grpc_channel"):
             self._grpc_channel = self.create_channel(
-                self._host,
-                credentials=self._credentials,
+                self._host, credentials=self._credentials,
             )
 
         # Return the channel from cache.
         return self._grpc_channel
 
     @property
-    def get_billing_account(self) -> Callable[
-            [cloud_billing.GetBillingAccountRequest],
-            cloud_billing.BillingAccount]:
+    def get_billing_account(
+        self,
+    ) -> Callable[
+        [cloud_billing.GetBillingAccountRequest], cloud_billing.BillingAccount
+    ]:
         r"""Return a callable for the get billing account method over gRPC.
 
         Gets information about a billing account. The current
@@ -215,18 +228,21 @@ class CloudBillingGrpcTransport(CloudBillingTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if 'get_billing_account' not in self._stubs:
-            self._stubs['get_billing_account'] = self.grpc_channel.unary_unary(
-                '/google.cloud.billing.v1.CloudBilling/GetBillingAccount',
+        if "get_billing_account" not in self._stubs:
+            self._stubs["get_billing_account"] = self.grpc_channel.unary_unary(
+                "/google.cloud.billing.v1.CloudBilling/GetBillingAccount",
                 request_serializer=cloud_billing.GetBillingAccountRequest.serialize,
                 response_deserializer=cloud_billing.BillingAccount.deserialize,
             )
-        return self._stubs['get_billing_account']
+        return self._stubs["get_billing_account"]
 
     @property
-    def list_billing_accounts(self) -> Callable[
-            [cloud_billing.ListBillingAccountsRequest],
-            cloud_billing.ListBillingAccountsResponse]:
+    def list_billing_accounts(
+        self,
+    ) -> Callable[
+        [cloud_billing.ListBillingAccountsRequest],
+        cloud_billing.ListBillingAccountsResponse,
+    ]:
         r"""Return a callable for the list billing accounts method over gRPC.
 
         Lists the billing accounts that the current authenticated user
@@ -243,18 +259,20 @@ class CloudBillingGrpcTransport(CloudBillingTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if 'list_billing_accounts' not in self._stubs:
-            self._stubs['list_billing_accounts'] = self.grpc_channel.unary_unary(
-                '/google.cloud.billing.v1.CloudBilling/ListBillingAccounts',
+        if "list_billing_accounts" not in self._stubs:
+            self._stubs["list_billing_accounts"] = self.grpc_channel.unary_unary(
+                "/google.cloud.billing.v1.CloudBilling/ListBillingAccounts",
                 request_serializer=cloud_billing.ListBillingAccountsRequest.serialize,
                 response_deserializer=cloud_billing.ListBillingAccountsResponse.deserialize,
             )
-        return self._stubs['list_billing_accounts']
+        return self._stubs["list_billing_accounts"]
 
     @property
-    def update_billing_account(self) -> Callable[
-            [cloud_billing.UpdateBillingAccountRequest],
-            cloud_billing.BillingAccount]:
+    def update_billing_account(
+        self,
+    ) -> Callable[
+        [cloud_billing.UpdateBillingAccountRequest], cloud_billing.BillingAccount
+    ]:
         r"""Return a callable for the update billing account method over gRPC.
 
         Updates a billing account's fields. Currently the only field
@@ -274,18 +292,20 @@ class CloudBillingGrpcTransport(CloudBillingTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if 'update_billing_account' not in self._stubs:
-            self._stubs['update_billing_account'] = self.grpc_channel.unary_unary(
-                '/google.cloud.billing.v1.CloudBilling/UpdateBillingAccount',
+        if "update_billing_account" not in self._stubs:
+            self._stubs["update_billing_account"] = self.grpc_channel.unary_unary(
+                "/google.cloud.billing.v1.CloudBilling/UpdateBillingAccount",
                 request_serializer=cloud_billing.UpdateBillingAccountRequest.serialize,
                 response_deserializer=cloud_billing.BillingAccount.deserialize,
             )
-        return self._stubs['update_billing_account']
+        return self._stubs["update_billing_account"]
 
     @property
-    def create_billing_account(self) -> Callable[
-            [cloud_billing.CreateBillingAccountRequest],
-            cloud_billing.BillingAccount]:
+    def create_billing_account(
+        self,
+    ) -> Callable[
+        [cloud_billing.CreateBillingAccountRequest], cloud_billing.BillingAccount
+    ]:
         r"""Return a callable for the create billing account method over gRPC.
 
         Creates a billing account. This method can only be used to
@@ -309,18 +329,21 @@ class CloudBillingGrpcTransport(CloudBillingTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if 'create_billing_account' not in self._stubs:
-            self._stubs['create_billing_account'] = self.grpc_channel.unary_unary(
-                '/google.cloud.billing.v1.CloudBilling/CreateBillingAccount',
+        if "create_billing_account" not in self._stubs:
+            self._stubs["create_billing_account"] = self.grpc_channel.unary_unary(
+                "/google.cloud.billing.v1.CloudBilling/CreateBillingAccount",
                 request_serializer=cloud_billing.CreateBillingAccountRequest.serialize,
                 response_deserializer=cloud_billing.BillingAccount.deserialize,
             )
-        return self._stubs['create_billing_account']
+        return self._stubs["create_billing_account"]
 
     @property
-    def list_project_billing_info(self) -> Callable[
-            [cloud_billing.ListProjectBillingInfoRequest],
-            cloud_billing.ListProjectBillingInfoResponse]:
+    def list_project_billing_info(
+        self,
+    ) -> Callable[
+        [cloud_billing.ListProjectBillingInfoRequest],
+        cloud_billing.ListProjectBillingInfoResponse,
+    ]:
         r"""Return a callable for the list project billing info method over gRPC.
 
         Lists the projects associated with a billing account. The
@@ -339,18 +362,20 @@ class CloudBillingGrpcTransport(CloudBillingTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if 'list_project_billing_info' not in self._stubs:
-            self._stubs['list_project_billing_info'] = self.grpc_channel.unary_unary(
-                '/google.cloud.billing.v1.CloudBilling/ListProjectBillingInfo',
+        if "list_project_billing_info" not in self._stubs:
+            self._stubs["list_project_billing_info"] = self.grpc_channel.unary_unary(
+                "/google.cloud.billing.v1.CloudBilling/ListProjectBillingInfo",
                 request_serializer=cloud_billing.ListProjectBillingInfoRequest.serialize,
                 response_deserializer=cloud_billing.ListProjectBillingInfoResponse.deserialize,
             )
-        return self._stubs['list_project_billing_info']
+        return self._stubs["list_project_billing_info"]
 
     @property
-    def get_project_billing_info(self) -> Callable[
-            [cloud_billing.GetProjectBillingInfoRequest],
-            cloud_billing.ProjectBillingInfo]:
+    def get_project_billing_info(
+        self,
+    ) -> Callable[
+        [cloud_billing.GetProjectBillingInfoRequest], cloud_billing.ProjectBillingInfo
+    ]:
         r"""Return a callable for the get project billing info method over gRPC.
 
         Gets the billing information for a project. The current
@@ -367,18 +392,21 @@ class CloudBillingGrpcTransport(CloudBillingTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if 'get_project_billing_info' not in self._stubs:
-            self._stubs['get_project_billing_info'] = self.grpc_channel.unary_unary(
-                '/google.cloud.billing.v1.CloudBilling/GetProjectBillingInfo',
+        if "get_project_billing_info" not in self._stubs:
+            self._stubs["get_project_billing_info"] = self.grpc_channel.unary_unary(
+                "/google.cloud.billing.v1.CloudBilling/GetProjectBillingInfo",
                 request_serializer=cloud_billing.GetProjectBillingInfoRequest.serialize,
                 response_deserializer=cloud_billing.ProjectBillingInfo.deserialize,
             )
-        return self._stubs['get_project_billing_info']
+        return self._stubs["get_project_billing_info"]
 
     @property
-    def update_project_billing_info(self) -> Callable[
-            [cloud_billing.UpdateProjectBillingInfoRequest],
-            cloud_billing.ProjectBillingInfo]:
+    def update_project_billing_info(
+        self,
+    ) -> Callable[
+        [cloud_billing.UpdateProjectBillingInfoRequest],
+        cloud_billing.ProjectBillingInfo,
+    ]:
         r"""Return a callable for the update project billing info method over gRPC.
 
         Sets or updates the billing account associated with a project.
@@ -428,18 +456,18 @@ class CloudBillingGrpcTransport(CloudBillingTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if 'update_project_billing_info' not in self._stubs:
-            self._stubs['update_project_billing_info'] = self.grpc_channel.unary_unary(
-                '/google.cloud.billing.v1.CloudBilling/UpdateProjectBillingInfo',
+        if "update_project_billing_info" not in self._stubs:
+            self._stubs["update_project_billing_info"] = self.grpc_channel.unary_unary(
+                "/google.cloud.billing.v1.CloudBilling/UpdateProjectBillingInfo",
                 request_serializer=cloud_billing.UpdateProjectBillingInfoRequest.serialize,
                 response_deserializer=cloud_billing.ProjectBillingInfo.deserialize,
             )
-        return self._stubs['update_project_billing_info']
+        return self._stubs["update_project_billing_info"]
 
     @property
-    def get_iam_policy(self) -> Callable[
-            [iam_policy.GetIamPolicyRequest],
-            policy.Policy]:
+    def get_iam_policy(
+        self,
+    ) -> Callable[[iam_policy.GetIamPolicyRequest], policy.Policy]:
         r"""Return a callable for the get iam policy method over gRPC.
 
         Gets the access control policy for a billing account. The caller
@@ -457,18 +485,18 @@ class CloudBillingGrpcTransport(CloudBillingTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if 'get_iam_policy' not in self._stubs:
-            self._stubs['get_iam_policy'] = self.grpc_channel.unary_unary(
-                '/google.cloud.billing.v1.CloudBilling/GetIamPolicy',
+        if "get_iam_policy" not in self._stubs:
+            self._stubs["get_iam_policy"] = self.grpc_channel.unary_unary(
+                "/google.cloud.billing.v1.CloudBilling/GetIamPolicy",
                 request_serializer=iam_policy.GetIamPolicyRequest.SerializeToString,
                 response_deserializer=policy.Policy.FromString,
             )
-        return self._stubs['get_iam_policy']
+        return self._stubs["get_iam_policy"]
 
     @property
-    def set_iam_policy(self) -> Callable[
-            [iam_policy.SetIamPolicyRequest],
-            policy.Policy]:
+    def set_iam_policy(
+        self,
+    ) -> Callable[[iam_policy.SetIamPolicyRequest], policy.Policy]:
         r"""Return a callable for the set iam policy method over gRPC.
 
         Sets the access control policy for a billing account. Replaces
@@ -487,18 +515,20 @@ class CloudBillingGrpcTransport(CloudBillingTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if 'set_iam_policy' not in self._stubs:
-            self._stubs['set_iam_policy'] = self.grpc_channel.unary_unary(
-                '/google.cloud.billing.v1.CloudBilling/SetIamPolicy',
+        if "set_iam_policy" not in self._stubs:
+            self._stubs["set_iam_policy"] = self.grpc_channel.unary_unary(
+                "/google.cloud.billing.v1.CloudBilling/SetIamPolicy",
                 request_serializer=iam_policy.SetIamPolicyRequest.SerializeToString,
                 response_deserializer=policy.Policy.FromString,
             )
-        return self._stubs['set_iam_policy']
+        return self._stubs["set_iam_policy"]
 
     @property
-    def test_iam_permissions(self) -> Callable[
-            [iam_policy.TestIamPermissionsRequest],
-            iam_policy.TestIamPermissionsResponse]:
+    def test_iam_permissions(
+        self,
+    ) -> Callable[
+        [iam_policy.TestIamPermissionsRequest], iam_policy.TestIamPermissionsResponse
+    ]:
         r"""Return a callable for the test iam permissions method over gRPC.
 
         Tests the access control policy for a billing
@@ -517,15 +547,13 @@ class CloudBillingGrpcTransport(CloudBillingTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if 'test_iam_permissions' not in self._stubs:
-            self._stubs['test_iam_permissions'] = self.grpc_channel.unary_unary(
-                '/google.cloud.billing.v1.CloudBilling/TestIamPermissions',
+        if "test_iam_permissions" not in self._stubs:
+            self._stubs["test_iam_permissions"] = self.grpc_channel.unary_unary(
+                "/google.cloud.billing.v1.CloudBilling/TestIamPermissions",
                 request_serializer=iam_policy.TestIamPermissionsRequest.SerializeToString,
                 response_deserializer=iam_policy.TestIamPermissionsResponse.FromString,
             )
-        return self._stubs['test_iam_permissions']
+        return self._stubs["test_iam_permissions"]
 
 
-__all__ = (
-    'CloudBillingGrpcTransport',
-)
+__all__ = ("CloudBillingGrpcTransport",)

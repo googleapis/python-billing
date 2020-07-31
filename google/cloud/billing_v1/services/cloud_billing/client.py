@@ -21,14 +21,14 @@ import re
 from typing import Callable, Dict, Sequence, Tuple, Type, Union
 import pkg_resources
 
-import google.api_core.client_options as ClientOptions # type: ignore
-from google.api_core import exceptions                 # type: ignore
-from google.api_core import gapic_v1                   # type: ignore
-from google.api_core import retry as retries           # type: ignore
-from google.auth import credentials                    # type: ignore
-from google.auth.transport import mtls                 # type: ignore
+import google.api_core.client_options as ClientOptions  # type: ignore
+from google.api_core import exceptions  # type: ignore
+from google.api_core import gapic_v1  # type: ignore
+from google.api_core import retry as retries  # type: ignore
+from google.auth import credentials  # type: ignore
+from google.auth.transport import mtls  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
-from google.oauth2 import service_account              # type: ignore
+from google.oauth2 import service_account  # type: ignore
 
 from google.cloud.billing_v1.services.cloud_billing import pagers
 from google.cloud.billing_v1.types import cloud_billing
@@ -47,13 +47,12 @@ class CloudBillingClientMeta(type):
     support objects (e.g. transport) without polluting the client instance
     objects.
     """
-    _transport_registry = OrderedDict()  # type: Dict[str, Type[CloudBillingTransport]]
-    _transport_registry['grpc'] = CloudBillingGrpcTransport
-    _transport_registry['grpc_asyncio'] = CloudBillingGrpcAsyncIOTransport
 
-    def get_transport_class(cls,
-            label: str = None,
-        ) -> Type[CloudBillingTransport]:
+    _transport_registry = OrderedDict()  # type: Dict[str, Type[CloudBillingTransport]]
+    _transport_registry["grpc"] = CloudBillingGrpcTransport
+    _transport_registry["grpc_asyncio"] = CloudBillingGrpcAsyncIOTransport
+
+    def get_transport_class(cls, label: str = None,) -> Type[CloudBillingTransport]:
         """Return an appropriate transport class.
 
         Args:
@@ -106,7 +105,7 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
 
         return api_endpoint.replace(".googleapis.com", ".mtls.googleapis.com")
 
-    DEFAULT_ENDPOINT = 'cloudbilling.googleapis.com'
+    DEFAULT_ENDPOINT = "cloudbilling.googleapis.com"
     DEFAULT_MTLS_ENDPOINT = _get_default_mtls_endpoint.__func__(  # type: ignore
         DEFAULT_ENDPOINT
     )
@@ -125,18 +124,19 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
         Returns:
             {@api.name}: The constructed client.
         """
-        credentials = service_account.Credentials.from_service_account_file(
-            filename)
-        kwargs['credentials'] = credentials
+        credentials = service_account.Credentials.from_service_account_file(filename)
+        kwargs["credentials"] = credentials
         return cls(*args, **kwargs)
 
     from_service_account_json = from_service_account_file
 
-    def __init__(self, *,
-            credentials: credentials.Credentials = None,
-            transport: Union[str, CloudBillingTransport] = None,
-            client_options: ClientOptions = None,
-            ) -> None:
+    def __init__(
+        self,
+        *,
+        credentials: credentials.Credentials = None,
+        transport: Union[str, CloudBillingTransport] = None,
+        client_options: ClientOptions = None,
+    ) -> None:
         """Instantiate the cloud billing client.
 
         Args:
@@ -183,7 +183,9 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
                     or mtls.has_default_client_cert_source()
                 )
                 client_options.api_endpoint = (
-                    self.DEFAULT_MTLS_ENDPOINT if has_client_cert_source else self.DEFAULT_ENDPOINT
+                    self.DEFAULT_MTLS_ENDPOINT
+                    if has_client_cert_source
+                    else self.DEFAULT_ENDPOINT
                 )
             else:
                 raise MutualTLSChannelError(
@@ -196,8 +198,10 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
         if isinstance(transport, CloudBillingTransport):
             # transport is a CloudBillingTransport instance.
             if credentials or client_options.credentials_file:
-                raise ValueError('When providing a transport instance, '
-                                 'provide its credentials directly.')
+                raise ValueError(
+                    "When providing a transport instance, "
+                    "provide its credentials directly."
+                )
             if client_options.scopes:
                 raise ValueError(
                     "When providing a transport instance, "
@@ -216,14 +220,15 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
                 quota_project_id=client_options.quota_project_id,
             )
 
-    def get_billing_account(self,
-            request: cloud_billing.GetBillingAccountRequest = None,
-            *,
-            name: str = None,
-            retry: retries.Retry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
-            metadata: Sequence[Tuple[str, str]] = (),
-            ) -> cloud_billing.BillingAccount:
+    def get_billing_account(
+        self,
+        request: cloud_billing.GetBillingAccountRequest = None,
+        *,
+        name: str = None,
+        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> cloud_billing.BillingAccount:
         r"""Gets information about a billing account. The current
         authenticated user must be a `viewer of the billing
         account <https://cloud.google.com/billing/docs/how-to/billing-access>`__.
@@ -258,8 +263,10 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
-            raise ValueError('If the `request` argument is set, then none of '
-                             'the individual field arguments should be set.')
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
 
         # Minor optimization to avoid making a copy if the user passes
         # in a cloud_billing.GetBillingAccountRequest.
@@ -281,29 +288,23 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ('name', request.name),
-            )),
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
         )
 
         # Send the request.
-        response = rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
         # Done; return the response.
         return response
 
-    def list_billing_accounts(self,
-            request: cloud_billing.ListBillingAccountsRequest = None,
-            *,
-            retry: retries.Retry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
-            metadata: Sequence[Tuple[str, str]] = (),
-            ) -> pagers.ListBillingAccountsPager:
+    def list_billing_accounts(
+        self,
+        request: cloud_billing.ListBillingAccountsRequest = None,
+        *,
+        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.ListBillingAccountsPager:
         r"""Lists the billing accounts that the current authenticated user
         has permission to
         `view <https://cloud.google.com/billing/docs/how-to/billing-access>`__.
@@ -341,34 +342,27 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
         rpc = self._transport._wrapped_methods[self._transport.list_billing_accounts]
 
         # Send the request.
-        response = rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListBillingAccountsPager(
-            method=rpc,
-            request=request,
-            response=response,
-            metadata=metadata,
+            method=rpc, request=request, response=response, metadata=metadata,
         )
 
         # Done; return the response.
         return response
 
-    def update_billing_account(self,
-            request: cloud_billing.UpdateBillingAccountRequest = None,
-            *,
-            name: str = None,
-            account: cloud_billing.BillingAccount = None,
-            retry: retries.Retry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
-            metadata: Sequence[Tuple[str, str]] = (),
-            ) -> cloud_billing.BillingAccount:
+    def update_billing_account(
+        self,
+        request: cloud_billing.UpdateBillingAccountRequest = None,
+        *,
+        name: str = None,
+        account: cloud_billing.BillingAccount = None,
+        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> cloud_billing.BillingAccount:
         r"""Updates a billing account's fields. Currently the only field
         that can be edited is ``display_name``. The current
         authenticated user must have the ``billing.accounts.update`` IAM
@@ -412,8 +406,10 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, account])
         if request is not None and has_flattened_params:
-            raise ValueError('If the `request` argument is set, then none of '
-                             'the individual field arguments should be set.')
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
 
         # Minor optimization to avoid making a copy if the user passes
         # in a cloud_billing.UpdateBillingAccountRequest.
@@ -437,30 +433,24 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ('name', request.name),
-            )),
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
         )
 
         # Send the request.
-        response = rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
         # Done; return the response.
         return response
 
-    def create_billing_account(self,
-            request: cloud_billing.CreateBillingAccountRequest = None,
-            *,
-            billing_account: cloud_billing.BillingAccount = None,
-            retry: retries.Retry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
-            metadata: Sequence[Tuple[str, str]] = (),
-            ) -> cloud_billing.BillingAccount:
+    def create_billing_account(
+        self,
+        request: cloud_billing.CreateBillingAccountRequest = None,
+        *,
+        billing_account: cloud_billing.BillingAccount = None,
+        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> cloud_billing.BillingAccount:
         r"""Creates a billing account. This method can only be used to
         create `billing
         subaccounts <https://cloud.google.com/billing/docs/concepts>`__
@@ -505,8 +495,10 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([billing_account])
         if request is not None and has_flattened_params:
-            raise ValueError('If the `request` argument is set, then none of '
-                             'the individual field arguments should be set.')
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
 
         # Minor optimization to avoid making a copy if the user passes
         # in a cloud_billing.CreateBillingAccountRequest.
@@ -526,24 +518,20 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
         rpc = self._transport._wrapped_methods[self._transport.create_billing_account]
 
         # Send the request.
-        response = rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
         # Done; return the response.
         return response
 
-    def list_project_billing_info(self,
-            request: cloud_billing.ListProjectBillingInfoRequest = None,
-            *,
-            name: str = None,
-            retry: retries.Retry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
-            metadata: Sequence[Tuple[str, str]] = (),
-            ) -> pagers.ListProjectBillingInfoPager:
+    def list_project_billing_info(
+        self,
+        request: cloud_billing.ListProjectBillingInfoRequest = None,
+        *,
+        name: str = None,
+        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.ListProjectBillingInfoPager:
         r"""Lists the projects associated with a billing account. The
         current authenticated user must have the
         ``billing.resourceAssociations.list`` IAM permission, which is
@@ -581,8 +569,10 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
-            raise ValueError('If the `request` argument is set, then none of '
-                             'the individual field arguments should be set.')
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
 
         # Minor optimization to avoid making a copy if the user passes
         # in a cloud_billing.ListProjectBillingInfoRequest.
@@ -599,44 +589,37 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.list_project_billing_info]
+        rpc = self._transport._wrapped_methods[
+            self._transport.list_project_billing_info
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ('name', request.name),
-            )),
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
         )
 
         # Send the request.
-        response = rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListProjectBillingInfoPager(
-            method=rpc,
-            request=request,
-            response=response,
-            metadata=metadata,
+            method=rpc, request=request, response=response, metadata=metadata,
         )
 
         # Done; return the response.
         return response
 
-    def get_project_billing_info(self,
-            request: cloud_billing.GetProjectBillingInfoRequest = None,
-            *,
-            name: str = None,
-            retry: retries.Retry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
-            metadata: Sequence[Tuple[str, str]] = (),
-            ) -> cloud_billing.ProjectBillingInfo:
+    def get_project_billing_info(
+        self,
+        request: cloud_billing.GetProjectBillingInfoRequest = None,
+        *,
+        name: str = None,
+        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> cloud_billing.ProjectBillingInfo:
         r"""Gets the billing information for a project. The current
         authenticated user must have `permission to view the
         project <https://cloud.google.com/docs/permissions-overview#h.bgs0oxofvnoo>`__.
@@ -673,8 +656,10 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
-            raise ValueError('If the `request` argument is set, then none of '
-                             'the individual field arguments should be set.')
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
 
         # Minor optimization to avoid making a copy if the user passes
         # in a cloud_billing.GetProjectBillingInfoRequest.
@@ -696,31 +681,25 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ('name', request.name),
-            )),
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
         )
 
         # Send the request.
-        response = rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
         # Done; return the response.
         return response
 
-    def update_project_billing_info(self,
-            request: cloud_billing.UpdateProjectBillingInfoRequest = None,
-            *,
-            name: str = None,
-            project_billing_info: cloud_billing.ProjectBillingInfo = None,
-            retry: retries.Retry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
-            metadata: Sequence[Tuple[str, str]] = (),
-            ) -> cloud_billing.ProjectBillingInfo:
+    def update_project_billing_info(
+        self,
+        request: cloud_billing.UpdateProjectBillingInfoRequest = None,
+        *,
+        name: str = None,
+        project_billing_info: cloud_billing.ProjectBillingInfo = None,
+        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> cloud_billing.ProjectBillingInfo:
         r"""Sets or updates the billing account associated with a project.
         You specify the new billing account by setting the
         ``billing_account_name`` in the ``ProjectBillingInfo`` resource
@@ -797,8 +776,10 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name, project_billing_info])
         if request is not None and has_flattened_params:
-            raise ValueError('If the `request` argument is set, then none of '
-                             'the individual field arguments should be set.')
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
 
         # Minor optimization to avoid making a copy if the user passes
         # in a cloud_billing.UpdateProjectBillingInfoRequest.
@@ -817,35 +798,31 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.update_project_billing_info]
+        rpc = self._transport._wrapped_methods[
+            self._transport.update_project_billing_info
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ('name', request.name),
-            )),
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
         )
 
         # Send the request.
-        response = rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
         # Done; return the response.
         return response
 
-    def get_iam_policy(self,
-            request: iam_policy.GetIamPolicyRequest = None,
-            *,
-            resource: str = None,
-            retry: retries.Retry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
-            metadata: Sequence[Tuple[str, str]] = (),
-            ) -> policy.Policy:
+    def get_iam_policy(
+        self,
+        request: iam_policy.GetIamPolicyRequest = None,
+        *,
+        resource: str = None,
+        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> policy.Policy:
         r"""Gets the access control policy for a billing account. The caller
         must have the ``billing.accounts.getIamPolicy`` permission on
         the account, which is often given to billing account
@@ -944,8 +921,10 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([resource])
         if request is not None and has_flattened_params:
-            raise ValueError('If the `request` argument is set, then none of '
-                             'the individual field arguments should be set.')
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
 
         # The request isn't a proto-plus wrapped type,
         # so it must be constructed via keyword expansion.
@@ -968,30 +947,24 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ('resource', request.resource),
-            )),
+            gapic_v1.routing_header.to_grpc_metadata((("resource", request.resource),)),
         )
 
         # Send the request.
-        response = rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
         # Done; return the response.
         return response
 
-    def set_iam_policy(self,
-            request: iam_policy.SetIamPolicyRequest = None,
-            *,
-            resource: str = None,
-            retry: retries.Retry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
-            metadata: Sequence[Tuple[str, str]] = (),
-            ) -> policy.Policy:
+    def set_iam_policy(
+        self,
+        request: iam_policy.SetIamPolicyRequest = None,
+        *,
+        resource: str = None,
+        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> policy.Policy:
         r"""Sets the access control policy for a billing account. Replaces
         any existing policy. The caller must have the
         ``billing.accounts.setIamPolicy`` permission on the account,
@@ -1091,8 +1064,10 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([resource])
         if request is not None and has_flattened_params:
-            raise ValueError('If the `request` argument is set, then none of '
-                             'the individual field arguments should be set.')
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
 
         # The request isn't a proto-plus wrapped type,
         # so it must be constructed via keyword expansion.
@@ -1115,31 +1090,25 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ('resource', request.resource),
-            )),
+            gapic_v1.routing_header.to_grpc_metadata((("resource", request.resource),)),
         )
 
         # Send the request.
-        response = rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
         # Done; return the response.
         return response
 
-    def test_iam_permissions(self,
-            request: iam_policy.TestIamPermissionsRequest = None,
-            *,
-            resource: str = None,
-            permissions: Sequence[str] = None,
-            retry: retries.Retry = gapic_v1.method.DEFAULT,
-            timeout: float = None,
-            metadata: Sequence[Tuple[str, str]] = (),
-            ) -> iam_policy.TestIamPermissionsResponse:
+    def test_iam_permissions(
+        self,
+        request: iam_policy.TestIamPermissionsRequest = None,
+        *,
+        resource: str = None,
+        permissions: Sequence[str] = None,
+        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> iam_policy.TestIamPermissionsResponse:
         r"""Tests the access control policy for a billing
         account. This method takes the resource and a set of
         permissions as input and returns the subset of the input
@@ -1182,8 +1151,10 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([resource, permissions])
         if request is not None and has_flattened_params:
-            raise ValueError('If the `request` argument is set, then none of '
-                             'the individual field arguments should be set.')
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
 
         # The request isn't a proto-plus wrapped type,
         # so it must be constructed via keyword expansion.
@@ -1209,38 +1180,22 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((
-                ('resource', request.resource),
-            )),
+            gapic_v1.routing_header.to_grpc_metadata((("resource", request.resource),)),
         )
 
         # Send the request.
-        response = rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
         # Done; return the response.
         return response
 
 
-
-
-
-
-
 try:
     _client_info = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution(
-            'google-cloud-billing',
-        ).version,
+        gapic_version=pkg_resources.get_distribution("google-cloud-billing",).version,
     )
 except pkg_resources.DistributionNotFound:
     _client_info = gapic_v1.client_info.ClientInfo()
 
 
-__all__ = (
-    'CloudBillingClient',
-)
+__all__ = ("CloudBillingClient",)

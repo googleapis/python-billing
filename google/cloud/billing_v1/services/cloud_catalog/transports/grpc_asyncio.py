@@ -17,11 +17,11 @@
 
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple
 
-from google.api_core import grpc_helpers_async         # type: ignore
-from google.auth import credentials                    # type: ignore
+from google.api_core import grpc_helpers_async  # type: ignore
+from google.auth import credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 
-import grpc                        # type: ignore
+import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
 
 from google.cloud.billing_v1.types import cloud_catalog
@@ -49,13 +49,15 @@ class CloudCatalogGrpcAsyncIOTransport(CloudCatalogTransport):
     _stubs: Dict[str, Callable] = {}
 
     @classmethod
-    def create_channel(cls,
-                       host: str = 'cloudbilling.googleapis.com',
-                       credentials: credentials.Credentials = None,
-                       credentials_file: Optional[str] = None,
-                       scopes: Optional[Sequence[str]] = None,
-                       quota_project_id: Optional[str] = None,
-                       **kwargs) -> aio.Channel:
+    def create_channel(
+        cls,
+        host: str = "cloudbilling.googleapis.com",
+        credentials: credentials.Credentials = None,
+        credentials_file: Optional[str] = None,
+        scopes: Optional[Sequence[str]] = None,
+        quota_project_id: Optional[str] = None,
+        **kwargs,
+    ) -> aio.Channel:
         """Create and return a gRPC AsyncIO channel object.
         Args:
             address (Optional[str]): The host for the channel to use.
@@ -84,19 +86,21 @@ class CloudCatalogGrpcAsyncIOTransport(CloudCatalogTransport):
             credentials_file=credentials_file,
             scopes=scopes,
             quota_project_id=quota_project_id,
-            **kwargs
+            **kwargs,
         )
 
-    def __init__(self, *,
-            host: str = 'cloudbilling.googleapis.com',
-            credentials: credentials.Credentials = None,
-            credentials_file: Optional[str] = None,
-            scopes: Optional[Sequence[str]] = None,
-            channel: aio.Channel = None,
-            api_mtls_endpoint: str = None,
-            client_cert_source: Callable[[], Tuple[bytes, bytes]] = None,
-            quota_project_id=None,
-            ) -> None:
+    def __init__(
+        self,
+        *,
+        host: str = "cloudbilling.googleapis.com",
+        credentials: credentials.Credentials = None,
+        credentials_file: Optional[str] = None,
+        scopes: Optional[Sequence[str]] = None,
+        channel: aio.Channel = None,
+        api_mtls_endpoint: str = None,
+        client_cert_source: Callable[[], Tuple[bytes, bytes]] = None,
+        quota_project_id=None,
+    ) -> None:
         """Instantiate the transport.
 
         Args:
@@ -140,7 +144,11 @@ class CloudCatalogGrpcAsyncIOTransport(CloudCatalogTransport):
             # If a channel was explicitly provided, set it.
             self._grpc_channel = channel
         elif api_mtls_endpoint:
-            host = api_mtls_endpoint if ":" in api_mtls_endpoint else api_mtls_endpoint + ":443"
+            host = (
+                api_mtls_endpoint
+                if ":" in api_mtls_endpoint
+                else api_mtls_endpoint + ":443"
+            )
 
             # Create SSL credentials with client_cert_source or application
             # default SSL credentials.
@@ -182,19 +190,21 @@ class CloudCatalogGrpcAsyncIOTransport(CloudCatalogTransport):
         """
         # Sanity check: Only create a new channel if we do not already
         # have one.
-        if not hasattr(self, '_grpc_channel'):
+        if not hasattr(self, "_grpc_channel"):
             self._grpc_channel = self.create_channel(
-                self._host,
-                credentials=self._credentials,
+                self._host, credentials=self._credentials,
             )
 
         # Return the channel from cache.
         return self._grpc_channel
 
     @property
-    def list_services(self) -> Callable[
-            [cloud_catalog.ListServicesRequest],
-            Awaitable[cloud_catalog.ListServicesResponse]]:
+    def list_services(
+        self,
+    ) -> Callable[
+        [cloud_catalog.ListServicesRequest],
+        Awaitable[cloud_catalog.ListServicesResponse],
+    ]:
         r"""Return a callable for the list services method over gRPC.
 
         Lists all public cloud services.
@@ -209,18 +219,20 @@ class CloudCatalogGrpcAsyncIOTransport(CloudCatalogTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if 'list_services' not in self._stubs:
-            self._stubs['list_services'] = self.grpc_channel.unary_unary(
-                '/google.cloud.billing.v1.CloudCatalog/ListServices',
+        if "list_services" not in self._stubs:
+            self._stubs["list_services"] = self.grpc_channel.unary_unary(
+                "/google.cloud.billing.v1.CloudCatalog/ListServices",
                 request_serializer=cloud_catalog.ListServicesRequest.serialize,
                 response_deserializer=cloud_catalog.ListServicesResponse.deserialize,
             )
-        return self._stubs['list_services']
+        return self._stubs["list_services"]
 
     @property
-    def list_skus(self) -> Callable[
-            [cloud_catalog.ListSkusRequest],
-            Awaitable[cloud_catalog.ListSkusResponse]]:
+    def list_skus(
+        self,
+    ) -> Callable[
+        [cloud_catalog.ListSkusRequest], Awaitable[cloud_catalog.ListSkusResponse]
+    ]:
         r"""Return a callable for the list skus method over gRPC.
 
         Lists all publicly available SKUs for a given cloud
@@ -236,15 +248,13 @@ class CloudCatalogGrpcAsyncIOTransport(CloudCatalogTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if 'list_skus' not in self._stubs:
-            self._stubs['list_skus'] = self.grpc_channel.unary_unary(
-                '/google.cloud.billing.v1.CloudCatalog/ListSkus',
+        if "list_skus" not in self._stubs:
+            self._stubs["list_skus"] = self.grpc_channel.unary_unary(
+                "/google.cloud.billing.v1.CloudCatalog/ListSkus",
                 request_serializer=cloud_catalog.ListSkusRequest.serialize,
                 response_deserializer=cloud_catalog.ListSkusResponse.deserialize,
             )
-        return self._stubs['list_skus']
+        return self._stubs["list_skus"]
 
 
-__all__ = (
-    'CloudCatalogGrpcAsyncIOTransport',
-)
+__all__ = ("CloudCatalogGrpcAsyncIOTransport",)
