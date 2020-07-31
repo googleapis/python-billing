@@ -16,6 +16,7 @@
 #
 
 from collections import OrderedDict
+import os
 import re
 from typing import Callable, Dict, Sequence, Tuple, Type, Union
 import pkg_resources
@@ -25,6 +26,8 @@ from google.api_core import exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
 from google.auth import credentials  # type: ignore
+from google.auth.transport import mtls  # type: ignore
+from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
 from google.cloud.billing_v1.services.cloud_catalog import pagers
@@ -32,6 +35,7 @@ from google.cloud.billing_v1.types import cloud_catalog
 
 from .transports.base import CloudCatalogTransport
 from .transports.grpc import CloudCatalogGrpcTransport
+from .transports.grpc_asyncio import CloudCatalogGrpcAsyncIOTransport
 
 
 class CloudCatalogClientMeta(type):
@@ -44,6 +48,7 @@ class CloudCatalogClientMeta(type):
 
     _transport_registry = OrderedDict()  # type: Dict[str, Type[CloudCatalogTransport]]
     _transport_registry["grpc"] = CloudCatalogGrpcTransport
+    _transport_registry["grpc_asyncio"] = CloudCatalogGrpcAsyncIOTransport
 
     def get_transport_class(cls, label: str = None) -> Type[CloudCatalogTransport]:
         """Return an appropriate transport class.
@@ -142,66 +147,76 @@ class CloudCatalogClient(metaclass=CloudCatalogClientMeta):
             transport (Union[str, ~.CloudCatalogTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
-            client_options (ClientOptions): Custom options for the client.
+            client_options (ClientOptions): Custom options for the client. It
+                won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
-                default endpoint provided by the client.
-                (2) If ``transport`` argument is None, ``client_options`` can be
-                used to create a mutual TLS transport. If ``client_cert_source``
-                is provided, mutual TLS transport will be created with the given
-                ``api_endpoint`` or the default mTLS endpoint, and the client
-                SSL credentials obtained from ``client_cert_source``.
+                default endpoint provided by the client. GOOGLE_API_USE_MTLS
+                environment variable can also be used to override the endpoint:
+                "always" (always use the default mTLS endpoint), "never" (always
+                use the default regular endpoint, this is the default value for
+                the environment variable) and "auto" (auto switch to the default
+                mTLS endpoint if client SSL credentials is present). However,
+                the ``api_endpoint`` property takes precedence if provided.
+                (2) The ``client_cert_source`` property is used to provide client
+                SSL credentials for mutual TLS transport. If not provided, the
+                default SSL credentials will be used if present.
 
         Raises:
-            google.auth.exceptions.MutualTlsChannelError: If mutual TLS transport
+            google.auth.exceptions.MutualTLSChannelError: If mutual TLS transport
                 creation failed for any reason.
         """
         if isinstance(client_options, dict):
             client_options = ClientOptions.from_dict(client_options)
+        if client_options is None:
+            client_options = ClientOptions.ClientOptions()
+
+        if client_options.api_endpoint is None:
+            use_mtls_env = os.getenv("GOOGLE_API_USE_MTLS", "never")
+            if use_mtls_env == "never":
+                client_options.api_endpoint = self.DEFAULT_ENDPOINT
+            elif use_mtls_env == "always":
+                client_options.api_endpoint = self.DEFAULT_MTLS_ENDPOINT
+            elif use_mtls_env == "auto":
+                has_client_cert_source = (
+                    client_options.client_cert_source is not None
+                    or mtls.has_default_client_cert_source()
+                )
+                client_options.api_endpoint = (
+                    self.DEFAULT_MTLS_ENDPOINT
+                    if has_client_cert_source
+                    else self.DEFAULT_ENDPOINT
+                )
+            else:
+                raise MutualTLSChannelError(
+                    "Unsupported GOOGLE_API_USE_MTLS value. Accepted values: never, auto, always"
+                )
 
         # Save or instantiate the transport.
         # Ordinarily, we provide the transport, but allowing a custom transport
         # instance provides an extensibility point for unusual situations.
         if isinstance(transport, CloudCatalogTransport):
             # transport is a CloudCatalogTransport instance.
-            if credentials:
+            if credentials or client_options.credentials_file:
                 raise ValueError(
                     "When providing a transport instance, "
                     "provide its credentials directly."
                 )
+            if client_options.scopes:
+                raise ValueError(
+                    "When providing a transport instance, "
+                    "provide its scopes directly."
+                )
             self._transport = transport
-        elif client_options is None or (
-            client_options.api_endpoint is None
-            and client_options.client_cert_source is None
-        ):
-            # Don't trigger mTLS if we get an empty ClientOptions.
+        else:
             Transport = type(self).get_transport_class(transport)
             self._transport = Transport(
-                credentials=credentials, host=self.DEFAULT_ENDPOINT
-            )
-        else:
-            # We have a non-empty ClientOptions. If client_cert_source is
-            # provided, trigger mTLS with user provided endpoint or the default
-            # mTLS endpoint.
-            if client_options.client_cert_source:
-                api_mtls_endpoint = (
-                    client_options.api_endpoint
-                    if client_options.api_endpoint
-                    else self.DEFAULT_MTLS_ENDPOINT
-                )
-            else:
-                api_mtls_endpoint = None
-
-            api_endpoint = (
-                client_options.api_endpoint
-                if client_options.api_endpoint
-                else self.DEFAULT_ENDPOINT
-            )
-
-            self._transport = CloudCatalogGrpcTransport(
                 credentials=credentials,
-                host=api_endpoint,
-                api_mtls_endpoint=api_mtls_endpoint,
+                credentials_file=client_options.credentials_file,
+                host=client_options.api_endpoint,
+                scopes=client_options.scopes,
+                api_mtls_endpoint=client_options.api_endpoint,
                 client_cert_source=client_options.client_cert_source,
+                quota_project_id=client_options.quota_project_id,
             )
 
     def list_services(
@@ -234,15 +249,16 @@ class CloudCatalogClient(metaclass=CloudCatalogClientMeta):
         """
         # Create or coerce a protobuf request object.
 
-        request = cloud_catalog.ListServicesRequest(request)
+        # Minor optimization to avoid making a copy if the user passes
+        # in a cloud_catalog.ListServicesRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, cloud_catalog.ListServicesRequest):
+            request = cloud_catalog.ListServicesRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method.wrap_method(
-            self._transport.list_services,
-            default_timeout=None,
-            client_info=_client_info,
-        )
+        rpc = self._transport._wrapped_methods[self._transport.list_services]
 
         # Send the request.
         response = rpc(request, retry=retry, timeout=timeout, metadata=metadata)
@@ -250,7 +266,7 @@ class CloudCatalogClient(metaclass=CloudCatalogClientMeta):
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListServicesPager(
-            method=rpc, request=request, response=response
+            method=rpc, request=request, response=response, metadata=metadata
         )
 
         # Done; return the response.
@@ -295,25 +311,29 @@ class CloudCatalogClient(metaclass=CloudCatalogClientMeta):
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([parent]):
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
             )
 
-        request = cloud_catalog.ListSkusRequest(request)
+        # Minor optimization to avoid making a copy if the user passes
+        # in a cloud_catalog.ListSkusRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, cloud_catalog.ListSkusRequest):
+            request = cloud_catalog.ListSkusRequest(request)
 
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
 
-        if parent is not None:
-            request.parent = parent
+            if parent is not None:
+                request.parent = parent
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method.wrap_method(
-            self._transport.list_skus, default_timeout=None, client_info=_client_info
-        )
+        rpc = self._transport._wrapped_methods[self._transport.list_skus]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -326,7 +346,9 @@ class CloudCatalogClient(metaclass=CloudCatalogClientMeta):
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
-        response = pagers.ListSkusPager(method=rpc, request=request, response=response)
+        response = pagers.ListSkusPager(
+            method=rpc, request=request, response=response, metadata=metadata
+        )
 
         # Done; return the response.
         return response

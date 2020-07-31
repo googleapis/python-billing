@@ -71,8 +71,11 @@ class BillingAccount(proto.Message):
     """
 
     name = proto.Field(proto.STRING, number=1)
+
     open = proto.Field(proto.BOOL, number=2)
+
     display_name = proto.Field(proto.STRING, number=3)
+
     master_billing_account = proto.Field(proto.STRING, number=4)
 
 
@@ -110,8 +113,11 @@ class ProjectBillingInfo(proto.Message):
     """
 
     name = proto.Field(proto.STRING, number=1)
+
     project_id = proto.Field(proto.STRING, number=2)
+
     billing_account_name = proto.Field(proto.STRING, number=3)
+
     billing_enabled = proto.Field(proto.BOOL, number=4)
 
 
@@ -151,7 +157,9 @@ class ListBillingAccountsRequest(proto.Message):
     """
 
     page_size = proto.Field(proto.INT32, number=1)
+
     page_token = proto.Field(proto.STRING, number=2)
+
     filter = proto.Field(proto.STRING, number=3)
 
 
@@ -175,6 +183,7 @@ class ListBillingAccountsResponse(proto.Message):
     billing_accounts = proto.RepeatedField(
         proto.MESSAGE, number=1, message=BillingAccount
     )
+
     next_page_token = proto.Field(proto.STRING, number=2)
 
 
@@ -209,7 +218,9 @@ class UpdateBillingAccountRequest(proto.Message):
     """
 
     name = proto.Field(proto.STRING, number=1)
+
     account = proto.Field(proto.MESSAGE, number=2, message=BillingAccount)
+
     update_mask = proto.Field(proto.MESSAGE, number=3, message=field_mask.FieldMask)
 
 
@@ -232,7 +243,9 @@ class ListProjectBillingInfoRequest(proto.Message):
     """
 
     name = proto.Field(proto.STRING, number=1)
+
     page_size = proto.Field(proto.INT32, number=2)
+
     page_token = proto.Field(proto.STRING, number=3)
 
 
@@ -257,6 +270,7 @@ class ListProjectBillingInfoResponse(proto.Message):
     project_billing_info = proto.RepeatedField(
         proto.MESSAGE, number=1, message=ProjectBillingInfo
     )
+
     next_page_token = proto.Field(proto.STRING, number=2)
 
 
@@ -288,6 +302,7 @@ class UpdateProjectBillingInfoRequest(proto.Message):
     """
 
     name = proto.Field(proto.STRING, number=1)
+
     project_billing_info = proto.Field(
         proto.MESSAGE, number=2, message=ProjectBillingInfo
     )
