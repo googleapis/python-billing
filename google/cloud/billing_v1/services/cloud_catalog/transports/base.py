@@ -21,7 +21,7 @@ import pkg_resources
 
 from google import auth
 from google.api_core import exceptions  # type: ignore
-from google.api_core import gapic_v1  # type: ignore
+from google.api_core import gapic_v1    # type: ignore
 from google.api_core import retry as retries  # type: ignore
 from google.auth import credentials  # type: ignore
 
@@ -30,27 +30,29 @@ from google.cloud.billing_v1.types import cloud_catalog
 
 try:
     _client_info = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution("google-cloud-billing",).version,
+        gapic_version=pkg_resources.get_distribution(
+            'google-cloud-billing',
+        ).version,
     )
 except pkg_resources.DistributionNotFound:
     _client_info = gapic_v1.client_info.ClientInfo()
 
-
 class CloudCatalogTransport(abc.ABC):
     """Abstract transport class for CloudCatalog."""
 
-    AUTH_SCOPES = ("https://www.googleapis.com/auth/cloud-platform",)
+    AUTH_SCOPES = (
+        'https://www.googleapis.com/auth/cloud-platform',
+    )
 
     def __init__(
-        self,
-        *,
-        host: str = "cloudbilling.googleapis.com",
-        credentials: credentials.Credentials = None,
-        credentials_file: typing.Optional[str] = None,
-        scopes: typing.Optional[typing.Sequence[str]] = AUTH_SCOPES,
-        quota_project_id: typing.Optional[str] = None,
-        **kwargs,
-    ) -> None:
+            self, *,
+            host: str = 'cloudbilling.googleapis.com',
+            credentials: credentials.Credentials = None,
+            credentials_file: typing.Optional[str] = None,
+            scopes: typing.Optional[typing.Sequence[str]] = AUTH_SCOPES,
+            quota_project_id: typing.Optional[str] = None,
+            **kwargs,
+            ) -> None:
         """Instantiate the transport.
 
         Args:
@@ -68,26 +70,24 @@ class CloudCatalogTransport(abc.ABC):
                 and quota.
         """
         # Save the hostname. Default to port 443 (HTTPS) if none is specified.
-        if ":" not in host:
-            host += ":443"
+        if ':' not in host:
+            host += ':443'
         self._host = host
 
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
             credentials, _ = auth.load_credentials_from_file(
-                credentials_file, scopes=scopes, quota_project_id=quota_project_id
-            )
+                                credentials_file,
+                                scopes=scopes,
+                                quota_project_id=quota_project_id
+                            )
 
         elif credentials is None:
-            credentials, _ = auth.default(
-                scopes=scopes, quota_project_id=quota_project_id
-            )
+            credentials, _ = auth.default(scopes=scopes, quota_project_id=quota_project_id)
 
         # Save the credentials.
         self._credentials = credentials
@@ -99,36 +99,37 @@ class CloudCatalogTransport(abc.ABC):
         # Precompute the wrapped methods.
         self._wrapped_methods = {
             self.list_services: gapic_v1.method.wrap_method(
-                self.list_services, default_timeout=None, client_info=_client_info,
+                self.list_services,
+                default_timeout=None,
+                client_info=_client_info,
             ),
             self.list_skus: gapic_v1.method.wrap_method(
-                self.list_skus, default_timeout=None, client_info=_client_info,
+                self.list_skus,
+                default_timeout=None,
+                client_info=_client_info,
             ),
+
         }
 
     @property
-    def list_services(
-        self,
-    ) -> typing.Callable[
-        [cloud_catalog.ListServicesRequest],
-        typing.Union[
-            cloud_catalog.ListServicesResponse,
-            typing.Awaitable[cloud_catalog.ListServicesResponse],
-        ],
-    ]:
+    def list_services(self) -> typing.Callable[
+            [cloud_catalog.ListServicesRequest],
+            typing.Union[
+                cloud_catalog.ListServicesResponse,
+                typing.Awaitable[cloud_catalog.ListServicesResponse]
+            ]]:
         raise NotImplementedError()
 
     @property
-    def list_skus(
-        self,
-    ) -> typing.Callable[
-        [cloud_catalog.ListSkusRequest],
-        typing.Union[
-            cloud_catalog.ListSkusResponse,
-            typing.Awaitable[cloud_catalog.ListSkusResponse],
-        ],
-    ]:
+    def list_skus(self) -> typing.Callable[
+            [cloud_catalog.ListSkusRequest],
+            typing.Union[
+                cloud_catalog.ListSkusResponse,
+                typing.Awaitable[cloud_catalog.ListSkusResponse]
+            ]]:
         raise NotImplementedError()
 
 
-__all__ = ("CloudCatalogTransport",)
+__all__ = (
+    'CloudCatalogTransport',
+)

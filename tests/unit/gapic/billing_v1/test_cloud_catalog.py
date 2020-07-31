@@ -49,11 +49,7 @@ def client_cert_source_callback():
 # This method modifies the default endpoint so the client can produce a different
 # mtls endpoint for endpoint testing purposes.
 def modify_default_endpoint(client):
-    return (
-        "foo.googleapis.com"
-        if ("localhost" in client.DEFAULT_ENDPOINT)
-        else client.DEFAULT_ENDPOINT
-    )
+    return "foo.googleapis.com" if ("localhost" in client.DEFAULT_ENDPOINT) else client.DEFAULT_ENDPOINT
 
 
 def test__get_default_mtls_endpoint():
@@ -64,30 +60,17 @@ def test__get_default_mtls_endpoint():
     non_googleapi = "api.example.com"
 
     assert CloudCatalogClient._get_default_mtls_endpoint(None) is None
-    assert (
-        CloudCatalogClient._get_default_mtls_endpoint(api_endpoint) == api_mtls_endpoint
-    )
-    assert (
-        CloudCatalogClient._get_default_mtls_endpoint(api_mtls_endpoint)
-        == api_mtls_endpoint
-    )
-    assert (
-        CloudCatalogClient._get_default_mtls_endpoint(sandbox_endpoint)
-        == sandbox_mtls_endpoint
-    )
-    assert (
-        CloudCatalogClient._get_default_mtls_endpoint(sandbox_mtls_endpoint)
-        == sandbox_mtls_endpoint
-    )
+    assert CloudCatalogClient._get_default_mtls_endpoint(api_endpoint) == api_mtls_endpoint
+    assert CloudCatalogClient._get_default_mtls_endpoint(api_mtls_endpoint) == api_mtls_endpoint
+    assert CloudCatalogClient._get_default_mtls_endpoint(sandbox_endpoint) == sandbox_mtls_endpoint
+    assert CloudCatalogClient._get_default_mtls_endpoint(sandbox_mtls_endpoint) == sandbox_mtls_endpoint
     assert CloudCatalogClient._get_default_mtls_endpoint(non_googleapi) == non_googleapi
 
 
 @pytest.mark.parametrize("client_class", [CloudCatalogClient, CloudCatalogAsyncClient])
 def test_cloud_catalog_client_from_service_account_file(client_class):
     creds = credentials.AnonymousCredentials()
-    with mock.patch.object(
-        service_account.Credentials, "from_service_account_file"
-    ) as factory:
+    with mock.patch.object(service_account.Credentials, 'from_service_account_file') as factory:
         factory.return_value = creds
         client = client_class.from_service_account_file("dummy/file/path.json")
         assert client._transport._credentials == creds
@@ -95,7 +78,7 @@ def test_cloud_catalog_client_from_service_account_file(client_class):
         client = client_class.from_service_account_json("dummy/file/path.json")
         assert client._transport._credentials == creds
 
-        assert client._transport._host == "cloudbilling.googleapis.com:443"
+        assert client._transport._host == 'cloudbilling.googleapis.com:443'
 
 
 def test_cloud_catalog_client_get_transport_class():
@@ -106,42 +89,29 @@ def test_cloud_catalog_client_get_transport_class():
     assert transport == transports.CloudCatalogGrpcTransport
 
 
-@pytest.mark.parametrize(
-    "client_class,transport_class,transport_name",
-    [
-        (CloudCatalogClient, transports.CloudCatalogGrpcTransport, "grpc"),
-        (
-            CloudCatalogAsyncClient,
-            transports.CloudCatalogGrpcAsyncIOTransport,
-            "grpc_asyncio",
-        ),
-    ],
-)
-@mock.patch.object(
-    CloudCatalogClient, "DEFAULT_ENDPOINT", modify_default_endpoint(CloudCatalogClient)
-)
-@mock.patch.object(
-    CloudCatalogAsyncClient,
-    "DEFAULT_ENDPOINT",
-    modify_default_endpoint(CloudCatalogAsyncClient),
-)
-def test_cloud_catalog_client_client_options(
-    client_class, transport_class, transport_name
-):
+@pytest.mark.parametrize("client_class,transport_class,transport_name", [
+    (CloudCatalogClient, transports.CloudCatalogGrpcTransport, "grpc"),
+    (CloudCatalogAsyncClient, transports.CloudCatalogGrpcAsyncIOTransport, "grpc_asyncio")
+])
+@mock.patch.object(CloudCatalogClient, "DEFAULT_ENDPOINT", modify_default_endpoint(CloudCatalogClient))
+@mock.patch.object(CloudCatalogAsyncClient, "DEFAULT_ENDPOINT", modify_default_endpoint(CloudCatalogAsyncClient))
+def test_cloud_catalog_client_client_options(client_class, transport_class, transport_name):
     # Check that if channel is provided we won't create a new one.
-    with mock.patch.object(CloudCatalogClient, "get_transport_class") as gtc:
-        transport = transport_class(credentials=credentials.AnonymousCredentials())
+    with mock.patch.object(CloudCatalogClient, 'get_transport_class') as gtc:
+        transport = transport_class(
+            credentials=credentials.AnonymousCredentials()
+        )
         client = client_class(transport=transport)
         gtc.assert_not_called()
 
     # Check that if channel is provided via str we will create a new one.
-    with mock.patch.object(CloudCatalogClient, "get_transport_class") as gtc:
+    with mock.patch.object(CloudCatalogClient, 'get_transport_class') as gtc:
         client = client_class(transport=transport_name)
         gtc.assert_called()
 
     # Check the case api_endpoint is provided.
     options = client_options.ClientOptions(api_endpoint="squid.clam.whelk")
-    with mock.patch.object(transport_class, "__init__") as patched:
+    with mock.patch.object(transport_class, '__init__') as patched:
         patched.return_value = None
         client = client_class(client_options=options)
         patched.assert_called_once_with(
@@ -157,7 +127,7 @@ def test_cloud_catalog_client_client_options(
     # Check the case api_endpoint is not provided and GOOGLE_API_USE_MTLS is
     # "never".
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS": "never"}):
-        with mock.patch.object(transport_class, "__init__") as patched:
+        with mock.patch.object(transport_class, '__init__') as patched:
             patched.return_value = None
             client = client_class()
             patched.assert_called_once_with(
@@ -173,7 +143,7 @@ def test_cloud_catalog_client_client_options(
     # Check the case api_endpoint is not provided and GOOGLE_API_USE_MTLS is
     # "always".
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS": "always"}):
-        with mock.patch.object(transport_class, "__init__") as patched:
+        with mock.patch.object(transport_class, '__init__') as patched:
             patched.return_value = None
             client = client_class()
             patched.assert_called_once_with(
@@ -189,10 +159,8 @@ def test_cloud_catalog_client_client_options(
     # Check the case api_endpoint is not provided, GOOGLE_API_USE_MTLS is
     # "auto", and client_cert_source is provided.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS": "auto"}):
-        options = client_options.ClientOptions(
-            client_cert_source=client_cert_source_callback
-        )
-        with mock.patch.object(transport_class, "__init__") as patched:
+        options = client_options.ClientOptions(client_cert_source=client_cert_source_callback)
+        with mock.patch.object(transport_class, '__init__') as patched:
             patched.return_value = None
             client = client_class(client_options=options)
             patched.assert_called_once_with(
@@ -203,16 +171,14 @@ def test_cloud_catalog_client_client_options(
                 api_mtls_endpoint=client.DEFAULT_MTLS_ENDPOINT,
                 client_cert_source=client_cert_source_callback,
                 quota_project_id=None,
+
             )
 
     # Check the case api_endpoint is not provided, GOOGLE_API_USE_MTLS is
     # "auto", and default_client_cert_source is provided.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS": "auto"}):
-        with mock.patch.object(transport_class, "__init__") as patched:
-            with mock.patch(
-                "google.auth.transport.mtls.has_default_client_cert_source",
-                return_value=True,
-            ):
+        with mock.patch.object(transport_class, '__init__') as patched:
+            with mock.patch('google.auth.transport.mtls.has_default_client_cert_source', return_value=True):
                 patched.return_value = None
                 client = client_class()
                 patched.assert_called_once_with(
@@ -228,11 +194,8 @@ def test_cloud_catalog_client_client_options(
     # Check the case api_endpoint is not provided, GOOGLE_API_USE_MTLS is
     # "auto", but client_cert_source and default_client_cert_source are None.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS": "auto"}):
-        with mock.patch.object(transport_class, "__init__") as patched:
-            with mock.patch(
-                "google.auth.transport.mtls.has_default_client_cert_source",
-                return_value=False,
-            ):
+        with mock.patch.object(transport_class, '__init__') as patched:
+            with mock.patch('google.auth.transport.mtls.has_default_client_cert_source', return_value=False):
                 patched.return_value = None
                 client = client_class()
                 patched.assert_called_once_with(
@@ -253,7 +216,7 @@ def test_cloud_catalog_client_client_options(
 
     # Check the case quota_project_id is provided
     options = client_options.ClientOptions(quota_project_id="octopus")
-    with mock.patch.object(transport_class, "__init__") as patched:
+    with mock.patch.object(transport_class, '__init__') as patched:
         patched.return_value = None
         client = client_class(client_options=options)
         patched.assert_called_once_with(
@@ -267,23 +230,16 @@ def test_cloud_catalog_client_client_options(
         )
 
 
-@pytest.mark.parametrize(
-    "client_class,transport_class,transport_name",
-    [
-        (CloudCatalogClient, transports.CloudCatalogGrpcTransport, "grpc"),
-        (
-            CloudCatalogAsyncClient,
-            transports.CloudCatalogGrpcAsyncIOTransport,
-            "grpc_asyncio",
-        ),
-    ],
-)
-def test_cloud_catalog_client_client_options_scopes(
-    client_class, transport_class, transport_name
-):
+@pytest.mark.parametrize("client_class,transport_class,transport_name", [
+    (CloudCatalogClient, transports.CloudCatalogGrpcTransport, "grpc"),
+    (CloudCatalogAsyncClient, transports.CloudCatalogGrpcAsyncIOTransport, "grpc_asyncio")
+])
+def test_cloud_catalog_client_client_options_scopes(client_class, transport_class, transport_name):
     # Check the case scopes are provided.
-    options = client_options.ClientOptions(scopes=["1", "2"],)
-    with mock.patch.object(transport_class, "__init__") as patched:
+    options = client_options.ClientOptions(
+        scopes=["1", "2"],
+    )
+    with mock.patch.object(transport_class, '__init__') as patched:
         patched.return_value = None
         client = client_class(client_options=options)
         patched.assert_called_once_with(
@@ -297,23 +253,16 @@ def test_cloud_catalog_client_client_options_scopes(
         )
 
 
-@pytest.mark.parametrize(
-    "client_class,transport_class,transport_name",
-    [
-        (CloudCatalogClient, transports.CloudCatalogGrpcTransport, "grpc"),
-        (
-            CloudCatalogAsyncClient,
-            transports.CloudCatalogGrpcAsyncIOTransport,
-            "grpc_asyncio",
-        ),
-    ],
-)
-def test_cloud_catalog_client_client_options_credentials_file(
-    client_class, transport_class, transport_name
-):
+@pytest.mark.parametrize("client_class,transport_class,transport_name", [
+    (CloudCatalogClient, transports.CloudCatalogGrpcTransport, "grpc"),
+    (CloudCatalogAsyncClient, transports.CloudCatalogGrpcAsyncIOTransport, "grpc_asyncio")
+])
+def test_cloud_catalog_client_client_options_credentials_file(client_class, transport_class, transport_name):
     # Check the case credentials file is provided.
-    options = client_options.ClientOptions(credentials_file="credentials.json")
-    with mock.patch.object(transport_class, "__init__") as patched:
+    options = client_options.ClientOptions(
+        credentials_file="credentials.json"
+    )
+    with mock.patch.object(transport_class, '__init__') as patched:
         patched.return_value = None
         client = client_class(client_options=options)
         patched.assert_called_once_with(
@@ -328,11 +277,11 @@ def test_cloud_catalog_client_client_options_credentials_file(
 
 
 def test_cloud_catalog_client_client_options_from_dict():
-    with mock.patch(
-        "google.cloud.billing_v1.services.cloud_catalog.transports.CloudCatalogGrpcTransport.__init__"
-    ) as grpc_transport:
+    with mock.patch('google.cloud.billing_v1.services.cloud_catalog.transports.CloudCatalogGrpcTransport.__init__') as grpc_transport:
         grpc_transport.return_value = None
-        client = CloudCatalogClient(client_options={"api_endpoint": "squid.clam.whelk"})
+        client = CloudCatalogClient(
+            client_options={'api_endpoint': 'squid.clam.whelk'}
+        )
         grpc_transport.assert_called_once_with(
             credentials=None,
             credentials_file=None,
@@ -344,11 +293,10 @@ def test_cloud_catalog_client_client_options_from_dict():
         )
 
 
-def test_list_services(
-    transport: str = "grpc", request_type=cloud_catalog.ListServicesRequest
-):
+def test_list_services(transport: str = 'grpc', request_type=cloud_catalog.ListServicesRequest):
     client = CloudCatalogClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -356,10 +304,13 @@ def test_list_services(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.list_services), "__call__") as call:
+    with mock.patch.object(
+            type(client._transport.list_services),
+            '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = cloud_catalog.ListServicesResponse(
-            next_page_token="next_page_token_value",
+            next_page_token='next_page_token_value',
+
         )
 
         response = client.list_services(request)
@@ -373,7 +324,7 @@ def test_list_services(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListServicesPager)
 
-    assert response.next_page_token == "next_page_token_value"
+    assert response.next_page_token == 'next_page_token_value'
 
 
 def test_list_services_from_dict():
@@ -381,9 +332,10 @@ def test_list_services_from_dict():
 
 
 @pytest.mark.asyncio
-async def test_list_services_async(transport: str = "grpc_asyncio"):
+async def test_list_services_async(transport: str = 'grpc_asyncio'):
     client = CloudCatalogAsyncClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -392,12 +344,12 @@ async def test_list_services_async(transport: str = "grpc_asyncio"):
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.list_services), "__call__"
-    ) as call:
+            type(client._client._transport.list_services),
+            '__call__') as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            cloud_catalog.ListServicesResponse(next_page_token="next_page_token_value",)
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(cloud_catalog.ListServicesResponse(
+            next_page_token='next_page_token_value',
+        ))
 
         response = await client.list_services(request)
 
@@ -410,14 +362,18 @@ async def test_list_services_async(transport: str = "grpc_asyncio"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListServicesAsyncPager)
 
-    assert response.next_page_token == "next_page_token_value"
+    assert response.next_page_token == 'next_page_token_value'
 
 
 def test_list_services_pager():
-    client = CloudCatalogClient(credentials=credentials.AnonymousCredentials,)
+    client = CloudCatalogClient(
+        credentials=credentials.AnonymousCredentials,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.list_services), "__call__") as call:
+    with mock.patch.object(
+            type(client._transport.list_services),
+            '__call__') as call:
         # Set the response to a series of pages.
         call.side_effect = (
             cloud_catalog.ListServicesResponse(
@@ -426,14 +382,23 @@ def test_list_services_pager():
                     cloud_catalog.Service(),
                     cloud_catalog.Service(),
                 ],
-                next_page_token="abc",
-            ),
-            cloud_catalog.ListServicesResponse(services=[], next_page_token="def",),
-            cloud_catalog.ListServicesResponse(
-                services=[cloud_catalog.Service(),], next_page_token="ghi",
+                next_page_token='abc',
             ),
             cloud_catalog.ListServicesResponse(
-                services=[cloud_catalog.Service(), cloud_catalog.Service(),],
+                services=[],
+                next_page_token='def',
+            ),
+            cloud_catalog.ListServicesResponse(
+                services=[
+                    cloud_catalog.Service(),
+                ],
+                next_page_token='ghi',
+            ),
+            cloud_catalog.ListServicesResponse(
+                services=[
+                    cloud_catalog.Service(),
+                    cloud_catalog.Service(),
+                ],
             ),
             RuntimeError,
         )
@@ -445,14 +410,18 @@ def test_list_services_pager():
 
         results = [i for i in pager]
         assert len(results) == 6
-        assert all(isinstance(i, cloud_catalog.Service) for i in results)
-
+        assert all(isinstance(i, cloud_catalog.Service)
+                   for i in results)
 
 def test_list_services_pages():
-    client = CloudCatalogClient(credentials=credentials.AnonymousCredentials,)
+    client = CloudCatalogClient(
+        credentials=credentials.AnonymousCredentials,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.list_services), "__call__") as call:
+    with mock.patch.object(
+            type(client._transport.list_services),
+            '__call__') as call:
         # Set the response to a series of pages.
         call.side_effect = (
             cloud_catalog.ListServicesResponse(
@@ -461,32 +430,40 @@ def test_list_services_pages():
                     cloud_catalog.Service(),
                     cloud_catalog.Service(),
                 ],
-                next_page_token="abc",
-            ),
-            cloud_catalog.ListServicesResponse(services=[], next_page_token="def",),
-            cloud_catalog.ListServicesResponse(
-                services=[cloud_catalog.Service(),], next_page_token="ghi",
+                next_page_token='abc',
             ),
             cloud_catalog.ListServicesResponse(
-                services=[cloud_catalog.Service(), cloud_catalog.Service(),],
+                services=[],
+                next_page_token='def',
+            ),
+            cloud_catalog.ListServicesResponse(
+                services=[
+                    cloud_catalog.Service(),
+                ],
+                next_page_token='ghi',
+            ),
+            cloud_catalog.ListServicesResponse(
+                services=[
+                    cloud_catalog.Service(),
+                    cloud_catalog.Service(),
+                ],
             ),
             RuntimeError,
         )
         pages = list(client.list_services(request={}).pages)
-        for page, token in zip(pages, ["abc", "def", "ghi", ""]):
+        for page, token in zip(pages, ['abc','def','ghi', '']):
             assert page.raw_page.next_page_token == token
-
 
 @pytest.mark.asyncio
 async def test_list_services_async_pager():
-    client = CloudCatalogAsyncClient(credentials=credentials.AnonymousCredentials,)
+    client = CloudCatalogAsyncClient(
+        credentials=credentials.AnonymousCredentials,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.list_services),
-        "__call__",
-        new_callable=mock.AsyncMock,
-    ) as call:
+            type(client._client._transport.list_services),
+            '__call__', new_callable=mock.AsyncMock) as call:
         # Set the response to a series of pages.
         call.side_effect = (
             cloud_catalog.ListServicesResponse(
@@ -495,37 +472,46 @@ async def test_list_services_async_pager():
                     cloud_catalog.Service(),
                     cloud_catalog.Service(),
                 ],
-                next_page_token="abc",
-            ),
-            cloud_catalog.ListServicesResponse(services=[], next_page_token="def",),
-            cloud_catalog.ListServicesResponse(
-                services=[cloud_catalog.Service(),], next_page_token="ghi",
+                next_page_token='abc',
             ),
             cloud_catalog.ListServicesResponse(
-                services=[cloud_catalog.Service(), cloud_catalog.Service(),],
+                services=[],
+                next_page_token='def',
+            ),
+            cloud_catalog.ListServicesResponse(
+                services=[
+                    cloud_catalog.Service(),
+                ],
+                next_page_token='ghi',
+            ),
+            cloud_catalog.ListServicesResponse(
+                services=[
+                    cloud_catalog.Service(),
+                    cloud_catalog.Service(),
+                ],
             ),
             RuntimeError,
         )
         async_pager = await client.list_services(request={},)
-        assert async_pager.next_page_token == "abc"
+        assert async_pager.next_page_token == 'abc'
         responses = []
         async for response in async_pager:
             responses.append(response)
 
         assert len(responses) == 6
-        assert all(isinstance(i, cloud_catalog.Service) for i in responses)
-
+        assert all(isinstance(i, cloud_catalog.Service)
+                   for i in responses)
 
 @pytest.mark.asyncio
 async def test_list_services_async_pages():
-    client = CloudCatalogAsyncClient(credentials=credentials.AnonymousCredentials,)
+    client = CloudCatalogAsyncClient(
+        credentials=credentials.AnonymousCredentials,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.list_services),
-        "__call__",
-        new_callable=mock.AsyncMock,
-    ) as call:
+            type(client._client._transport.list_services),
+            '__call__', new_callable=mock.AsyncMock) as call:
         # Set the response to a series of pages.
         call.side_effect = (
             cloud_catalog.ListServicesResponse(
@@ -534,27 +520,37 @@ async def test_list_services_async_pages():
                     cloud_catalog.Service(),
                     cloud_catalog.Service(),
                 ],
-                next_page_token="abc",
-            ),
-            cloud_catalog.ListServicesResponse(services=[], next_page_token="def",),
-            cloud_catalog.ListServicesResponse(
-                services=[cloud_catalog.Service(),], next_page_token="ghi",
+                next_page_token='abc',
             ),
             cloud_catalog.ListServicesResponse(
-                services=[cloud_catalog.Service(), cloud_catalog.Service(),],
+                services=[],
+                next_page_token='def',
+            ),
+            cloud_catalog.ListServicesResponse(
+                services=[
+                    cloud_catalog.Service(),
+                ],
+                next_page_token='ghi',
+            ),
+            cloud_catalog.ListServicesResponse(
+                services=[
+                    cloud_catalog.Service(),
+                    cloud_catalog.Service(),
+                ],
             ),
             RuntimeError,
         )
         pages = []
         async for page in (await client.list_services(request={})).pages:
             pages.append(page)
-        for page, token in zip(pages, ["abc", "def", "ghi", ""]):
+        for page, token in zip(pages, ['abc','def','ghi', '']):
             assert page.raw_page.next_page_token == token
 
 
-def test_list_skus(transport: str = "grpc", request_type=cloud_catalog.ListSkusRequest):
+def test_list_skus(transport: str = 'grpc', request_type=cloud_catalog.ListSkusRequest):
     client = CloudCatalogClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -562,10 +558,13 @@ def test_list_skus(transport: str = "grpc", request_type=cloud_catalog.ListSkusR
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.list_skus), "__call__") as call:
+    with mock.patch.object(
+            type(client._transport.list_skus),
+            '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = cloud_catalog.ListSkusResponse(
-            next_page_token="next_page_token_value",
+            next_page_token='next_page_token_value',
+
         )
 
         response = client.list_skus(request)
@@ -579,7 +578,7 @@ def test_list_skus(transport: str = "grpc", request_type=cloud_catalog.ListSkusR
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListSkusPager)
 
-    assert response.next_page_token == "next_page_token_value"
+    assert response.next_page_token == 'next_page_token_value'
 
 
 def test_list_skus_from_dict():
@@ -587,9 +586,10 @@ def test_list_skus_from_dict():
 
 
 @pytest.mark.asyncio
-async def test_list_skus_async(transport: str = "grpc_asyncio"):
+async def test_list_skus_async(transport: str = 'grpc_asyncio'):
     client = CloudCatalogAsyncClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -598,12 +598,12 @@ async def test_list_skus_async(transport: str = "grpc_asyncio"):
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.list_skus), "__call__"
-    ) as call:
+            type(client._client._transport.list_skus),
+            '__call__') as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            cloud_catalog.ListSkusResponse(next_page_token="next_page_token_value",)
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(cloud_catalog.ListSkusResponse(
+            next_page_token='next_page_token_value',
+        ))
 
         response = await client.list_skus(request)
 
@@ -616,19 +616,23 @@ async def test_list_skus_async(transport: str = "grpc_asyncio"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListSkusAsyncPager)
 
-    assert response.next_page_token == "next_page_token_value"
+    assert response.next_page_token == 'next_page_token_value'
 
 
 def test_list_skus_field_headers():
-    client = CloudCatalogClient(credentials=credentials.AnonymousCredentials(),)
+    client = CloudCatalogClient(
+        credentials=credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
     request = cloud_catalog.ListSkusRequest()
-    request.parent = "parent/value"
+    request.parent = 'parent/value'
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.list_skus), "__call__") as call:
+    with mock.patch.object(
+            type(client._transport.list_skus),
+            '__call__') as call:
         call.return_value = cloud_catalog.ListSkusResponse()
 
         client.list_skus(request)
@@ -640,25 +644,28 @@ def test_list_skus_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        'x-goog-request-params',
+        'parent=parent/value',
+    ) in kw['metadata']
 
 
 @pytest.mark.asyncio
 async def test_list_skus_field_headers_async():
-    client = CloudCatalogAsyncClient(credentials=credentials.AnonymousCredentials(),)
+    client = CloudCatalogAsyncClient(
+        credentials=credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
     request = cloud_catalog.ListSkusRequest()
-    request.parent = "parent/value"
+    request.parent = 'parent/value'
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.list_skus), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            cloud_catalog.ListSkusResponse()
-        )
+            type(client._client._transport.list_skus),
+            '__call__') as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(cloud_catalog.ListSkusResponse())
 
         await client.list_skus(request)
 
@@ -669,102 +676,138 @@ async def test_list_skus_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        'x-goog-request-params',
+        'parent=parent/value',
+    ) in kw['metadata']
 
 
 def test_list_skus_flattened():
-    client = CloudCatalogClient(credentials=credentials.AnonymousCredentials(),)
+    client = CloudCatalogClient(
+        credentials=credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.list_skus), "__call__") as call:
+    with mock.patch.object(
+            type(client._transport.list_skus),
+            '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = cloud_catalog.ListSkusResponse()
 
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.list_skus(parent="parent_value",)
+        client.list_skus(
+            parent='parent_value',
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
 
-        assert args[0].parent == "parent_value"
+        assert args[0].parent == 'parent_value'
 
 
 def test_list_skus_flattened_error():
-    client = CloudCatalogClient(credentials=credentials.AnonymousCredentials(),)
+    client = CloudCatalogClient(
+        credentials=credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.list_skus(
-            cloud_catalog.ListSkusRequest(), parent="parent_value",
+            cloud_catalog.ListSkusRequest(),
+            parent='parent_value',
         )
 
 
 @pytest.mark.asyncio
 async def test_list_skus_flattened_async():
-    client = CloudCatalogAsyncClient(credentials=credentials.AnonymousCredentials(),)
+    client = CloudCatalogAsyncClient(
+        credentials=credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.list_skus), "__call__"
-    ) as call:
+            type(client._client._transport.list_skus),
+            '__call__') as call:
         # Designate an appropriate return value for the call.
         call.return_value = cloud_catalog.ListSkusResponse()
 
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            cloud_catalog.ListSkusResponse()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(cloud_catalog.ListSkusResponse())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.list_skus(parent="parent_value",)
+        response = await client.list_skus(
+            parent='parent_value',
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
 
-        assert args[0].parent == "parent_value"
+        assert args[0].parent == 'parent_value'
 
 
 @pytest.mark.asyncio
 async def test_list_skus_flattened_error_async():
-    client = CloudCatalogAsyncClient(credentials=credentials.AnonymousCredentials(),)
+    client = CloudCatalogAsyncClient(
+        credentials=credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         await client.list_skus(
-            cloud_catalog.ListSkusRequest(), parent="parent_value",
+            cloud_catalog.ListSkusRequest(),
+            parent='parent_value',
         )
 
 
 def test_list_skus_pager():
-    client = CloudCatalogClient(credentials=credentials.AnonymousCredentials,)
+    client = CloudCatalogClient(
+        credentials=credentials.AnonymousCredentials,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.list_skus), "__call__") as call:
+    with mock.patch.object(
+            type(client._transport.list_skus),
+            '__call__') as call:
         # Set the response to a series of pages.
         call.side_effect = (
             cloud_catalog.ListSkusResponse(
-                skus=[cloud_catalog.Sku(), cloud_catalog.Sku(), cloud_catalog.Sku(),],
-                next_page_token="abc",
+                skus=[
+                    cloud_catalog.Sku(),
+                    cloud_catalog.Sku(),
+                    cloud_catalog.Sku(),
+                ],
+                next_page_token='abc',
             ),
-            cloud_catalog.ListSkusResponse(skus=[], next_page_token="def",),
             cloud_catalog.ListSkusResponse(
-                skus=[cloud_catalog.Sku(),], next_page_token="ghi",
+                skus=[],
+                next_page_token='def',
             ),
             cloud_catalog.ListSkusResponse(
-                skus=[cloud_catalog.Sku(), cloud_catalog.Sku(),],
+                skus=[
+                    cloud_catalog.Sku(),
+                ],
+                next_page_token='ghi',
+            ),
+            cloud_catalog.ListSkusResponse(
+                skus=[
+                    cloud_catalog.Sku(),
+                    cloud_catalog.Sku(),
+                ],
             ),
             RuntimeError,
         )
 
         metadata = ()
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ('parent', ''),
+            )),
         )
         pager = client.list_skus(request={})
 
@@ -772,98 +815,140 @@ def test_list_skus_pager():
 
         results = [i for i in pager]
         assert len(results) == 6
-        assert all(isinstance(i, cloud_catalog.Sku) for i in results)
-
+        assert all(isinstance(i, cloud_catalog.Sku)
+                   for i in results)
 
 def test_list_skus_pages():
-    client = CloudCatalogClient(credentials=credentials.AnonymousCredentials,)
+    client = CloudCatalogClient(
+        credentials=credentials.AnonymousCredentials,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.list_skus), "__call__") as call:
+    with mock.patch.object(
+            type(client._transport.list_skus),
+            '__call__') as call:
         # Set the response to a series of pages.
         call.side_effect = (
             cloud_catalog.ListSkusResponse(
-                skus=[cloud_catalog.Sku(), cloud_catalog.Sku(), cloud_catalog.Sku(),],
-                next_page_token="abc",
+                skus=[
+                    cloud_catalog.Sku(),
+                    cloud_catalog.Sku(),
+                    cloud_catalog.Sku(),
+                ],
+                next_page_token='abc',
             ),
-            cloud_catalog.ListSkusResponse(skus=[], next_page_token="def",),
             cloud_catalog.ListSkusResponse(
-                skus=[cloud_catalog.Sku(),], next_page_token="ghi",
+                skus=[],
+                next_page_token='def',
             ),
             cloud_catalog.ListSkusResponse(
-                skus=[cloud_catalog.Sku(), cloud_catalog.Sku(),],
+                skus=[
+                    cloud_catalog.Sku(),
+                ],
+                next_page_token='ghi',
+            ),
+            cloud_catalog.ListSkusResponse(
+                skus=[
+                    cloud_catalog.Sku(),
+                    cloud_catalog.Sku(),
+                ],
             ),
             RuntimeError,
         )
         pages = list(client.list_skus(request={}).pages)
-        for page, token in zip(pages, ["abc", "def", "ghi", ""]):
+        for page, token in zip(pages, ['abc','def','ghi', '']):
             assert page.raw_page.next_page_token == token
-
 
 @pytest.mark.asyncio
 async def test_list_skus_async_pager():
-    client = CloudCatalogAsyncClient(credentials=credentials.AnonymousCredentials,)
+    client = CloudCatalogAsyncClient(
+        credentials=credentials.AnonymousCredentials,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.list_skus),
-        "__call__",
-        new_callable=mock.AsyncMock,
-    ) as call:
+            type(client._client._transport.list_skus),
+            '__call__', new_callable=mock.AsyncMock) as call:
         # Set the response to a series of pages.
         call.side_effect = (
             cloud_catalog.ListSkusResponse(
-                skus=[cloud_catalog.Sku(), cloud_catalog.Sku(), cloud_catalog.Sku(),],
-                next_page_token="abc",
+                skus=[
+                    cloud_catalog.Sku(),
+                    cloud_catalog.Sku(),
+                    cloud_catalog.Sku(),
+                ],
+                next_page_token='abc',
             ),
-            cloud_catalog.ListSkusResponse(skus=[], next_page_token="def",),
             cloud_catalog.ListSkusResponse(
-                skus=[cloud_catalog.Sku(),], next_page_token="ghi",
+                skus=[],
+                next_page_token='def',
             ),
             cloud_catalog.ListSkusResponse(
-                skus=[cloud_catalog.Sku(), cloud_catalog.Sku(),],
+                skus=[
+                    cloud_catalog.Sku(),
+                ],
+                next_page_token='ghi',
+            ),
+            cloud_catalog.ListSkusResponse(
+                skus=[
+                    cloud_catalog.Sku(),
+                    cloud_catalog.Sku(),
+                ],
             ),
             RuntimeError,
         )
         async_pager = await client.list_skus(request={},)
-        assert async_pager.next_page_token == "abc"
+        assert async_pager.next_page_token == 'abc'
         responses = []
         async for response in async_pager:
             responses.append(response)
 
         assert len(responses) == 6
-        assert all(isinstance(i, cloud_catalog.Sku) for i in responses)
-
+        assert all(isinstance(i, cloud_catalog.Sku)
+                   for i in responses)
 
 @pytest.mark.asyncio
 async def test_list_skus_async_pages():
-    client = CloudCatalogAsyncClient(credentials=credentials.AnonymousCredentials,)
+    client = CloudCatalogAsyncClient(
+        credentials=credentials.AnonymousCredentials,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.list_skus),
-        "__call__",
-        new_callable=mock.AsyncMock,
-    ) as call:
+            type(client._client._transport.list_skus),
+            '__call__', new_callable=mock.AsyncMock) as call:
         # Set the response to a series of pages.
         call.side_effect = (
             cloud_catalog.ListSkusResponse(
-                skus=[cloud_catalog.Sku(), cloud_catalog.Sku(), cloud_catalog.Sku(),],
-                next_page_token="abc",
+                skus=[
+                    cloud_catalog.Sku(),
+                    cloud_catalog.Sku(),
+                    cloud_catalog.Sku(),
+                ],
+                next_page_token='abc',
             ),
-            cloud_catalog.ListSkusResponse(skus=[], next_page_token="def",),
             cloud_catalog.ListSkusResponse(
-                skus=[cloud_catalog.Sku(),], next_page_token="ghi",
+                skus=[],
+                next_page_token='def',
             ),
             cloud_catalog.ListSkusResponse(
-                skus=[cloud_catalog.Sku(), cloud_catalog.Sku(),],
+                skus=[
+                    cloud_catalog.Sku(),
+                ],
+                next_page_token='ghi',
+            ),
+            cloud_catalog.ListSkusResponse(
+                skus=[
+                    cloud_catalog.Sku(),
+                    cloud_catalog.Sku(),
+                ],
             ),
             RuntimeError,
         )
         pages = []
         async for page in (await client.list_skus(request={})).pages:
             pages.append(page)
-        for page, token in zip(pages, ["abc", "def", "ghi", ""]):
+        for page, token in zip(pages, ['abc','def','ghi', '']):
             assert page.raw_page.next_page_token == token
 
 
@@ -874,7 +959,8 @@ def test_credentials_transport_error():
     )
     with pytest.raises(ValueError):
         client = CloudCatalogClient(
-            credentials=credentials.AnonymousCredentials(), transport=transport,
+            credentials=credentials.AnonymousCredentials(),
+            transport=transport,
         )
 
     # It is an error to provide a credentials file and a transport instance.
@@ -893,7 +979,8 @@ def test_credentials_transport_error():
     )
     with pytest.raises(ValueError):
         client = CloudCatalogClient(
-            client_options={"scopes": ["1", "2"]}, transport=transport,
+            client_options={"scopes": ["1", "2"]},
+            transport=transport,
         )
 
 
@@ -923,8 +1010,13 @@ def test_transport_get_channel():
 
 def test_transport_grpc_default():
     # A client should use the gRPC transport by default.
-    client = CloudCatalogClient(credentials=credentials.AnonymousCredentials(),)
-    assert isinstance(client._transport, transports.CloudCatalogGrpcTransport,)
+    client = CloudCatalogClient(
+        credentials=credentials.AnonymousCredentials(),
+    )
+    assert isinstance(
+        client._transport,
+        transports.CloudCatalogGrpcTransport,
+    )
 
 
 def test_cloud_catalog_base_transport_error():
@@ -932,15 +1024,13 @@ def test_cloud_catalog_base_transport_error():
     with pytest.raises(exceptions.DuplicateCredentialArgs):
         transport = transports.CloudCatalogTransport(
             credentials=credentials.AnonymousCredentials(),
-            credentials_file="credentials.json",
+            credentials_file="credentials.json"
         )
 
 
 def test_cloud_catalog_base_transport():
     # Instantiate the base transport.
-    with mock.patch(
-        "google.cloud.billing_v1.services.cloud_catalog.transports.CloudCatalogTransport.__init__"
-    ) as Transport:
+    with mock.patch('google.cloud.billing_v1.services.cloud_catalog.transports.CloudCatalogTransport.__init__') as Transport:
         Transport.return_value = None
         transport = transports.CloudCatalogTransport(
             credentials=credentials.AnonymousCredentials(),
@@ -949,9 +1039,9 @@ def test_cloud_catalog_base_transport():
     # Every method on the transport should just blindly
     # raise NotImplementedError.
     methods = (
-        "list_services",
-        "list_skus",
-    )
+        'list_services',
+        'list_skus',
+        )
     for method in methods:
         with pytest.raises(NotImplementedError):
             getattr(transport, method)(request=object())
@@ -959,30 +1049,27 @@ def test_cloud_catalog_base_transport():
 
 def test_cloud_catalog_base_transport_with_credentials_file():
     # Instantiate the base transport with a credentials file
-    with mock.patch.object(
-        auth, "load_credentials_from_file"
-    ) as load_creds, mock.patch(
-        "google.cloud.billing_v1.services.cloud_catalog.transports.CloudCatalogTransport._prep_wrapped_messages"
-    ) as Transport:
+    with mock.patch.object(auth, 'load_credentials_from_file') as load_creds, mock.patch('google.cloud.billing_v1.services.cloud_catalog.transports.CloudCatalogTransport._prep_wrapped_messages') as Transport:
         Transport.return_value = None
         load_creds.return_value = (credentials.AnonymousCredentials(), None)
         transport = transports.CloudCatalogTransport(
-            credentials_file="credentials.json", quota_project_id="octopus",
+            credentials_file="credentials.json",
+            quota_project_id="octopus",
         )
-        load_creds.assert_called_once_with(
-            "credentials.json",
-            scopes=("https://www.googleapis.com/auth/cloud-platform",),
+        load_creds.assert_called_once_with("credentials.json", scopes=(
+            'https://www.googleapis.com/auth/cloud-platform',
+            ),
             quota_project_id="octopus",
         )
 
 
 def test_cloud_catalog_auth_adc():
     # If no credentials are provided, we should use ADC credentials.
-    with mock.patch.object(auth, "default") as adc:
+    with mock.patch.object(auth, 'default') as adc:
         adc.return_value = (credentials.AnonymousCredentials(), None)
         CloudCatalogClient()
-        adc.assert_called_once_with(
-            scopes=("https://www.googleapis.com/auth/cloud-platform",),
+        adc.assert_called_once_with(scopes=(
+            'https://www.googleapis.com/auth/cloud-platform',),
             quota_project_id=None,
         )
 
@@ -990,39 +1077,32 @@ def test_cloud_catalog_auth_adc():
 def test_cloud_catalog_transport_auth_adc():
     # If credentials and host are not provided, the transport class should use
     # ADC credentials.
-    with mock.patch.object(auth, "default") as adc:
+    with mock.patch.object(auth, 'default') as adc:
         adc.return_value = (credentials.AnonymousCredentials(), None)
-        transports.CloudCatalogGrpcTransport(
-            host="squid.clam.whelk", quota_project_id="octopus"
-        )
-        adc.assert_called_once_with(
-            scopes=("https://www.googleapis.com/auth/cloud-platform",),
+        transports.CloudCatalogGrpcTransport(host="squid.clam.whelk", quota_project_id="octopus")
+        adc.assert_called_once_with(scopes=(
+            'https://www.googleapis.com/auth/cloud-platform',),
             quota_project_id="octopus",
         )
-
 
 def test_cloud_catalog_host_no_port():
     client = CloudCatalogClient(
         credentials=credentials.AnonymousCredentials(),
-        client_options=client_options.ClientOptions(
-            api_endpoint="cloudbilling.googleapis.com"
-        ),
+        client_options=client_options.ClientOptions(api_endpoint='cloudbilling.googleapis.com'),
     )
-    assert client._transport._host == "cloudbilling.googleapis.com:443"
+    assert client._transport._host == 'cloudbilling.googleapis.com:443'
 
 
 def test_cloud_catalog_host_with_port():
     client = CloudCatalogClient(
         credentials=credentials.AnonymousCredentials(),
-        client_options=client_options.ClientOptions(
-            api_endpoint="cloudbilling.googleapis.com:8000"
-        ),
+        client_options=client_options.ClientOptions(api_endpoint='cloudbilling.googleapis.com:8000'),
     )
-    assert client._transport._host == "cloudbilling.googleapis.com:8000"
+    assert client._transport._host == 'cloudbilling.googleapis.com:8000'
 
 
 def test_cloud_catalog_grpc_transport_channel():
-    channel = grpc.insecure_channel("http://localhost/")
+    channel = grpc.insecure_channel('http://localhost/')
 
     # Check that if channel is provided, mtls endpoint and client_cert_source
     # won't be used.
@@ -1039,7 +1119,7 @@ def test_cloud_catalog_grpc_transport_channel():
 
 
 def test_cloud_catalog_grpc_asyncio_transport_channel():
-    channel = aio.insecure_channel("http://localhost/")
+    channel = aio.insecure_channel('http://localhost/')
 
     # Check that if channel is provided, mtls endpoint and client_cert_source
     # won't be used.
@@ -1083,7 +1163,9 @@ def test_cloud_catalog_grpc_transport_channel_mtls_with_client_cert_source(
         "mtls.squid.clam.whelk:443",
         credentials=mock_cred,
         credentials_file=None,
-        scopes=("https://www.googleapis.com/auth/cloud-platform",),
+        scopes=(
+            'https://www.googleapis.com/auth/cloud-platform',
+        ),
         ssl_credentials=mock_ssl_cred,
         quota_project_id=None,
     )
@@ -1118,7 +1200,9 @@ def test_cloud_catalog_grpc_asyncio_transport_channel_mtls_with_client_cert_sour
         "mtls.squid.clam.whelk:443",
         credentials=mock_cred,
         credentials_file=None,
-        scopes=("https://www.googleapis.com/auth/cloud-platform",),
+        scopes=(
+            'https://www.googleapis.com/auth/cloud-platform',
+        ),
         ssl_credentials=mock_ssl_cred,
         quota_project_id=None,
     )
@@ -1155,7 +1239,9 @@ def test_cloud_catalog_grpc_transport_channel_mtls_with_adc(
             "mtls.squid.clam.whelk:443",
             credentials=mock_cred,
             credentials_file=None,
-            scopes=("https://www.googleapis.com/auth/cloud-platform",),
+            scopes=(
+                'https://www.googleapis.com/auth/cloud-platform',
+            ),
             ssl_credentials=mock_ssl_cred,
             quota_project_id=None,
         )
@@ -1192,7 +1278,9 @@ def test_cloud_catalog_grpc_asyncio_transport_channel_mtls_with_adc(
             "mtls.squid.clam.whelk:443",
             credentials=mock_cred,
             credentials_file=None,
-            scopes=("https://www.googleapis.com/auth/cloud-platform",),
+            scopes=(
+                'https://www.googleapis.com/auth/cloud-platform',
+            ),
             ssl_credentials=mock_ssl_cred,
             quota_project_id=None,
         )

@@ -37,15 +37,12 @@ class ListBillingAccountsPager:
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
-
-    def __init__(
-        self,
-        method: Callable[..., cloud_billing.ListBillingAccountsResponse],
-        request: cloud_billing.ListBillingAccountsRequest,
-        response: cloud_billing.ListBillingAccountsResponse,
-        *,
-        metadata: Sequence[Tuple[str, str]] = ()
-    ):
+    def __init__(self,
+            method: Callable[..., cloud_billing.ListBillingAccountsResponse],
+            request: cloud_billing.ListBillingAccountsRequest,
+            response: cloud_billing.ListBillingAccountsResponse,
+            *,
+            metadata: Sequence[Tuple[str, str]] = ()):
         """Instantiate the pager.
 
         Args:
@@ -79,7 +76,7 @@ class ListBillingAccountsPager:
             yield from page.billing_accounts
 
     def __repr__(self) -> str:
-        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+        return '{0}<{1!r}>'.format(self.__class__.__name__, self._response)
 
 
 class ListBillingAccountsAsyncPager:
@@ -99,15 +96,12 @@ class ListBillingAccountsAsyncPager:
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
-
-    def __init__(
-        self,
-        method: Callable[..., Awaitable[cloud_billing.ListBillingAccountsResponse]],
-        request: cloud_billing.ListBillingAccountsRequest,
-        response: cloud_billing.ListBillingAccountsResponse,
-        *,
-        metadata: Sequence[Tuple[str, str]] = ()
-    ):
+    def __init__(self,
+            method: Callable[..., Awaitable[cloud_billing.ListBillingAccountsResponse]],
+            request: cloud_billing.ListBillingAccountsRequest,
+            response: cloud_billing.ListBillingAccountsResponse,
+            *,
+            metadata: Sequence[Tuple[str, str]] = ()):
         """Instantiate the pager.
 
         Args:
@@ -145,7 +139,7 @@ class ListBillingAccountsAsyncPager:
         return async_generator()
 
     def __repr__(self) -> str:
-        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+        return '{0}<{1!r}>'.format(self.__class__.__name__, self._response)
 
 
 class ListProjectBillingInfoPager:
@@ -165,15 +159,12 @@ class ListProjectBillingInfoPager:
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
-
-    def __init__(
-        self,
-        method: Callable[..., cloud_billing.ListProjectBillingInfoResponse],
-        request: cloud_billing.ListProjectBillingInfoRequest,
-        response: cloud_billing.ListProjectBillingInfoResponse,
-        *,
-        metadata: Sequence[Tuple[str, str]] = ()
-    ):
+    def __init__(self,
+            method: Callable[..., cloud_billing.ListProjectBillingInfoResponse],
+            request: cloud_billing.ListProjectBillingInfoRequest,
+            response: cloud_billing.ListProjectBillingInfoResponse,
+            *,
+            metadata: Sequence[Tuple[str, str]] = ()):
         """Instantiate the pager.
 
         Args:
@@ -207,7 +198,7 @@ class ListProjectBillingInfoPager:
             yield from page.project_billing_info
 
     def __repr__(self) -> str:
-        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+        return '{0}<{1!r}>'.format(self.__class__.__name__, self._response)
 
 
 class ListProjectBillingInfoAsyncPager:
@@ -227,15 +218,12 @@ class ListProjectBillingInfoAsyncPager:
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
-
-    def __init__(
-        self,
-        method: Callable[..., Awaitable[cloud_billing.ListProjectBillingInfoResponse]],
-        request: cloud_billing.ListProjectBillingInfoRequest,
-        response: cloud_billing.ListProjectBillingInfoResponse,
-        *,
-        metadata: Sequence[Tuple[str, str]] = ()
-    ):
+    def __init__(self,
+            method: Callable[..., Awaitable[cloud_billing.ListProjectBillingInfoResponse]],
+            request: cloud_billing.ListProjectBillingInfoRequest,
+            response: cloud_billing.ListProjectBillingInfoResponse,
+            *,
+            metadata: Sequence[Tuple[str, str]] = ()):
         """Instantiate the pager.
 
         Args:
@@ -257,9 +245,7 @@ class ListProjectBillingInfoAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(
-        self,
-    ) -> AsyncIterable[cloud_billing.ListProjectBillingInfoResponse]:
+    async def pages(self) -> AsyncIterable[cloud_billing.ListProjectBillingInfoResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
@@ -275,4 +261,4 @@ class ListProjectBillingInfoAsyncPager:
         return async_generator()
 
     def __repr__(self) -> str:
-        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+        return '{0}<{1!r}>'.format(self.__class__.__name__, self._response)

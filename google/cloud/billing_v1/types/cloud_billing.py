@@ -22,19 +22,19 @@ from google.protobuf import field_mask_pb2 as field_mask  # type: ignore
 
 
 __protobuf__ = proto.module(
-    package="google.cloud.billing.v1",
+    package='google.cloud.billing.v1',
     manifest={
-        "BillingAccount",
-        "ProjectBillingInfo",
-        "GetBillingAccountRequest",
-        "ListBillingAccountsRequest",
-        "ListBillingAccountsResponse",
-        "CreateBillingAccountRequest",
-        "UpdateBillingAccountRequest",
-        "ListProjectBillingInfoRequest",
-        "ListProjectBillingInfoResponse",
-        "GetProjectBillingInfoRequest",
-        "UpdateProjectBillingInfoRequest",
+        'BillingAccount',
+        'ProjectBillingInfo',
+        'GetBillingAccountRequest',
+        'ListBillingAccountsRequest',
+        'ListBillingAccountsResponse',
+        'CreateBillingAccountRequest',
+        'UpdateBillingAccountRequest',
+        'ListProjectBillingInfoRequest',
+        'ListProjectBillingInfoResponse',
+        'GetProjectBillingInfoRequest',
+        'UpdateProjectBillingInfoRequest',
     },
 )
 
@@ -180,8 +180,8 @@ class ListBillingAccountsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    billing_accounts = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=BillingAccount,
+    billing_accounts = proto.RepeatedField(proto.MESSAGE, number=1,
+        message=BillingAccount,
     )
 
     next_page_token = proto.Field(proto.STRING, number=2)
@@ -199,7 +199,9 @@ class CreateBillingAccountRequest(proto.Message):
             billing account.
     """
 
-    billing_account = proto.Field(proto.MESSAGE, number=1, message=BillingAccount,)
+    billing_account = proto.Field(proto.MESSAGE, number=1,
+        message=BillingAccount,
+    )
 
 
 class UpdateBillingAccountRequest(proto.Message):
@@ -219,9 +221,13 @@ class UpdateBillingAccountRequest(proto.Message):
 
     name = proto.Field(proto.STRING, number=1)
 
-    account = proto.Field(proto.MESSAGE, number=2, message=BillingAccount,)
+    account = proto.Field(proto.MESSAGE, number=2,
+        message=BillingAccount,
+    )
 
-    update_mask = proto.Field(proto.MESSAGE, number=3, message=field_mask.FieldMask,)
+    update_mask = proto.Field(proto.MESSAGE, number=3,
+        message=field_mask.FieldMask,
+    )
 
 
 class ListProjectBillingInfoRequest(proto.Message):
@@ -267,8 +273,8 @@ class ListProjectBillingInfoResponse(proto.Message):
     def raw_page(self):
         return self
 
-    project_billing_info = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=ProjectBillingInfo,
+    project_billing_info = proto.RepeatedField(proto.MESSAGE, number=1,
+        message=ProjectBillingInfo,
     )
 
     next_page_token = proto.Field(proto.STRING, number=2)
@@ -303,8 +309,8 @@ class UpdateProjectBillingInfoRequest(proto.Message):
 
     name = proto.Field(proto.STRING, number=1)
 
-    project_billing_info = proto.Field(
-        proto.MESSAGE, number=2, message=ProjectBillingInfo,
+    project_billing_info = proto.Field(proto.MESSAGE, number=2,
+        message=ProjectBillingInfo,
     )
 
 

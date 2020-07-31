@@ -21,7 +21,7 @@ import pkg_resources
 
 from google import auth
 from google.api_core import exceptions  # type: ignore
-from google.api_core import gapic_v1  # type: ignore
+from google.api_core import gapic_v1    # type: ignore
 from google.api_core import retry as retries  # type: ignore
 from google.auth import credentials  # type: ignore
 
@@ -32,27 +32,29 @@ from google.iam.v1 import policy_pb2 as policy  # type: ignore
 
 try:
     _client_info = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution("google-cloud-billing",).version,
+        gapic_version=pkg_resources.get_distribution(
+            'google-cloud-billing',
+        ).version,
     )
 except pkg_resources.DistributionNotFound:
     _client_info = gapic_v1.client_info.ClientInfo()
 
-
 class CloudBillingTransport(abc.ABC):
     """Abstract transport class for CloudBilling."""
 
-    AUTH_SCOPES = ("https://www.googleapis.com/auth/cloud-platform",)
+    AUTH_SCOPES = (
+        'https://www.googleapis.com/auth/cloud-platform',
+    )
 
     def __init__(
-        self,
-        *,
-        host: str = "cloudbilling.googleapis.com",
-        credentials: credentials.Credentials = None,
-        credentials_file: typing.Optional[str] = None,
-        scopes: typing.Optional[typing.Sequence[str]] = AUTH_SCOPES,
-        quota_project_id: typing.Optional[str] = None,
-        **kwargs,
-    ) -> None:
+            self, *,
+            host: str = 'cloudbilling.googleapis.com',
+            credentials: credentials.Credentials = None,
+            credentials_file: typing.Optional[str] = None,
+            scopes: typing.Optional[typing.Sequence[str]] = AUTH_SCOPES,
+            quota_project_id: typing.Optional[str] = None,
+            **kwargs,
+            ) -> None:
         """Instantiate the transport.
 
         Args:
@@ -70,26 +72,24 @@ class CloudBillingTransport(abc.ABC):
                 and quota.
         """
         # Save the hostname. Default to port 443 (HTTPS) if none is specified.
-        if ":" not in host:
-            host += ":443"
+        if ':' not in host:
+            host += ':443'
         self._host = host
 
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
             credentials, _ = auth.load_credentials_from_file(
-                credentials_file, scopes=scopes, quota_project_id=quota_project_id
-            )
+                                credentials_file,
+                                scopes=scopes,
+                                quota_project_id=quota_project_id
+                            )
 
         elif credentials is None:
-            credentials, _ = auth.default(
-                scopes=scopes, quota_project_id=quota_project_id
-            )
+            credentials, _ = auth.default(scopes=scopes, quota_project_id=quota_project_id)
 
         # Save the credentials.
         self._credentials = credentials
@@ -136,128 +136,114 @@ class CloudBillingTransport(abc.ABC):
                 client_info=_client_info,
             ),
             self.get_iam_policy: gapic_v1.method.wrap_method(
-                self.get_iam_policy, default_timeout=None, client_info=_client_info,
+                self.get_iam_policy,
+                default_timeout=None,
+                client_info=_client_info,
             ),
             self.set_iam_policy: gapic_v1.method.wrap_method(
-                self.set_iam_policy, default_timeout=None, client_info=_client_info,
+                self.set_iam_policy,
+                default_timeout=None,
+                client_info=_client_info,
             ),
             self.test_iam_permissions: gapic_v1.method.wrap_method(
                 self.test_iam_permissions,
                 default_timeout=None,
                 client_info=_client_info,
             ),
+
         }
 
     @property
-    def get_billing_account(
-        self,
-    ) -> typing.Callable[
-        [cloud_billing.GetBillingAccountRequest],
-        typing.Union[
-            cloud_billing.BillingAccount, typing.Awaitable[cloud_billing.BillingAccount]
-        ],
-    ]:
+    def get_billing_account(self) -> typing.Callable[
+            [cloud_billing.GetBillingAccountRequest],
+            typing.Union[
+                cloud_billing.BillingAccount,
+                typing.Awaitable[cloud_billing.BillingAccount]
+            ]]:
         raise NotImplementedError()
 
     @property
-    def list_billing_accounts(
-        self,
-    ) -> typing.Callable[
-        [cloud_billing.ListBillingAccountsRequest],
-        typing.Union[
-            cloud_billing.ListBillingAccountsResponse,
-            typing.Awaitable[cloud_billing.ListBillingAccountsResponse],
-        ],
-    ]:
+    def list_billing_accounts(self) -> typing.Callable[
+            [cloud_billing.ListBillingAccountsRequest],
+            typing.Union[
+                cloud_billing.ListBillingAccountsResponse,
+                typing.Awaitable[cloud_billing.ListBillingAccountsResponse]
+            ]]:
         raise NotImplementedError()
 
     @property
-    def update_billing_account(
-        self,
-    ) -> typing.Callable[
-        [cloud_billing.UpdateBillingAccountRequest],
-        typing.Union[
-            cloud_billing.BillingAccount, typing.Awaitable[cloud_billing.BillingAccount]
-        ],
-    ]:
+    def update_billing_account(self) -> typing.Callable[
+            [cloud_billing.UpdateBillingAccountRequest],
+            typing.Union[
+                cloud_billing.BillingAccount,
+                typing.Awaitable[cloud_billing.BillingAccount]
+            ]]:
         raise NotImplementedError()
 
     @property
-    def create_billing_account(
-        self,
-    ) -> typing.Callable[
-        [cloud_billing.CreateBillingAccountRequest],
-        typing.Union[
-            cloud_billing.BillingAccount, typing.Awaitable[cloud_billing.BillingAccount]
-        ],
-    ]:
+    def create_billing_account(self) -> typing.Callable[
+            [cloud_billing.CreateBillingAccountRequest],
+            typing.Union[
+                cloud_billing.BillingAccount,
+                typing.Awaitable[cloud_billing.BillingAccount]
+            ]]:
         raise NotImplementedError()
 
     @property
-    def list_project_billing_info(
-        self,
-    ) -> typing.Callable[
-        [cloud_billing.ListProjectBillingInfoRequest],
-        typing.Union[
-            cloud_billing.ListProjectBillingInfoResponse,
-            typing.Awaitable[cloud_billing.ListProjectBillingInfoResponse],
-        ],
-    ]:
+    def list_project_billing_info(self) -> typing.Callable[
+            [cloud_billing.ListProjectBillingInfoRequest],
+            typing.Union[
+                cloud_billing.ListProjectBillingInfoResponse,
+                typing.Awaitable[cloud_billing.ListProjectBillingInfoResponse]
+            ]]:
         raise NotImplementedError()
 
     @property
-    def get_project_billing_info(
-        self,
-    ) -> typing.Callable[
-        [cloud_billing.GetProjectBillingInfoRequest],
-        typing.Union[
-            cloud_billing.ProjectBillingInfo,
-            typing.Awaitable[cloud_billing.ProjectBillingInfo],
-        ],
-    ]:
+    def get_project_billing_info(self) -> typing.Callable[
+            [cloud_billing.GetProjectBillingInfoRequest],
+            typing.Union[
+                cloud_billing.ProjectBillingInfo,
+                typing.Awaitable[cloud_billing.ProjectBillingInfo]
+            ]]:
         raise NotImplementedError()
 
     @property
-    def update_project_billing_info(
-        self,
-    ) -> typing.Callable[
-        [cloud_billing.UpdateProjectBillingInfoRequest],
-        typing.Union[
-            cloud_billing.ProjectBillingInfo,
-            typing.Awaitable[cloud_billing.ProjectBillingInfo],
-        ],
-    ]:
+    def update_project_billing_info(self) -> typing.Callable[
+            [cloud_billing.UpdateProjectBillingInfoRequest],
+            typing.Union[
+                cloud_billing.ProjectBillingInfo,
+                typing.Awaitable[cloud_billing.ProjectBillingInfo]
+            ]]:
         raise NotImplementedError()
 
     @property
-    def get_iam_policy(
-        self,
-    ) -> typing.Callable[
-        [iam_policy.GetIamPolicyRequest],
-        typing.Union[policy.Policy, typing.Awaitable[policy.Policy]],
-    ]:
+    def get_iam_policy(self) -> typing.Callable[
+            [iam_policy.GetIamPolicyRequest],
+            typing.Union[
+                policy.Policy,
+                typing.Awaitable[policy.Policy]
+            ]]:
         raise NotImplementedError()
 
     @property
-    def set_iam_policy(
-        self,
-    ) -> typing.Callable[
-        [iam_policy.SetIamPolicyRequest],
-        typing.Union[policy.Policy, typing.Awaitable[policy.Policy]],
-    ]:
+    def set_iam_policy(self) -> typing.Callable[
+            [iam_policy.SetIamPolicyRequest],
+            typing.Union[
+                policy.Policy,
+                typing.Awaitable[policy.Policy]
+            ]]:
         raise NotImplementedError()
 
     @property
-    def test_iam_permissions(
-        self,
-    ) -> typing.Callable[
-        [iam_policy.TestIamPermissionsRequest],
-        typing.Union[
-            iam_policy.TestIamPermissionsResponse,
-            typing.Awaitable[iam_policy.TestIamPermissionsResponse],
-        ],
-    ]:
+    def test_iam_permissions(self) -> typing.Callable[
+            [iam_policy.TestIamPermissionsRequest],
+            typing.Union[
+                iam_policy.TestIamPermissionsResponse,
+                typing.Awaitable[iam_policy.TestIamPermissionsResponse]
+            ]]:
         raise NotImplementedError()
 
 
-__all__ = ("CloudBillingTransport",)
+__all__ = (
+    'CloudBillingTransport',
+)

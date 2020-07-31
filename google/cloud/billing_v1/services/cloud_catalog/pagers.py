@@ -37,15 +37,12 @@ class ListServicesPager:
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
-
-    def __init__(
-        self,
-        method: Callable[..., cloud_catalog.ListServicesResponse],
-        request: cloud_catalog.ListServicesRequest,
-        response: cloud_catalog.ListServicesResponse,
-        *,
-        metadata: Sequence[Tuple[str, str]] = ()
-    ):
+    def __init__(self,
+            method: Callable[..., cloud_catalog.ListServicesResponse],
+            request: cloud_catalog.ListServicesRequest,
+            response: cloud_catalog.ListServicesResponse,
+            *,
+            metadata: Sequence[Tuple[str, str]] = ()):
         """Instantiate the pager.
 
         Args:
@@ -79,7 +76,7 @@ class ListServicesPager:
             yield from page.services
 
     def __repr__(self) -> str:
-        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+        return '{0}<{1!r}>'.format(self.__class__.__name__, self._response)
 
 
 class ListServicesAsyncPager:
@@ -99,15 +96,12 @@ class ListServicesAsyncPager:
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
-
-    def __init__(
-        self,
-        method: Callable[..., Awaitable[cloud_catalog.ListServicesResponse]],
-        request: cloud_catalog.ListServicesRequest,
-        response: cloud_catalog.ListServicesResponse,
-        *,
-        metadata: Sequence[Tuple[str, str]] = ()
-    ):
+    def __init__(self,
+            method: Callable[..., Awaitable[cloud_catalog.ListServicesResponse]],
+            request: cloud_catalog.ListServicesRequest,
+            response: cloud_catalog.ListServicesResponse,
+            *,
+            metadata: Sequence[Tuple[str, str]] = ()):
         """Instantiate the pager.
 
         Args:
@@ -145,7 +139,7 @@ class ListServicesAsyncPager:
         return async_generator()
 
     def __repr__(self) -> str:
-        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+        return '{0}<{1!r}>'.format(self.__class__.__name__, self._response)
 
 
 class ListSkusPager:
@@ -165,15 +159,12 @@ class ListSkusPager:
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
-
-    def __init__(
-        self,
-        method: Callable[..., cloud_catalog.ListSkusResponse],
-        request: cloud_catalog.ListSkusRequest,
-        response: cloud_catalog.ListSkusResponse,
-        *,
-        metadata: Sequence[Tuple[str, str]] = ()
-    ):
+    def __init__(self,
+            method: Callable[..., cloud_catalog.ListSkusResponse],
+            request: cloud_catalog.ListSkusRequest,
+            response: cloud_catalog.ListSkusResponse,
+            *,
+            metadata: Sequence[Tuple[str, str]] = ()):
         """Instantiate the pager.
 
         Args:
@@ -207,7 +198,7 @@ class ListSkusPager:
             yield from page.skus
 
     def __repr__(self) -> str:
-        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+        return '{0}<{1!r}>'.format(self.__class__.__name__, self._response)
 
 
 class ListSkusAsyncPager:
@@ -227,15 +218,12 @@ class ListSkusAsyncPager:
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
-
-    def __init__(
-        self,
-        method: Callable[..., Awaitable[cloud_catalog.ListSkusResponse]],
-        request: cloud_catalog.ListSkusRequest,
-        response: cloud_catalog.ListSkusResponse,
-        *,
-        metadata: Sequence[Tuple[str, str]] = ()
-    ):
+    def __init__(self,
+            method: Callable[..., Awaitable[cloud_catalog.ListSkusResponse]],
+            request: cloud_catalog.ListSkusRequest,
+            response: cloud_catalog.ListSkusResponse,
+            *,
+            metadata: Sequence[Tuple[str, str]] = ()):
         """Instantiate the pager.
 
         Args:
@@ -273,4 +261,4 @@ class ListSkusAsyncPager:
         return async_generator()
 
     def __repr__(self) -> str:
-        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+        return '{0}<{1!r}>'.format(self.__class__.__name__, self._response)
