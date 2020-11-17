@@ -4,15 +4,7 @@
       "git": {
         "name": ".",
         "remote": "git@github.com:googleapis/python-billing",
-        "sha": "ffb60b5a1fc4e7c853712678c806af5d12f19ee9"
-      }
-    },
-    {
-      "git": {
-        "name": "googleapis",
-        "remote": "https://github.com/googleapis/googleapis.git",
-        "sha": "6a69c750c3f01a69017662395f90515bbf1fe1ff",
-        "internalRef": "342721036"
+        "sha": "a9da72a796559ba13b95104cb719ba04300375ac"
       }
     },
     {
@@ -27,17 +19,6 @@
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
         "sha": "d5fc0bcf9ea9789c5b0e3154a9e3b29e5cea6116"
-      }
-    }
-  ],
-  "destinations": [
-    {
-      "client": {
-        "source": "googleapis",
-        "apiName": "billing",
-        "apiVersion": "v1",
-        "language": "python",
-        "generator": "gapic-generator-python"
       }
     }
   ]
