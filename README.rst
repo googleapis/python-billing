@@ -1,7 +1,5 @@
-Python Client for Cloud Billing API
+Python Client for Cloud Billing API (`Alpha`_)
 ==============================================
-
-|ga| |pypi| |versions|
 
 `Cloud Billing API`_: Allows developers to manage billing for their Google Cloud Platform
 projects     programmatically.
@@ -9,14 +7,9 @@ projects     programmatically.
 - `Client Library Documentation`_
 - `Product Documentation`_
 
-.. |ga| image:: https://img.shields.io/badge/support-GA-gold.svg
-   :target: https://github.com/googleapis/google-cloud-python/blob/master/README.rst#general-availability
-.. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-billing.svg
-   :target: https://pypi.org/project/google-cloud-billing/
-.. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-billing.svg
-   :target: https://pypi.org/project/google-cloud-billing/
+.. _Alpha: https://github.com/googleapis/google-cloud-python/blob/master/README.rst
 .. _Cloud Billing API: https://cloud.google.com/billing
-.. _Client Library Documentation: https://googleapis.dev/python/cloudbilling/latest
+.. _Client Library Documentation: https://googleapis.github.io/google-cloud-python/latest/billing/usage.html
 .. _Product Documentation:  https://cloud.google.com/billing
 
 Quick Start
@@ -76,8 +69,8 @@ Next Steps
    API to see other available methods on the client.
 -  Read the `Cloud Billing API Product documentation`_ to learn
    more about the product and see How-to Guides.
--  View this `README`_ to see the full list of Cloud
+-  View this `repository’s main README`_ to see the full list of Cloud
    APIs that we cover.
 
 .. _Cloud Billing API Product documentation:  https://cloud.google.com/billing
-.. _README: https://github.com/googleapis/google-cloud-python/blob/master/README.rst
+.. _repository’s main README: https://github.com/googleapis/google-cloud-python/blob/master/README.rst

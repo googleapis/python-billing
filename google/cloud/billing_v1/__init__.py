@@ -1,67 +1,52 @@
 # -*- coding: utf-8 -*-
-
+#
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-#     http://www.apache.org/licenses/LICENSE-2.0
+#     https://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-#
 
-from .services.cloud_billing import CloudBillingClient
-from .services.cloud_catalog import CloudCatalogClient
-from .types.cloud_billing import BillingAccount
-from .types.cloud_billing import CreateBillingAccountRequest
-from .types.cloud_billing import GetBillingAccountRequest
-from .types.cloud_billing import GetProjectBillingInfoRequest
-from .types.cloud_billing import ListBillingAccountsRequest
-from .types.cloud_billing import ListBillingAccountsResponse
-from .types.cloud_billing import ListProjectBillingInfoRequest
-from .types.cloud_billing import ListProjectBillingInfoResponse
-from .types.cloud_billing import ProjectBillingInfo
-from .types.cloud_billing import UpdateBillingAccountRequest
-from .types.cloud_billing import UpdateProjectBillingInfoRequest
-from .types.cloud_catalog import AggregationInfo
-from .types.cloud_catalog import Category
-from .types.cloud_catalog import ListServicesRequest
-from .types.cloud_catalog import ListServicesResponse
-from .types.cloud_catalog import ListSkusRequest
-from .types.cloud_catalog import ListSkusResponse
-from .types.cloud_catalog import PricingExpression
-from .types.cloud_catalog import PricingInfo
-from .types.cloud_catalog import Service
-from .types.cloud_catalog import Sku
+
+from __future__ import absolute_import
+import sys
+import warnings
+
+from google.cloud.billing_v1 import types
+from google.cloud.billing_v1.gapic import cloud_billing_client
+from google.cloud.billing_v1.gapic import cloud_catalog_client
+from google.cloud.billing_v1.gapic import enums
+
+
+if sys.version_info[:2] == (2, 7):
+    message = (
+        "A future version of this library will drop support for Python 2.7. "
+        "More details about Python 2 support for Google Cloud Client Libraries "
+        "can be found at https://cloud.google.com/python/docs/python2-sunset/"
+    )
+    warnings.warn(message, DeprecationWarning)
+
+
+class CloudBillingClient(cloud_billing_client.CloudBillingClient):
+    __doc__ = cloud_billing_client.CloudBillingClient.__doc__
+    enums = enums
+
+
+class CloudCatalogClient(cloud_catalog_client.CloudCatalogClient):
+    __doc__ = cloud_catalog_client.CloudCatalogClient.__doc__
+    enums = enums
 
 
 __all__ = (
-    "AggregationInfo",
-    "BillingAccount",
-    "Category",
-    "CloudCatalogClient",
-    "CreateBillingAccountRequest",
-    "GetBillingAccountRequest",
-    "GetProjectBillingInfoRequest",
-    "ListBillingAccountsRequest",
-    "ListBillingAccountsResponse",
-    "ListProjectBillingInfoRequest",
-    "ListProjectBillingInfoResponse",
-    "ListServicesRequest",
-    "ListServicesResponse",
-    "ListSkusRequest",
-    "ListSkusResponse",
-    "PricingExpression",
-    "PricingInfo",
-    "ProjectBillingInfo",
-    "Service",
-    "Sku",
-    "UpdateBillingAccountRequest",
-    "UpdateProjectBillingInfoRequest",
+    "enums",
+    "types",
     "CloudBillingClient",
+    "CloudCatalogClient",
 )
