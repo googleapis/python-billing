@@ -4,15 +4,15 @@
       "git": {
         "name": ".",
         "remote": "https://github.com/googleapis/python-billing.git",
-        "sha": "e7f139f44b6d5fc8f77b8a321bea39261edeb7f3"
+        "sha": "8dbad869521924fc3f7d7dc2d4f5d7e9100874b3"
       }
     },
     {
       "git": {
         "name": "googleapis",
         "remote": "https://github.com/googleapis/googleapis.git",
-        "sha": "69697504d9eba1d064820c3085b4750767be6d08",
-        "internalRef": "348952930"
+        "sha": "520682435235d9c503983a360a2090025aa47cd1",
+        "internalRef": "350246057"
       }
     },
     {
@@ -42,6 +42,7 @@
     }
   ],
   "generatedFiles": [
+    ".coveragerc",
     ".flake8",
     ".github/CONTRIBUTING.md",
     ".github/ISSUE_TEMPLATE/bug_report.md",
@@ -93,6 +94,8 @@
     "MANIFEST.in",
     "docs/_static/custom.css",
     "docs/_templates/layout.html",
+    "docs/billing_v1/cloud_billing.rst",
+    "docs/billing_v1/cloud_catalog.rst",
     "docs/billing_v1/services.rst",
     "docs/billing_v1/types.rst",
     "docs/conf.py",

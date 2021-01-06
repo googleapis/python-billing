@@ -112,6 +112,22 @@ class CloudCatalogClient(metaclass=CloudCatalogClientMeta):
     )
 
     @classmethod
+    def from_service_account_info(cls, info: dict, *args, **kwargs):
+        """Creates an instance of this client using the provided credentials info.
+
+        Args:
+            info (dict): The service account private key info.
+            args: Additional arguments to pass to the constructor.
+            kwargs: Additional arguments to pass to the constructor.
+
+        Returns:
+            CloudCatalogClient: The constructed client.
+        """
+        credentials = service_account.Credentials.from_service_account_info(info)
+        kwargs["credentials"] = credentials
+        return cls(*args, **kwargs)
+
+    @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
         """Creates an instance of this client using the provided credentials
         file.
@@ -123,7 +139,7 @@ class CloudCatalogClient(metaclass=CloudCatalogClientMeta):
             kwargs: Additional arguments to pass to the constructor.
 
         Returns:
-            {@api.name}: The constructed client.
+            CloudCatalogClient: The constructed client.
         """
         credentials = service_account.Credentials.from_service_account_file(filename)
         kwargs["credentials"] = credentials
@@ -237,10 +253,10 @@ class CloudCatalogClient(metaclass=CloudCatalogClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ~.CloudCatalogTransport]): The
+            transport (Union[str, CloudCatalogTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
-            client_options (client_options_lib.ClientOptions): Custom options for the
+            client_options (google.api_core.client_options.ClientOptions): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
@@ -349,7 +365,7 @@ class CloudCatalogClient(metaclass=CloudCatalogClientMeta):
         r"""Lists all public cloud services.
 
         Args:
-            request (:class:`~.cloud_catalog.ListServicesRequest`):
+            request (google.cloud.billing_v1.types.ListServicesRequest):
                 The request object. Request message for `ListServices`.
 
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -359,8 +375,8 @@ class CloudCatalogClient(metaclass=CloudCatalogClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.pagers.ListServicesPager:
-                Response message for ``ListServices``.
+            google.cloud.billing_v1.services.cloud_catalog.pagers.ListServicesPager:
+                Response message for ListServices.
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.
@@ -404,11 +420,12 @@ class CloudCatalogClient(metaclass=CloudCatalogClientMeta):
         service.
 
         Args:
-            request (:class:`~.cloud_catalog.ListSkusRequest`):
+            request (google.cloud.billing_v1.types.ListSkusRequest):
                 The request object. Request message for `ListSkus`.
-            parent (:class:`str`):
+            parent (str):
                 Required. The name of the service.
-                Example: "services/DA34-426B-A397".
+                Example: "services/DA34-426B-A397"
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -420,8 +437,8 @@ class CloudCatalogClient(metaclass=CloudCatalogClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.pagers.ListSkusPager:
-                Response message for ``ListSkus``.
+            google.cloud.billing_v1.services.cloud_catalog.pagers.ListSkusPager:
+                Response message for ListSkus.
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.
