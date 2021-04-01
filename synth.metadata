@@ -4,29 +4,29 @@
       "git": {
         "name": ".",
         "remote": "https://github.com/googleapis/python-billing.git",
-        "sha": "8dbad869521924fc3f7d7dc2d4f5d7e9100874b3"
+        "sha": "65755f9cb54c745a6f9bdd4e23a339e2168eb383"
       }
     },
     {
       "git": {
         "name": "googleapis",
         "remote": "https://github.com/googleapis/googleapis.git",
-        "sha": "520682435235d9c503983a360a2090025aa47cd1",
-        "internalRef": "350246057"
+        "sha": "69697504d9eba1d064820c3085b4750767be6d08",
+        "internalRef": "348952930"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "373861061648b5fe5e0ac4f8a38b32d639ee93e4"
+        "sha": "4679e7e415221f03ff2a71e3ffad75b9ec41d87e"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "373861061648b5fe5e0ac4f8a38b32d639ee93e4"
+        "sha": "4679e7e415221f03ff2a71e3ffad75b9ec41d87e"
       }
     }
   ],
@@ -42,13 +42,13 @@
     }
   ],
   "generatedFiles": [
-    ".coveragerc",
     ".flake8",
     ".github/CONTRIBUTING.md",
     ".github/ISSUE_TEMPLATE/bug_report.md",
     ".github/ISSUE_TEMPLATE/feature_request.md",
     ".github/ISSUE_TEMPLATE/support_request.md",
     ".github/PULL_REQUEST_TEMPLATE.md",
+    ".github/header-checker-lint.yml",
     ".github/release-please.yml",
     ".github/snippet-bot.yml",
     ".gitignore",
@@ -94,8 +94,6 @@
     "MANIFEST.in",
     "docs/_static/custom.css",
     "docs/_templates/layout.html",
-    "docs/billing_v1/cloud_billing.rst",
-    "docs/billing_v1/cloud_catalog.rst",
     "docs/billing_v1/services.rst",
     "docs/billing_v1/types.rst",
     "docs/conf.py",
