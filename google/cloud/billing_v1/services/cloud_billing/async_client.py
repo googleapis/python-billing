@@ -31,7 +31,7 @@ from google.oauth2 import service_account  # type: ignore
 from google.cloud.billing_v1.services.cloud_billing import pagers
 from google.cloud.billing_v1.types import cloud_billing
 from google.iam.v1 import iam_policy_pb2 as iam_policy  # type: ignore
-from google.iam.v1 import policy_pb2 as policy  # type: ignore
+from google.iam.v1 import policy_pb2 as gi_policy  # type: ignore
 
 from .transports.base import CloudBillingTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc_asyncio import CloudBillingGrpcAsyncIOTransport
@@ -819,7 +819,7 @@ class CloudBillingAsyncClient:
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> policy.Policy:
+    ) -> gi_policy.Policy:
         r"""Gets the access control policy for a billing account. The caller
         must have the ``billing.accounts.getIamPolicy`` permission on
         the account, which is often given to billing account
@@ -959,7 +959,7 @@ class CloudBillingAsyncClient:
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> policy.Policy:
+    ) -> gi_policy.Policy:
         r"""Sets the access control policy for a billing account. Replaces
         any existing policy. The caller must have the
         ``billing.accounts.setIamPolicy`` permission on the account,

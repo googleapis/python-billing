@@ -27,7 +27,7 @@ from google.auth import credentials  # type: ignore
 
 from google.cloud.billing_v1.types import cloud_billing
 from google.iam.v1 import iam_policy_pb2 as iam_policy  # type: ignore
-from google.iam.v1 import policy_pb2 as policy  # type: ignore
+from google.iam.v1 import policy_pb2 as gi_policy  # type: ignore
 
 
 try:
@@ -325,7 +325,7 @@ class CloudBillingTransport(abc.ABC):
         self,
     ) -> typing.Callable[
         [iam_policy.GetIamPolicyRequest],
-        typing.Union[policy.Policy, typing.Awaitable[policy.Policy]],
+        typing.Union[gi_policy.Policy, typing.Awaitable[gi_policy.Policy]],
     ]:
         raise NotImplementedError()
 
@@ -334,7 +334,7 @@ class CloudBillingTransport(abc.ABC):
         self,
     ) -> typing.Callable[
         [iam_policy.SetIamPolicyRequest],
-        typing.Union[policy.Policy, typing.Awaitable[policy.Policy]],
+        typing.Union[gi_policy.Policy, typing.Awaitable[gi_policy.Policy]],
     ]:
         raise NotImplementedError()
 
