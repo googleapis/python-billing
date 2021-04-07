@@ -4,7 +4,7 @@
       "git": {
         "name": ".",
         "remote": "https://github.com/googleapis/python-billing.git",
-        "sha": "09aaf4ff94df5fd4bcd4edbdf55613402b262b1f"
+        "sha": "c98aebaa7343cee9b0dcac6ea4979b191d14ddb7"
       }
     },
     {
