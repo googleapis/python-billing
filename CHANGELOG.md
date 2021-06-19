@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.2.2](https://www.github.com/googleapis/python-billing/compare/v1.2.1...v1.2.2) (2021-06-19)
+
+
+### Documentation
+
+* omit mention of Python 2.7 in 'CONTRIBUTING.rst' ([#1127](https://www.github.com/googleapis/python-billing/issues/1127)) ([#82](https://www.github.com/googleapis/python-billing/issues/82)) ([634d7b0](https://www.github.com/googleapis/python-billing/commit/634d7b01fba7d834b0acfd3a2ee1357260f0b695))
+
 ### [1.2.1](https://www.github.com/googleapis/python-billing/compare/v1.2.0...v1.2.1) (2021-06-16)
 
 
