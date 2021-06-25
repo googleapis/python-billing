@@ -35,7 +35,7 @@ In order to use this library, you first need to go through the following steps:
 .. _Setup Authentication.: https://googleapis.github.io/google-cloud-python/latest/core/auth.html
 
 Installation
-~~~~~~~~~~~
+~~~~~~~~~~~~
 
 Install this library in a `virtualenv`_ using pip. `virtualenv`_ is a tool to
 create isolated Python environments. The basic problem it addresses is one of
@@ -70,7 +70,7 @@ Windows
     <your-env>\Scripts\pip.exe install google-cloud-billing
 
 Next Steps
-~~~~~~~~~
+~~~~~~~~~~
 
 -  Read the `Client Library Documentation`_ for Cloud Billing API
    API to see other available methods on the client.
