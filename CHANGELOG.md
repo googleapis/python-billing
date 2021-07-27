@@ -3,14 +3,14 @@
 ### [1.3.2](https://www.github.com/googleapis/python-billing/compare/v1.3.1...v1.3.2) (2021-07-27)
 
 
-### Features
-
-* add Samples section to CONTRIBUTING.rst ([#97](https://www.github.com/googleapis/python-billing/issues/97)) ([05b63b3](https://www.github.com/googleapis/python-billing/commit/05b63b3f88cb7cbc77db9daedf34db5617f93ca8))
-
-
 ### Bug Fixes
 
 * enable self signed jwt for grpc ([#101](https://www.github.com/googleapis/python-billing/issues/101)) ([261507e](https://www.github.com/googleapis/python-billing/commit/261507e86d5e14a435fa74dea96feff187cd4f87))
+
+
+### Documentation
+
+* add Samples section to CONTRIBUTING.rst ([#97](https://www.github.com/googleapis/python-billing/issues/97)) ([05b63b3](https://www.github.com/googleapis/python-billing/commit/05b63b3f88cb7cbc77db9daedf34db5617f93ca8))
 
 
 ### Miscellaneous Chores
