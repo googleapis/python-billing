@@ -26,7 +26,10 @@ from google.oauth2 import service_account
 from google.protobuf import timestamp_pb2  # type: ignore
 import grpc
 from grpc.experimental import aio
-import mock
+try:
+    from unittest import mock
+except ImportError:
+    import mock
 from proto.marshal.rules.dates import DurationRule, TimestampRule
 import pytest
 
