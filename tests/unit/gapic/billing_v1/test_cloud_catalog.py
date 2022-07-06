@@ -1586,7 +1586,6 @@ def test_cloud_catalog_transport_auth_adc(transport_class):
     [
         transports.CloudCatalogGrpcTransport,
         transports.CloudCatalogGrpcAsyncIOTransport,
-        transports.CloudCatalogRestTransport,
     ],
 )
 def test_cloud_catalog_transport_auth_gdch_credentials(transport_class):

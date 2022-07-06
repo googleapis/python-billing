@@ -3660,7 +3660,6 @@ def test_cloud_billing_transport_auth_adc(transport_class):
     [
         transports.CloudBillingGrpcTransport,
         transports.CloudBillingGrpcAsyncIOTransport,
-        transports.CloudBillingRestTransport,
     ],
 )
 def test_cloud_billing_transport_auth_gdch_credentials(transport_class):
