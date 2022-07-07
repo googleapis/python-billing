@@ -3,7 +3,7 @@ Python Client for Cloud Billing API
 
 |stable| |pypi| |versions|
 
-`Cloud Billing API`_: 
+`Cloud Billing API`_: allows developers to manage their billing accounts or browse the catalog of SKUs and pricing.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
