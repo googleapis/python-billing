@@ -16,7 +16,18 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union, cast
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+    cast,
+)
 
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
@@ -59,7 +70,7 @@ class CloudBillingClientMeta(type):
 
     def get_transport_class(
         cls,
-        label: str = None,
+        label: Optional[str] = None,
     ) -> Type[CloudBillingTransport]:
         """Returns an appropriate transport class.
 
@@ -314,7 +325,7 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, CloudBillingTransport, None] = None,
+        transport: Optional[Union[str, CloudBillingTransport]] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -412,11 +423,11 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
 
     def get_billing_account(
         self,
-        request: Union[cloud_billing.GetBillingAccountRequest, dict] = None,
+        request: Optional[Union[cloud_billing.GetBillingAccountRequest, dict]] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cloud_billing.BillingAccount:
         r"""Gets information about a billing account. The current
@@ -518,10 +529,10 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
 
     def list_billing_accounts(
         self,
-        request: Union[cloud_billing.ListBillingAccountsRequest, dict] = None,
+        request: Optional[Union[cloud_billing.ListBillingAccountsRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListBillingAccountsPager:
         r"""Lists the billing accounts that the current authenticated user
@@ -606,12 +617,14 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
 
     def update_billing_account(
         self,
-        request: Union[cloud_billing.UpdateBillingAccountRequest, dict] = None,
+        request: Optional[
+            Union[cloud_billing.UpdateBillingAccountRequest, dict]
+        ] = None,
         *,
-        name: str = None,
-        account: cloud_billing.BillingAccount = None,
+        name: Optional[str] = None,
+        account: Optional[cloud_billing.BillingAccount] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cloud_billing.BillingAccount:
         r"""Updates a billing account's fields. Currently the only field
@@ -725,11 +738,13 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
 
     def create_billing_account(
         self,
-        request: Union[cloud_billing.CreateBillingAccountRequest, dict] = None,
+        request: Optional[
+            Union[cloud_billing.CreateBillingAccountRequest, dict]
+        ] = None,
         *,
-        billing_account: cloud_billing.BillingAccount = None,
+        billing_account: Optional[cloud_billing.BillingAccount] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cloud_billing.BillingAccount:
         r"""Creates a billing account. This method can only be used to
@@ -834,11 +849,13 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
 
     def list_project_billing_info(
         self,
-        request: Union[cloud_billing.ListProjectBillingInfoRequest, dict] = None,
+        request: Optional[
+            Union[cloud_billing.ListProjectBillingInfoRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListProjectBillingInfoPager:
         r"""Lists the projects associated with a billing account. The
@@ -955,11 +972,13 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
 
     def get_project_billing_info(
         self,
-        request: Union[cloud_billing.GetProjectBillingInfoRequest, dict] = None,
+        request: Optional[
+            Union[cloud_billing.GetProjectBillingInfoRequest, dict]
+        ] = None,
         *,
-        name: str = None,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cloud_billing.ProjectBillingInfo:
         r"""Gets the billing information for a project. The current
@@ -1063,12 +1082,14 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
 
     def update_project_billing_info(
         self,
-        request: Union[cloud_billing.UpdateProjectBillingInfoRequest, dict] = None,
+        request: Optional[
+            Union[cloud_billing.UpdateProjectBillingInfoRequest, dict]
+        ] = None,
         *,
-        name: str = None,
-        project_billing_info: cloud_billing.ProjectBillingInfo = None,
+        name: Optional[str] = None,
+        project_billing_info: Optional[cloud_billing.ProjectBillingInfo] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cloud_billing.ProjectBillingInfo:
         r"""Sets or updates the billing account associated with a project.
@@ -1217,11 +1238,11 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
 
     def get_iam_policy(
         self,
-        request: Union[iam_policy_pb2.GetIamPolicyRequest, dict] = None,
+        request: Optional[Union[iam_policy_pb2.GetIamPolicyRequest, dict]] = None,
         *,
-        resource: str = None,
+        resource: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> policy_pb2.Policy:
         r"""Gets the access control policy for a billing account. The caller
@@ -1383,11 +1404,11 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
 
     def set_iam_policy(
         self,
-        request: Union[iam_policy_pb2.SetIamPolicyRequest, dict] = None,
+        request: Optional[Union[iam_policy_pb2.SetIamPolicyRequest, dict]] = None,
         *,
-        resource: str = None,
+        resource: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> policy_pb2.Policy:
         r"""Sets the access control policy for a billing account. Replaces
@@ -1550,12 +1571,12 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
 
     def test_iam_permissions(
         self,
-        request: Union[iam_policy_pb2.TestIamPermissionsRequest, dict] = None,
+        request: Optional[Union[iam_policy_pb2.TestIamPermissionsRequest, dict]] = None,
         *,
-        resource: str = None,
-        permissions: Sequence[str] = None,
+        resource: Optional[str] = None,
+        permissions: Optional[MutableSequence[str]] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> iam_policy_pb2.TestIamPermissionsResponse:
         r"""Tests the access control policy for a billing
@@ -1605,7 +1626,7 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
                 This corresponds to the ``resource`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            permissions (Sequence[str]):
+            permissions (MutableSequence[str]):
                 The set of permissions to check for the ``resource``.
                 Permissions with wildcards (such as '*' or 'storage.*')
                 are not allowed. For more information see `IAM

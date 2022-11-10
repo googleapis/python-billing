@@ -16,7 +16,18 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union, cast
+from typing import (
+    Dict,
+    Mapping,
+    MutableMapping,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+    cast,
+)
 
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
@@ -56,7 +67,7 @@ class CloudCatalogClientMeta(type):
 
     def get_transport_class(
         cls,
-        label: str = None,
+        label: Optional[str] = None,
     ) -> Type[CloudCatalogTransport]:
         """Returns an appropriate transport class.
 
@@ -344,7 +355,7 @@ class CloudCatalogClient(metaclass=CloudCatalogClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, CloudCatalogTransport, None] = None,
+        transport: Optional[Union[str, CloudCatalogTransport]] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -442,10 +453,10 @@ class CloudCatalogClient(metaclass=CloudCatalogClientMeta):
 
     def list_services(
         self,
-        request: Union[cloud_catalog.ListServicesRequest, dict] = None,
+        request: Optional[Union[cloud_catalog.ListServicesRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListServicesPager:
         r"""Lists all public cloud services.
@@ -527,11 +538,11 @@ class CloudCatalogClient(metaclass=CloudCatalogClientMeta):
 
     def list_skus(
         self,
-        request: Union[cloud_catalog.ListSkusRequest, dict] = None,
+        request: Optional[Union[cloud_catalog.ListSkusRequest, dict]] = None,
         *,
-        parent: str = None,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListSkusPager:
         r"""Lists all publicly available SKUs for a given cloud

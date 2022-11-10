@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import MutableMapping, MutableSequence
+
 from google.protobuf import field_mask_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -65,19 +67,19 @@ class BillingAccount(proto.Message):
             be empty.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    open_ = proto.Field(
+    open_: bool = proto.Field(
         proto.BOOL,
         number=2,
     )
-    display_name = proto.Field(
+    display_name: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    master_billing_account = proto.Field(
+    master_billing_account: str = proto.Field(
         proto.STRING,
         number=4,
     )
@@ -116,19 +118,19 @@ class ProjectBillingInfo(proto.Message):
             paid services. This field is read-only.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    project_id = proto.Field(
+    project_id: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    billing_account_name = proto.Field(
+    billing_account_name: str = proto.Field(
         proto.STRING,
         number=3,
     )
-    billing_enabled = proto.Field(
+    billing_enabled: bool = proto.Field(
         proto.BOOL,
         number=4,
     )
@@ -144,7 +146,7 @@ class GetBillingAccountRequest(proto.Message):
             ``billingAccounts/012345-567890-ABCDEF``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -172,15 +174,15 @@ class ListBillingAccountsRequest(proto.Message):
             supported.
     """
 
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=1,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
-    filter = proto.Field(
+    filter: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -190,7 +192,7 @@ class ListBillingAccountsResponse(proto.Message):
     r"""Response message for ``ListBillingAccounts``.
 
     Attributes:
-        billing_accounts (Sequence[google.cloud.billing_v1.types.BillingAccount]):
+        billing_accounts (MutableSequence[google.cloud.billing_v1.types.BillingAccount]):
             A list of billing accounts.
         next_page_token (str):
             A token to retrieve the next page of results. To retrieve
@@ -203,12 +205,12 @@ class ListBillingAccountsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    billing_accounts = proto.RepeatedField(
+    billing_accounts: MutableSequence["BillingAccount"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="BillingAccount",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -226,7 +228,7 @@ class CreateBillingAccountRequest(proto.Message):
             billing account.
     """
 
-    billing_account = proto.Field(
+    billing_account: "BillingAccount" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="BillingAccount",
@@ -248,16 +250,16 @@ class UpdateBillingAccountRequest(proto.Message):
             is currently supported.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    account = proto.Field(
+    account: "BillingAccount" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="BillingAccount",
     )
-    update_mask = proto.Field(
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
         number=3,
         message=field_mask_pb2.FieldMask,
@@ -282,15 +284,15 @@ class ListProjectBillingInfoRequest(proto.Message):
             the first page of results is returned.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    page_size = proto.Field(
+    page_size: int = proto.Field(
         proto.INT32,
         number=2,
     )
-    page_token = proto.Field(
+    page_token: str = proto.Field(
         proto.STRING,
         number=3,
     )
@@ -300,7 +302,7 @@ class ListProjectBillingInfoResponse(proto.Message):
     r"""Request message for ``ListProjectBillingInfoResponse``.
 
     Attributes:
-        project_billing_info (Sequence[google.cloud.billing_v1.types.ProjectBillingInfo]):
+        project_billing_info (MutableSequence[google.cloud.billing_v1.types.ProjectBillingInfo]):
             A list of ``ProjectBillingInfo`` resources representing the
             projects associated with the billing account.
         next_page_token (str):
@@ -314,12 +316,12 @@ class ListProjectBillingInfoResponse(proto.Message):
     def raw_page(self):
         return self
 
-    project_billing_info = proto.RepeatedField(
+    project_billing_info: MutableSequence["ProjectBillingInfo"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="ProjectBillingInfo",
     )
-    next_page_token = proto.Field(
+    next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -335,7 +337,7 @@ class GetProjectBillingInfoRequest(proto.Message):
             ``projects/tokyo-rain-123``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -355,11 +357,11 @@ class UpdateProjectBillingInfoRequest(proto.Message):
             except ``billing_account_name``.
     """
 
-    name = proto.Field(
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    project_billing_info = proto.Field(
+    project_billing_info: "ProjectBillingInfo" = proto.Field(
         proto.MESSAGE,
         number=2,
         message="ProjectBillingInfo",
