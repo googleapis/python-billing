@@ -42,6 +42,7 @@ from google.cloud.billing_v1.types.cloud_billing import (
 from google.cloud.billing_v1.types.cloud_catalog import (
     AggregationInfo,
     Category,
+    GeoTaxonomy,
     ListServicesRequest,
     ListServicesResponse,
     ListSkusRequest,
@@ -70,6 +71,7 @@ __all__ = (
     "UpdateProjectBillingInfoRequest",
     "AggregationInfo",
     "Category",
+    "GeoTaxonomy",
     "ListServicesRequest",
     "ListServicesResponse",
     "ListSkusRequest",

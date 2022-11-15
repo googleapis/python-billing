@@ -33,8 +33,8 @@ from .grpc import CloudBillingGrpcTransport
 class CloudBillingGrpcAsyncIOTransport(CloudBillingTransport):
     """gRPC AsyncIO backend transport for CloudBilling.
 
-    Retrieves GCP Console billing accounts and associates them
-    with projects.
+    Retrieves the Google Cloud Console billing accounts and
+    associates them with projects.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -339,15 +339,19 @@ class CloudBillingGrpcAsyncIOTransport(CloudBillingTransport):
     ]:
         r"""Return a callable for the create billing account method over gRPC.
 
-        Creates a billing account. This method can only be used to
-        create `billing
-        subaccounts <https://cloud.google.com/billing/docs/concepts>`__
-        by GCP resellers. When creating a subaccount, the current
-        authenticated user must have the ``billing.accounts.update`` IAM
-        permission on the master account, which is typically given to
-        billing account
+        This method creates `billing
+        subaccounts <https://cloud.google.com/billing/docs/concepts#subaccounts>`__.
+
+        Google Cloud resellers should use the Channel Services APIs,
+        `accounts.customers.create <https://cloud.google.com/channel/docs/reference/rest/v1/accounts.customers/create>`__
+        and
+        `accounts.customers.entitlements.create <https://cloud.google.com/channel/docs/reference/rest/v1/accounts.customers.entitlements/create>`__.
+
+        When creating a subaccount, the current authenticated user must
+        have the ``billing.accounts.update`` IAM permission on the
+        parent account, which is typically given to billing account
         `administrators <https://cloud.google.com/billing/docs/how-to/billing-access>`__.
-        This method will return an error if the master account has not
+        This method will return an error if the parent account has not
         been provisioned as a reseller account.
 
         Returns:
@@ -411,8 +415,11 @@ class CloudBillingGrpcAsyncIOTransport(CloudBillingTransport):
         r"""Return a callable for the get project billing info method over gRPC.
 
         Gets the billing information for a project. The current
-        authenticated user must have `permission to view the
-        project <https://cloud.google.com/docs/permissions-overview#h.bgs0oxofvnoo>`__.
+        authenticated user must have the
+        ``resourcemanager.projects.get`` permission for the project,
+        which can be granted by assigning the `Project
+        Viewer <https://cloud.google.com/iam/docs/understanding-roles#predefined_roles>`__
+        role.
 
         Returns:
             Callable[[~.GetProjectBillingInfoRequest],
@@ -451,9 +458,9 @@ class CloudBillingGrpcAsyncIOTransport(CloudBillingTransport):
         for resource usage charges.
 
         *Note:* Incurred charges that have not yet been reported in the
-        transaction history of the GCP Console might be billed to the
-        new billing account, even if the charge occurred before the new
-        billing account was assigned to the project.
+        transaction history of the Google Cloud Console might be billed
+        to the new billing account, even if the charge occurred before
+        the new billing account was assigned to the project.
 
         The current authenticated user must have ownership privileges
         for both the

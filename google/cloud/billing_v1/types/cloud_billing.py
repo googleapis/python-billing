@@ -37,17 +37,17 @@ __protobuf__ = proto.module(
 
 
 class BillingAccount(proto.Message):
-    r"""A billing account in `GCP
+    r"""A billing account in the `Google Cloud
     Console <https://console.cloud.google.com/>`__. You can assign a
     billing account to one or more projects.
 
     Attributes:
         name (str):
-            The resource name of the billing account. The resource name
-            has the form ``billingAccounts/{billing_account_id}``. For
-            example, ``billingAccounts/012345-567890-ABCDEF`` would be
-            the resource name for billing account
-            ``012345-567890-ABCDEF``.
+            Output only. The resource name of the billing account. The
+            resource name has the form
+            ``billingAccounts/{billing_account_id}``. For example,
+            ``billingAccounts/012345-567890-ABCDEF`` would be the
+            resource name for billing account ``012345-567890-ABCDEF``.
         open_ (bool):
             Output only. True if the billing account is
             open, and will therefore be charged for any
@@ -57,12 +57,12 @@ class BillingAccount(proto.Message):
             use paid services.
         display_name (str):
             The display name given to the billing account, such as
-            ``My Billing Account``. This name is displayed in the GCP
-            Console.
+            ``My Billing Account``. This name is displayed in the Google
+            Cloud Console.
         master_billing_account (str):
             If this account is a
             `subaccount <https://cloud.google.com/billing/docs/concepts>`__,
-            then this will be the resource name of the master billing
+            then this will be the resource name of the parent billing
             account that it is being resold through. Otherwise this will
             be empty.
     """
@@ -86,10 +86,10 @@ class BillingAccount(proto.Message):
 
 
 class ProjectBillingInfo(proto.Message):
-    r"""Encapsulation of billing information for a GCP Console
-    project. A project has at most one associated billing account at
-    a time (but a billing account can be assigned to multiple
-    projects).
+    r"""Encapsulation of billing information for a Google Cloud
+    Console project. A project has at most one associated billing
+    account at a time (but a billing account can be assigned to
+    multiple projects).
 
     Attributes:
         name (str):
@@ -224,7 +224,7 @@ class CreateBillingAccountRequest(proto.Message):
             Required. The billing account resource to
             create. Currently CreateBillingAccount only
             supports subaccount creation, so any created
-            billing accounts must be under a provided master
+            billing accounts must be under a provided parent
             billing account.
     """
 

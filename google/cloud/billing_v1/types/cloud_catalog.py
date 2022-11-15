@@ -28,6 +28,7 @@ __protobuf__ = proto.module(
         "PricingInfo",
         "PricingExpression",
         "AggregationInfo",
+        "GeoTaxonomy",
         "ListServicesRequest",
         "ListServicesResponse",
         "ListSkusRequest",
@@ -102,6 +103,8 @@ class Sku(proto.Message):
             Identifies the service provider.
             This is 'Google' for first party services in
             Google Cloud Platform.
+        geo_taxonomy (google.cloud.billing_v1.types.GeoTaxonomy):
+            The geographic taxonomy for this sku.
     """
 
     name: str = proto.Field(
@@ -133,6 +136,11 @@ class Sku(proto.Message):
     service_provider_name: str = proto.Field(
         proto.STRING,
         number=7,
+    )
+    geo_taxonomy: "GeoTaxonomy" = proto.Field(
+        proto.MESSAGE,
+        number=8,
+        message="GeoTaxonomy",
     )
 
 
@@ -248,6 +256,20 @@ class PricingExpression(proto.Message):
             The short hand for unit of usage this pricing is specified
             in. Example: usage_unit of "GiBy" means that usage is
             specified in "Gibi Byte".
+        display_quantity (float):
+            The recommended quantity of units for displaying pricing
+            info. When displaying pricing info it is recommended to
+            display: (unit_price \* display_quantity) per
+            display_quantity usage_unit. This field does not affect the
+            pricing formula and is for display purposes only. Example:
+            If the unit_price is "0.0001 USD", the usage_unit is "GB"
+            and the display_quantity is "1000" then the recommended way
+            of displaying the pricing info is "0.10 USD per 1000 GB".
+        tiered_rates (MutableSequence[google.cloud.billing_v1.types.PricingExpression.TierRate]):
+            The list of tiered rates for this pricing. The total cost is
+            computed by applying each of the tiered rates on usage. This
+            repeated list is sorted by ascending order of
+            start_usage_amount.
         usage_unit_description (str):
             The unit of usage in human readable form.
             Example: "gibi byte".
@@ -264,20 +286,6 @@ class PricingExpression(proto.Message):
             base_unit_conversion_factor = price per base_unit.
             start_usage_amount \* base_unit_conversion_factor =
             start_usage_amount in base_unit.
-        display_quantity (float):
-            The recommended quantity of units for displaying pricing
-            info. When displaying pricing info it is recommended to
-            display: (unit_price \* display_quantity) per
-            display_quantity usage_unit. This field does not affect the
-            pricing formula and is for display purposes only. Example:
-            If the unit_price is "0.0001 USD", the usage_unit is "GB"
-            and the display_quantity is "1000" then the recommended way
-            of displaying the pricing info is "0.10 USD per 1000 GB".
-        tiered_rates (MutableSequence[google.cloud.billing_v1.types.PricingExpression.TierRate]):
-            The list of tiered rates for this pricing. The total cost is
-            computed by applying each of the tiered rates on usage. This
-            repeated list is sorted by ascending order of
-            start_usage_amount.
     """
 
     class TierRate(proto.Message):
@@ -309,6 +317,15 @@ class PricingExpression(proto.Message):
         proto.STRING,
         number=1,
     )
+    display_quantity: float = proto.Field(
+        proto.DOUBLE,
+        number=2,
+    )
+    tiered_rates: MutableSequence[TierRate] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=3,
+        message=TierRate,
+    )
     usage_unit_description: str = proto.Field(
         proto.STRING,
         number=4,
@@ -324,15 +341,6 @@ class PricingExpression(proto.Message):
     base_unit_conversion_factor: float = proto.Field(
         proto.DOUBLE,
         number=7,
-    )
-    display_quantity: float = proto.Field(
-        proto.DOUBLE,
-        number=2,
-    )
-    tiered_rates: MutableSequence[TierRate] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=3,
-        message=TierRate,
     )
 
 
@@ -383,6 +391,37 @@ class AggregationInfo(proto.Message):
     aggregation_count: int = proto.Field(
         proto.INT32,
         number=3,
+    )
+
+
+class GeoTaxonomy(proto.Message):
+    r"""Encapsulates the geographic taxonomy data for a sku.
+
+    Attributes:
+        type_ (google.cloud.billing_v1.types.GeoTaxonomy.Type):
+            The type of Geo Taxonomy: GLOBAL, REGIONAL, or
+            MULTI_REGIONAL.
+        regions (MutableSequence[str]):
+            The list of regions associated with a sku.
+            Empty for Global skus, which are associated with
+            all Google Cloud regions.
+    """
+
+    class Type(proto.Enum):
+        r"""The type of Geo Taxonomy: GLOBAL, REGIONAL, or MULTI_REGIONAL."""
+        TYPE_UNSPECIFIED = 0
+        GLOBAL = 1
+        REGIONAL = 2
+        MULTI_REGIONAL = 3
+
+    type_: Type = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=Type,
+    )
+    regions: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=2,
     )
 
 

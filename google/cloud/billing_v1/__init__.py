@@ -36,6 +36,7 @@ from .types.cloud_billing import (
 from .types.cloud_catalog import (
     AggregationInfo,
     Category,
+    GeoTaxonomy,
     ListServicesRequest,
     ListServicesResponse,
     ListSkusRequest,
@@ -55,6 +56,7 @@ __all__ = (
     "CloudBillingClient",
     "CloudCatalogClient",
     "CreateBillingAccountRequest",
+    "GeoTaxonomy",
     "GetBillingAccountRequest",
     "GetProjectBillingInfoRequest",
     "ListBillingAccountsRequest",

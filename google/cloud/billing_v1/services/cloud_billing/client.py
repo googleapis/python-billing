@@ -91,8 +91,8 @@ class CloudBillingClientMeta(type):
 
 
 class CloudBillingClient(metaclass=CloudBillingClientMeta):
-    """Retrieves GCP Console billing accounts and associates them
-    with projects.
+    """Retrieves the Google Cloud Console billing accounts and
+    associates them with projects.
     """
 
     @staticmethod
@@ -480,9 +480,10 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
 
         Returns:
             google.cloud.billing_v1.types.BillingAccount:
-                A billing account in [GCP Console](\ https://console.cloud.google.com/).
-                   You can assign a billing account to one or more
-                   projects.
+                A billing account in the
+                   [Google Cloud
+                   Console](\ https://console.cloud.google.com/). You
+                   can assign a billing account to one or more projects.
 
         """
         # Create or coerce a protobuf request object.
@@ -687,9 +688,10 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
 
         Returns:
             google.cloud.billing_v1.types.BillingAccount:
-                A billing account in [GCP Console](\ https://console.cloud.google.com/).
-                   You can assign a billing account to one or more
-                   projects.
+                A billing account in the
+                   [Google Cloud
+                   Console](\ https://console.cloud.google.com/). You
+                   can assign a billing account to one or more projects.
 
         """
         # Create or coerce a protobuf request object.
@@ -747,15 +749,19 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
         timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cloud_billing.BillingAccount:
-        r"""Creates a billing account. This method can only be used to
-        create `billing
-        subaccounts <https://cloud.google.com/billing/docs/concepts>`__
-        by GCP resellers. When creating a subaccount, the current
-        authenticated user must have the ``billing.accounts.update`` IAM
-        permission on the master account, which is typically given to
-        billing account
+        r"""This method creates `billing
+        subaccounts <https://cloud.google.com/billing/docs/concepts#subaccounts>`__.
+
+        Google Cloud resellers should use the Channel Services APIs,
+        `accounts.customers.create <https://cloud.google.com/channel/docs/reference/rest/v1/accounts.customers/create>`__
+        and
+        `accounts.customers.entitlements.create <https://cloud.google.com/channel/docs/reference/rest/v1/accounts.customers.entitlements/create>`__.
+
+        When creating a subaccount, the current authenticated user must
+        have the ``billing.accounts.update`` IAM permission on the
+        parent account, which is typically given to billing account
         `administrators <https://cloud.google.com/billing/docs/how-to/billing-access>`__.
-        This method will return an error if the master account has not
+        This method will return an error if the parent account has not
         been provisioned as a reseller account.
 
         .. code-block:: python
@@ -793,7 +799,7 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
                 CreateBillingAccount only supports
                 subaccount creation, so any created
                 billing accounts must be under a
-                provided master billing account.
+                provided parent billing account.
 
                 This corresponds to the ``billing_account`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -806,9 +812,10 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
 
         Returns:
             google.cloud.billing_v1.types.BillingAccount:
-                A billing account in [GCP Console](\ https://console.cloud.google.com/).
-                   You can assign a billing account to one or more
-                   projects.
+                A billing account in the
+                   [Google Cloud
+                   Console](\ https://console.cloud.google.com/). You
+                   can assign a billing account to one or more projects.
 
         """
         # Create or coerce a protobuf request object.
@@ -982,8 +989,11 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cloud_billing.ProjectBillingInfo:
         r"""Gets the billing information for a project. The current
-        authenticated user must have `permission to view the
-        project <https://cloud.google.com/docs/permissions-overview#h.bgs0oxofvnoo>`__.
+        authenticated user must have the
+        ``resourcemanager.projects.get`` permission for the project,
+        which can be granted by assigning the `Project
+        Viewer <https://cloud.google.com/iam/docs/understanding-roles#predefined_roles>`__
+        role.
 
         .. code-block:: python
 
@@ -1032,10 +1042,11 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
         Returns:
             google.cloud.billing_v1.types.ProjectBillingInfo:
                 Encapsulation of billing information
-                for a GCP Console project. A project has
-                at most one associated billing account
-                at a time (but a billing account can be
-                assigned to multiple projects).
+                for a Google Cloud Console project. A
+                project has at most one associated
+                billing account at a time (but a billing
+                account can be assigned to multiple
+                projects).
 
         """
         # Create or coerce a protobuf request object.
@@ -1102,9 +1113,9 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
         for resource usage charges.
 
         *Note:* Incurred charges that have not yet been reported in the
-        transaction history of the GCP Console might be billed to the
-        new billing account, even if the charge occurred before the new
-        billing account was assigned to the project.
+        transaction history of the Google Cloud Console might be billed
+        to the new billing account, even if the charge occurred before
+        the new billing account was assigned to the project.
 
         The current authenticated user must have ownership privileges
         for both the
@@ -1184,10 +1195,11 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
         Returns:
             google.cloud.billing_v1.types.ProjectBillingInfo:
                 Encapsulation of billing information
-                for a GCP Console project. A project has
-                at most one associated billing account
-                at a time (but a billing account can be
-                assigned to multiple projects).
+                for a Google Cloud Console project. A
+                project has at most one associated
+                billing account at a time (but a billing
+                account can be assigned to multiple
+                projects).
 
         """
         # Create or coerce a protobuf request object.
