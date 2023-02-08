@@ -14,24 +14,21 @@
 # limitations under the License.
 #
 
-from google.auth.transport.requests import AuthorizedSession  # type: ignore
-import json  # type: ignore
-import grpc  # type: ignore
-from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.auth import credentials as ga_credentials  # type: ignore
-from google.api_core import exceptions as core_exceptions
-from google.api_core import retry as retries
-from google.api_core import rest_helpers
-from google.api_core import rest_streaming
-from google.api_core import path_template
-from google.api_core import gapic_v1
-
-from google.protobuf import json_format
-from requests import __version__ as requests_version
 import dataclasses
+import json  # type: ignore
 import re
 from typing import Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+
+from google.api_core import gapic_v1, path_template, rest_helpers, rest_streaming
+from google.api_core import exceptions as core_exceptions
+from google.api_core import retry as retries
+from google.auth import credentials as ga_credentials  # type: ignore
+from google.auth.transport.grpc import SslCredentials  # type: ignore
+from google.auth.transport.requests import AuthorizedSession  # type: ignore
+from google.protobuf import json_format
+import grpc  # type: ignore
+from requests import __version__ as requests_version
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
@@ -39,12 +36,13 @@ except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object]  # type: ignore
 
 
-from google.cloud.billing_v1.types import cloud_billing
 from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
 
-from .base import CloudBillingTransport, DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
+from google.cloud.billing_v1.types import cloud_billing
 
+from .base import CloudBillingTransport
+from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -153,7 +151,12 @@ class CloudBillingRestInterceptor:
 
 
     """
-    def pre_create_billing_account(self, request: cloud_billing.CreateBillingAccountRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[cloud_billing.CreateBillingAccountRequest, Sequence[Tuple[str, str]]]:
+
+    def pre_create_billing_account(
+        self,
+        request: cloud_billing.CreateBillingAccountRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[cloud_billing.CreateBillingAccountRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for create_billing_account
 
         Override in a subclass to manipulate the request or metadata
@@ -161,7 +164,9 @@ class CloudBillingRestInterceptor:
         """
         return request, metadata
 
-    def post_create_billing_account(self, response: cloud_billing.BillingAccount) -> cloud_billing.BillingAccount:
+    def post_create_billing_account(
+        self, response: cloud_billing.BillingAccount
+    ) -> cloud_billing.BillingAccount:
         """Post-rpc interceptor for create_billing_account
 
         Override in a subclass to manipulate the response
@@ -169,7 +174,12 @@ class CloudBillingRestInterceptor:
         it is returned to user code.
         """
         return response
-    def pre_get_billing_account(self, request: cloud_billing.GetBillingAccountRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[cloud_billing.GetBillingAccountRequest, Sequence[Tuple[str, str]]]:
+
+    def pre_get_billing_account(
+        self,
+        request: cloud_billing.GetBillingAccountRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[cloud_billing.GetBillingAccountRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for get_billing_account
 
         Override in a subclass to manipulate the request or metadata
@@ -177,7 +187,9 @@ class CloudBillingRestInterceptor:
         """
         return request, metadata
 
-    def post_get_billing_account(self, response: cloud_billing.BillingAccount) -> cloud_billing.BillingAccount:
+    def post_get_billing_account(
+        self, response: cloud_billing.BillingAccount
+    ) -> cloud_billing.BillingAccount:
         """Post-rpc interceptor for get_billing_account
 
         Override in a subclass to manipulate the response
@@ -185,7 +197,12 @@ class CloudBillingRestInterceptor:
         it is returned to user code.
         """
         return response
-    def pre_get_iam_policy(self, request: iam_policy_pb2.GetIamPolicyRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, str]]]:
+
+    def pre_get_iam_policy(
+        self,
+        request: iam_policy_pb2.GetIamPolicyRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for get_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -201,7 +218,12 @@ class CloudBillingRestInterceptor:
         it is returned to user code.
         """
         return response
-    def pre_get_project_billing_info(self, request: cloud_billing.GetProjectBillingInfoRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[cloud_billing.GetProjectBillingInfoRequest, Sequence[Tuple[str, str]]]:
+
+    def pre_get_project_billing_info(
+        self,
+        request: cloud_billing.GetProjectBillingInfoRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[cloud_billing.GetProjectBillingInfoRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for get_project_billing_info
 
         Override in a subclass to manipulate the request or metadata
@@ -209,7 +231,9 @@ class CloudBillingRestInterceptor:
         """
         return request, metadata
 
-    def post_get_project_billing_info(self, response: cloud_billing.ProjectBillingInfo) -> cloud_billing.ProjectBillingInfo:
+    def post_get_project_billing_info(
+        self, response: cloud_billing.ProjectBillingInfo
+    ) -> cloud_billing.ProjectBillingInfo:
         """Post-rpc interceptor for get_project_billing_info
 
         Override in a subclass to manipulate the response
@@ -217,7 +241,12 @@ class CloudBillingRestInterceptor:
         it is returned to user code.
         """
         return response
-    def pre_list_billing_accounts(self, request: cloud_billing.ListBillingAccountsRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[cloud_billing.ListBillingAccountsRequest, Sequence[Tuple[str, str]]]:
+
+    def pre_list_billing_accounts(
+        self,
+        request: cloud_billing.ListBillingAccountsRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[cloud_billing.ListBillingAccountsRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for list_billing_accounts
 
         Override in a subclass to manipulate the request or metadata
@@ -225,7 +254,9 @@ class CloudBillingRestInterceptor:
         """
         return request, metadata
 
-    def post_list_billing_accounts(self, response: cloud_billing.ListBillingAccountsResponse) -> cloud_billing.ListBillingAccountsResponse:
+    def post_list_billing_accounts(
+        self, response: cloud_billing.ListBillingAccountsResponse
+    ) -> cloud_billing.ListBillingAccountsResponse:
         """Post-rpc interceptor for list_billing_accounts
 
         Override in a subclass to manipulate the response
@@ -233,7 +264,12 @@ class CloudBillingRestInterceptor:
         it is returned to user code.
         """
         return response
-    def pre_list_project_billing_info(self, request: cloud_billing.ListProjectBillingInfoRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[cloud_billing.ListProjectBillingInfoRequest, Sequence[Tuple[str, str]]]:
+
+    def pre_list_project_billing_info(
+        self,
+        request: cloud_billing.ListProjectBillingInfoRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[cloud_billing.ListProjectBillingInfoRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for list_project_billing_info
 
         Override in a subclass to manipulate the request or metadata
@@ -241,7 +277,9 @@ class CloudBillingRestInterceptor:
         """
         return request, metadata
 
-    def post_list_project_billing_info(self, response: cloud_billing.ListProjectBillingInfoResponse) -> cloud_billing.ListProjectBillingInfoResponse:
+    def post_list_project_billing_info(
+        self, response: cloud_billing.ListProjectBillingInfoResponse
+    ) -> cloud_billing.ListProjectBillingInfoResponse:
         """Post-rpc interceptor for list_project_billing_info
 
         Override in a subclass to manipulate the response
@@ -249,7 +287,12 @@ class CloudBillingRestInterceptor:
         it is returned to user code.
         """
         return response
-    def pre_set_iam_policy(self, request: iam_policy_pb2.SetIamPolicyRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, str]]]:
+
+    def pre_set_iam_policy(
+        self,
+        request: iam_policy_pb2.SetIamPolicyRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for set_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -265,7 +308,12 @@ class CloudBillingRestInterceptor:
         it is returned to user code.
         """
         return response
-    def pre_test_iam_permissions(self, request: iam_policy_pb2.TestIamPermissionsRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[iam_policy_pb2.TestIamPermissionsRequest, Sequence[Tuple[str, str]]]:
+
+    def pre_test_iam_permissions(
+        self,
+        request: iam_policy_pb2.TestIamPermissionsRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[iam_policy_pb2.TestIamPermissionsRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for test_iam_permissions
 
         Override in a subclass to manipulate the request or metadata
@@ -273,7 +321,9 @@ class CloudBillingRestInterceptor:
         """
         return request, metadata
 
-    def post_test_iam_permissions(self, response: iam_policy_pb2.TestIamPermissionsResponse) -> iam_policy_pb2.TestIamPermissionsResponse:
+    def post_test_iam_permissions(
+        self, response: iam_policy_pb2.TestIamPermissionsResponse
+    ) -> iam_policy_pb2.TestIamPermissionsResponse:
         """Post-rpc interceptor for test_iam_permissions
 
         Override in a subclass to manipulate the response
@@ -281,7 +331,12 @@ class CloudBillingRestInterceptor:
         it is returned to user code.
         """
         return response
-    def pre_update_billing_account(self, request: cloud_billing.UpdateBillingAccountRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[cloud_billing.UpdateBillingAccountRequest, Sequence[Tuple[str, str]]]:
+
+    def pre_update_billing_account(
+        self,
+        request: cloud_billing.UpdateBillingAccountRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[cloud_billing.UpdateBillingAccountRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for update_billing_account
 
         Override in a subclass to manipulate the request or metadata
@@ -289,7 +344,9 @@ class CloudBillingRestInterceptor:
         """
         return request, metadata
 
-    def post_update_billing_account(self, response: cloud_billing.BillingAccount) -> cloud_billing.BillingAccount:
+    def post_update_billing_account(
+        self, response: cloud_billing.BillingAccount
+    ) -> cloud_billing.BillingAccount:
         """Post-rpc interceptor for update_billing_account
 
         Override in a subclass to manipulate the response
@@ -297,7 +354,14 @@ class CloudBillingRestInterceptor:
         it is returned to user code.
         """
         return response
-    def pre_update_project_billing_info(self, request: cloud_billing.UpdateProjectBillingInfoRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[cloud_billing.UpdateProjectBillingInfoRequest, Sequence[Tuple[str, str]]]:
+
+    def pre_update_project_billing_info(
+        self,
+        request: cloud_billing.UpdateProjectBillingInfoRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        cloud_billing.UpdateProjectBillingInfoRequest, Sequence[Tuple[str, str]]
+    ]:
         """Pre-rpc interceptor for update_project_billing_info
 
         Override in a subclass to manipulate the request or metadata
@@ -305,7 +369,9 @@ class CloudBillingRestInterceptor:
         """
         return request, metadata
 
-    def post_update_project_billing_info(self, response: cloud_billing.ProjectBillingInfo) -> cloud_billing.ProjectBillingInfo:
+    def post_update_project_billing_info(
+        self, response: cloud_billing.ProjectBillingInfo
+    ) -> cloud_billing.ProjectBillingInfo:
         """Post-rpc interceptor for update_project_billing_info
 
         Override in a subclass to manipulate the response
@@ -336,20 +402,21 @@ class CloudBillingRestTransport(CloudBillingTransport):
 
     """
 
-    def __init__(self, *,
-            host: str = 'cloudbilling.googleapis.com',
-            credentials: Optional[ga_credentials.Credentials] = None,
-            credentials_file: Optional[str] = None,
-            scopes: Optional[Sequence[str]] = None,
-            client_cert_source_for_mtls: Optional[Callable[[
-                ], Tuple[bytes, bytes]]] = None,
-            quota_project_id: Optional[str] = None,
-            client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
-            always_use_jwt_access: Optional[bool] = False,
-            url_scheme: str = 'https',
-            interceptor: Optional[CloudBillingRestInterceptor] = None,
-            api_audience: Optional[str] = None,
-            ) -> None:
+    def __init__(
+        self,
+        *,
+        host: str = "cloudbilling.googleapis.com",
+        credentials: Optional[ga_credentials.Credentials] = None,
+        credentials_file: Optional[str] = None,
+        scopes: Optional[Sequence[str]] = None,
+        client_cert_source_for_mtls: Optional[Callable[[], Tuple[bytes, bytes]]] = None,
+        quota_project_id: Optional[str] = None,
+        client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
+        always_use_jwt_access: Optional[bool] = False,
+        url_scheme: str = "https",
+        interceptor: Optional[CloudBillingRestInterceptor] = None,
+        api_audience: Optional[str] = None,
+    ) -> None:
         """Instantiate the transport.
 
         Args:
@@ -388,7 +455,9 @@ class CloudBillingRestTransport(CloudBillingTransport):
         # credentials object
         maybe_url_match = re.match("^(?P<scheme>http(?:s)?://)?(?P<host>.*)$", host)
         if maybe_url_match is None:
-            raise ValueError(f"Unexpected hostname structure: {host}")  # pragma: NO COVER
+            raise ValueError(
+                f"Unexpected hostname structure: {host}"
+            )  # pragma: NO COVER
 
         url_match_items = maybe_url_match.groupdict()
 
@@ -399,10 +468,11 @@ class CloudBillingRestTransport(CloudBillingTransport):
             credentials=credentials,
             client_info=client_info,
             always_use_jwt_access=always_use_jwt_access,
-            api_audience=api_audience
+            api_audience=api_audience,
         )
         self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST)
+            self._credentials, default_host=self.DEFAULT_HOST
+        )
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or CloudBillingRestInterceptor()
@@ -412,19 +482,24 @@ class CloudBillingRestTransport(CloudBillingTransport):
         def __hash__(self):
             return hash("CreateBillingAccount")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] =  {
-        }
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
 
-        def __call__(self,
-                request: cloud_billing.CreateBillingAccountRequest, *,
-                retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: Optional[float]=None,
-                metadata: Sequence[Tuple[str, str]]=(),
-                ) -> cloud_billing.BillingAccount:
+        def __call__(
+            self,
+            request: cloud_billing.CreateBillingAccountRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> cloud_billing.BillingAccount:
             r"""Call the create billing account method over HTTP.
 
             Args:
@@ -444,46 +519,51 @@ class CloudBillingRestTransport(CloudBillingTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [{
-                'method': 'post',
-                'uri': '/v1/billingAccounts',
-                'body': 'billing_account',
-            },
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v1/billingAccounts",
+                    "body": "billing_account",
+                },
             ]
-            request, metadata = self._interceptor.pre_create_billing_account(request, metadata)
+            request, metadata = self._interceptor.pre_create_billing_account(
+                request, metadata
+            )
             pb_request = cloud_billing.CreateBillingAccountRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
 
             # Jsonify the request body
 
             body = json_format.MessageToJson(
-                transcoded_request['body'],
-                including_default_value_fields=False,
-                use_integers_for_enums=True
-            )
-            uri = transcoded_request['uri']
-            method = transcoded_request['method']
-
-            # Jsonify the query params
-            query_params = json.loads(json_format.MessageToJson(
-                transcoded_request['query_params'],
+                transcoded_request["body"],
                 including_default_value_fields=False,
                 use_integers_for_enums=True,
-            ))
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
             query_params.update(self._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
             headers = dict(metadata)
-            headers['Content-Type'] = 'application/json'
+            headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
                 "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params, strict=True),
                 data=body,
-                )
+            )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -502,19 +582,24 @@ class CloudBillingRestTransport(CloudBillingTransport):
         def __hash__(self):
             return hash("GetBillingAccount")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] =  {
-        }
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
 
-        def __call__(self,
-                request: cloud_billing.GetBillingAccountRequest, *,
-                retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: Optional[float]=None,
-                metadata: Sequence[Tuple[str, str]]=(),
-                ) -> cloud_billing.BillingAccount:
+        def __call__(
+            self,
+            request: cloud_billing.GetBillingAccountRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> cloud_billing.BillingAccount:
             r"""Call the get billing account method over HTTP.
 
             Args:
@@ -534,37 +619,42 @@ class CloudBillingRestTransport(CloudBillingTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [{
-                'method': 'get',
-                'uri': '/v1/{name=billingAccounts/*}',
-            },
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1/{name=billingAccounts/*}",
+                },
             ]
-            request, metadata = self._interceptor.pre_get_billing_account(request, metadata)
+            request, metadata = self._interceptor.pre_get_billing_account(
+                request, metadata
+            )
             pb_request = cloud_billing.GetBillingAccountRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
 
-            uri = transcoded_request['uri']
-            method = transcoded_request['method']
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = json.loads(json_format.MessageToJson(
-                transcoded_request['query_params'],
-                including_default_value_fields=False,
-                use_integers_for_enums=True,
-            ))
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
             query_params.update(self._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
             headers = dict(metadata)
-            headers['Content-Type'] = 'application/json'
+            headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
                 "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params, strict=True),
-                )
+            )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -583,19 +673,24 @@ class CloudBillingRestTransport(CloudBillingTransport):
         def __hash__(self):
             return hash("GetIamPolicy")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] =  {
-        }
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
 
-        def __call__(self,
-                request: iam_policy_pb2.GetIamPolicyRequest, *,
-                retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: Optional[float]=None,
-                metadata: Sequence[Tuple[str, str]]=(),
-                ) -> policy_pb2.Policy:
+        def __call__(
+            self,
+            request: iam_policy_pb2.GetIamPolicyRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> policy_pb2.Policy:
             r"""Call the get iam policy method over HTTP.
 
             Args:
@@ -686,37 +781,40 @@ class CloudBillingRestTransport(CloudBillingTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [{
-                'method': 'get',
-                'uri': '/v1/{resource=billingAccounts/*}:getIamPolicy',
-            },
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1/{resource=billingAccounts/*}:getIamPolicy",
+                },
             ]
             request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
             pb_request = request
             transcoded_request = path_template.transcode(http_options, pb_request)
 
-            uri = transcoded_request['uri']
-            method = transcoded_request['method']
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = json.loads(json_format.MessageToJson(
-                transcoded_request['query_params'],
-                including_default_value_fields=False,
-                use_integers_for_enums=True,
-            ))
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
             query_params.update(self._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
             headers = dict(metadata)
-            headers['Content-Type'] = 'application/json'
+            headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
                 "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params, strict=True),
-                )
+            )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -735,19 +833,24 @@ class CloudBillingRestTransport(CloudBillingTransport):
         def __hash__(self):
             return hash("GetProjectBillingInfo")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] =  {
-        }
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
 
-        def __call__(self,
-                request: cloud_billing.GetProjectBillingInfoRequest, *,
-                retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: Optional[float]=None,
-                metadata: Sequence[Tuple[str, str]]=(),
-                ) -> cloud_billing.ProjectBillingInfo:
+        def __call__(
+            self,
+            request: cloud_billing.GetProjectBillingInfoRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> cloud_billing.ProjectBillingInfo:
             r"""Call the get project billing info method over HTTP.
 
             Args:
@@ -770,37 +873,42 @@ class CloudBillingRestTransport(CloudBillingTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [{
-                'method': 'get',
-                'uri': '/v1/{name=projects/*}/billingInfo',
-            },
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1/{name=projects/*}/billingInfo",
+                },
             ]
-            request, metadata = self._interceptor.pre_get_project_billing_info(request, metadata)
+            request, metadata = self._interceptor.pre_get_project_billing_info(
+                request, metadata
+            )
             pb_request = cloud_billing.GetProjectBillingInfoRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
 
-            uri = transcoded_request['uri']
-            method = transcoded_request['method']
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = json.loads(json_format.MessageToJson(
-                transcoded_request['query_params'],
-                including_default_value_fields=False,
-                use_integers_for_enums=True,
-            ))
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
             query_params.update(self._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
             headers = dict(metadata)
-            headers['Content-Type'] = 'application/json'
+            headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
                 "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params, strict=True),
-                )
+            )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -819,12 +927,14 @@ class CloudBillingRestTransport(CloudBillingTransport):
         def __hash__(self):
             return hash("ListBillingAccounts")
 
-        def __call__(self,
-                request: cloud_billing.ListBillingAccountsRequest, *,
-                retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: Optional[float]=None,
-                metadata: Sequence[Tuple[str, str]]=(),
-                ) -> cloud_billing.ListBillingAccountsResponse:
+        def __call__(
+            self,
+            request: cloud_billing.ListBillingAccountsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> cloud_billing.ListBillingAccountsResponse:
             r"""Call the list billing accounts method over HTTP.
 
             Args:
@@ -841,36 +951,41 @@ class CloudBillingRestTransport(CloudBillingTransport):
                     Response message for ``ListBillingAccounts``.
             """
 
-            http_options: List[Dict[str, str]] = [{
-                'method': 'get',
-                'uri': '/v1/billingAccounts',
-            },
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1/billingAccounts",
+                },
             ]
-            request, metadata = self._interceptor.pre_list_billing_accounts(request, metadata)
+            request, metadata = self._interceptor.pre_list_billing_accounts(
+                request, metadata
+            )
             pb_request = cloud_billing.ListBillingAccountsRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
 
-            uri = transcoded_request['uri']
-            method = transcoded_request['method']
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = json.loads(json_format.MessageToJson(
-                transcoded_request['query_params'],
-                including_default_value_fields=False,
-                use_integers_for_enums=True,
-            ))
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
 
             query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
             headers = dict(metadata)
-            headers['Content-Type'] = 'application/json'
+            headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
                 "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params, strict=True),
-                )
+            )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -889,19 +1004,24 @@ class CloudBillingRestTransport(CloudBillingTransport):
         def __hash__(self):
             return hash("ListProjectBillingInfo")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] =  {
-        }
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
 
-        def __call__(self,
-                request: cloud_billing.ListProjectBillingInfoRequest, *,
-                retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: Optional[float]=None,
-                metadata: Sequence[Tuple[str, str]]=(),
-                ) -> cloud_billing.ListProjectBillingInfoResponse:
+        def __call__(
+            self,
+            request: cloud_billing.ListProjectBillingInfoRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> cloud_billing.ListProjectBillingInfoResponse:
             r"""Call the list project billing info method over HTTP.
 
             Args:
@@ -918,37 +1038,42 @@ class CloudBillingRestTransport(CloudBillingTransport):
                     Request message for ``ListProjectBillingInfoResponse``.
             """
 
-            http_options: List[Dict[str, str]] = [{
-                'method': 'get',
-                'uri': '/v1/{name=billingAccounts/*}/projects',
-            },
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1/{name=billingAccounts/*}/projects",
+                },
             ]
-            request, metadata = self._interceptor.pre_list_project_billing_info(request, metadata)
+            request, metadata = self._interceptor.pre_list_project_billing_info(
+                request, metadata
+            )
             pb_request = cloud_billing.ListProjectBillingInfoRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
 
-            uri = transcoded_request['uri']
-            method = transcoded_request['method']
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = json.loads(json_format.MessageToJson(
-                transcoded_request['query_params'],
-                including_default_value_fields=False,
-                use_integers_for_enums=True,
-            ))
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
             query_params.update(self._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
             headers = dict(metadata)
-            headers['Content-Type'] = 'application/json'
+            headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
                 "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params, strict=True),
-                )
+            )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -967,19 +1092,24 @@ class CloudBillingRestTransport(CloudBillingTransport):
         def __hash__(self):
             return hash("SetIamPolicy")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] =  {
-        }
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
 
-        def __call__(self,
-                request: iam_policy_pb2.SetIamPolicyRequest, *,
-                retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: Optional[float]=None,
-                metadata: Sequence[Tuple[str, str]]=(),
-                ) -> policy_pb2.Policy:
+        def __call__(
+            self,
+            request: iam_policy_pb2.SetIamPolicyRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> policy_pb2.Policy:
             r"""Call the set iam policy method over HTTP.
 
             Args:
@@ -1070,11 +1200,12 @@ class CloudBillingRestTransport(CloudBillingTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [{
-                'method': 'post',
-                'uri': '/v1/{resource=billingAccounts/*}:setIamPolicy',
-                'body': '*',
-            },
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v1/{resource=billingAccounts/*}:setIamPolicy",
+                    "body": "*",
+                },
             ]
             request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
             pb_request = request
@@ -1083,33 +1214,35 @@ class CloudBillingRestTransport(CloudBillingTransport):
             # Jsonify the request body
 
             body = json_format.MessageToJson(
-                transcoded_request['body'],
-                including_default_value_fields=False,
-                use_integers_for_enums=True
-            )
-            uri = transcoded_request['uri']
-            method = transcoded_request['method']
-
-            # Jsonify the query params
-            query_params = json.loads(json_format.MessageToJson(
-                transcoded_request['query_params'],
+                transcoded_request["body"],
                 including_default_value_fields=False,
                 use_integers_for_enums=True,
-            ))
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
             query_params.update(self._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
             headers = dict(metadata)
-            headers['Content-Type'] = 'application/json'
+            headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
                 "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params, strict=True),
                 data=body,
-                )
+            )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1128,19 +1261,24 @@ class CloudBillingRestTransport(CloudBillingTransport):
         def __hash__(self):
             return hash("TestIamPermissions")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] =  {
-        }
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
 
-        def __call__(self,
-                request: iam_policy_pb2.TestIamPermissionsRequest, *,
-                retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: Optional[float]=None,
-                metadata: Sequence[Tuple[str, str]]=(),
-                ) -> iam_policy_pb2.TestIamPermissionsResponse:
+        def __call__(
+            self,
+            request: iam_policy_pb2.TestIamPermissionsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> iam_policy_pb2.TestIamPermissionsResponse:
             r"""Call the test iam permissions method over HTTP.
 
             Args:
@@ -1157,46 +1295,51 @@ class CloudBillingRestTransport(CloudBillingTransport):
                     Response message for ``TestIamPermissions`` method.
             """
 
-            http_options: List[Dict[str, str]] = [{
-                'method': 'post',
-                'uri': '/v1/{resource=billingAccounts/*}:testIamPermissions',
-                'body': '*',
-            },
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v1/{resource=billingAccounts/*}:testIamPermissions",
+                    "body": "*",
+                },
             ]
-            request, metadata = self._interceptor.pre_test_iam_permissions(request, metadata)
+            request, metadata = self._interceptor.pre_test_iam_permissions(
+                request, metadata
+            )
             pb_request = request
             transcoded_request = path_template.transcode(http_options, pb_request)
 
             # Jsonify the request body
 
             body = json_format.MessageToJson(
-                transcoded_request['body'],
-                including_default_value_fields=False,
-                use_integers_for_enums=True
-            )
-            uri = transcoded_request['uri']
-            method = transcoded_request['method']
-
-            # Jsonify the query params
-            query_params = json.loads(json_format.MessageToJson(
-                transcoded_request['query_params'],
+                transcoded_request["body"],
                 including_default_value_fields=False,
                 use_integers_for_enums=True,
-            ))
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
             query_params.update(self._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
             headers = dict(metadata)
-            headers['Content-Type'] = 'application/json'
+            headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
                 "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params, strict=True),
                 data=body,
-                )
+            )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1215,19 +1358,24 @@ class CloudBillingRestTransport(CloudBillingTransport):
         def __hash__(self):
             return hash("UpdateBillingAccount")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] =  {
-        }
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
 
-        def __call__(self,
-                request: cloud_billing.UpdateBillingAccountRequest, *,
-                retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: Optional[float]=None,
-                metadata: Sequence[Tuple[str, str]]=(),
-                ) -> cloud_billing.BillingAccount:
+        def __call__(
+            self,
+            request: cloud_billing.UpdateBillingAccountRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> cloud_billing.BillingAccount:
             r"""Call the update billing account method over HTTP.
 
             Args:
@@ -1247,46 +1395,51 @@ class CloudBillingRestTransport(CloudBillingTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [{
-                'method': 'patch',
-                'uri': '/v1/{name=billingAccounts/*}',
-                'body': 'account',
-            },
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "patch",
+                    "uri": "/v1/{name=billingAccounts/*}",
+                    "body": "account",
+                },
             ]
-            request, metadata = self._interceptor.pre_update_billing_account(request, metadata)
+            request, metadata = self._interceptor.pre_update_billing_account(
+                request, metadata
+            )
             pb_request = cloud_billing.UpdateBillingAccountRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
 
             # Jsonify the request body
 
             body = json_format.MessageToJson(
-                transcoded_request['body'],
-                including_default_value_fields=False,
-                use_integers_for_enums=True
-            )
-            uri = transcoded_request['uri']
-            method = transcoded_request['method']
-
-            # Jsonify the query params
-            query_params = json.loads(json_format.MessageToJson(
-                transcoded_request['query_params'],
+                transcoded_request["body"],
                 including_default_value_fields=False,
                 use_integers_for_enums=True,
-            ))
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
             query_params.update(self._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
             headers = dict(metadata)
-            headers['Content-Type'] = 'application/json'
+            headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
                 "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params, strict=True),
                 data=body,
-                )
+            )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1305,82 +1458,92 @@ class CloudBillingRestTransport(CloudBillingTransport):
         def __hash__(self):
             return hash("UpdateProjectBillingInfo")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] =  {
-        }
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
 
-        def __call__(self,
-                request: cloud_billing.UpdateProjectBillingInfoRequest, *,
-                retry: OptionalRetry=gapic_v1.method.DEFAULT,
-                timeout: Optional[float]=None,
-                metadata: Sequence[Tuple[str, str]]=(),
-                ) -> cloud_billing.ProjectBillingInfo:
+        def __call__(
+            self,
+            request: cloud_billing.UpdateProjectBillingInfoRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> cloud_billing.ProjectBillingInfo:
             r"""Call the update project billing
-        info method over HTTP.
+            info method over HTTP.
 
-            Args:
-                request (~.cloud_billing.UpdateProjectBillingInfoRequest):
-                    The request object. Request message for ``UpdateProjectBillingInfo``.
-                retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                    should be retried.
-                timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                Args:
+                    request (~.cloud_billing.UpdateProjectBillingInfoRequest):
+                        The request object. Request message for ``UpdateProjectBillingInfo``.
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, str]]): Strings which should be
+                        sent along with the request as metadata.
 
-            Returns:
-                ~.cloud_billing.ProjectBillingInfo:
-                    Encapsulation of billing information
-                for a Google Cloud Console project. A
-                project has at most one associated
-                billing account at a time (but a billing
-                account can be assigned to multiple
-                projects).
+                Returns:
+                    ~.cloud_billing.ProjectBillingInfo:
+                        Encapsulation of billing information
+                    for a Google Cloud Console project. A
+                    project has at most one associated
+                    billing account at a time (but a billing
+                    account can be assigned to multiple
+                    projects).
 
             """
 
-            http_options: List[Dict[str, str]] = [{
-                'method': 'put',
-                'uri': '/v1/{name=projects/*}/billingInfo',
-                'body': 'project_billing_info',
-            },
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "put",
+                    "uri": "/v1/{name=projects/*}/billingInfo",
+                    "body": "project_billing_info",
+                },
             ]
-            request, metadata = self._interceptor.pre_update_project_billing_info(request, metadata)
+            request, metadata = self._interceptor.pre_update_project_billing_info(
+                request, metadata
+            )
             pb_request = cloud_billing.UpdateProjectBillingInfoRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
 
             # Jsonify the request body
 
             body = json_format.MessageToJson(
-                transcoded_request['body'],
-                including_default_value_fields=False,
-                use_integers_for_enums=True
-            )
-            uri = transcoded_request['uri']
-            method = transcoded_request['method']
-
-            # Jsonify the query params
-            query_params = json.loads(json_format.MessageToJson(
-                transcoded_request['query_params'],
+                transcoded_request["body"],
                 including_default_value_fields=False,
                 use_integers_for_enums=True,
-            ))
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
             query_params.update(self._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
             headers = dict(metadata)
-            headers['Content-Type'] = 'application/json'
+            headers["Content-Type"] = "application/json"
             response = getattr(self._session, method)(
                 "{host}{uri}".format(host=self._host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params, strict=True),
                 data=body,
-                )
+            )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1396,84 +1559,104 @@ class CloudBillingRestTransport(CloudBillingTransport):
             return resp
 
     @property
-    def create_billing_account(self) -> Callable[
-            [cloud_billing.CreateBillingAccountRequest],
-            cloud_billing.BillingAccount]:
+    def create_billing_account(
+        self,
+    ) -> Callable[
+        [cloud_billing.CreateBillingAccountRequest], cloud_billing.BillingAccount
+    ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._CreateBillingAccount(self._session, self._host, self._interceptor) # type: ignore
+        return self._CreateBillingAccount(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_billing_account(self) -> Callable[
-            [cloud_billing.GetBillingAccountRequest],
-            cloud_billing.BillingAccount]:
+    def get_billing_account(
+        self,
+    ) -> Callable[
+        [cloud_billing.GetBillingAccountRequest], cloud_billing.BillingAccount
+    ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._GetBillingAccount(self._session, self._host, self._interceptor) # type: ignore
+        return self._GetBillingAccount(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_iam_policy(self) -> Callable[
-            [iam_policy_pb2.GetIamPolicyRequest],
-            policy_pb2.Policy]:
+    def get_iam_policy(
+        self,
+    ) -> Callable[[iam_policy_pb2.GetIamPolicyRequest], policy_pb2.Policy]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._GetIamPolicy(self._session, self._host, self._interceptor) # type: ignore
+        return self._GetIamPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_project_billing_info(self) -> Callable[
-            [cloud_billing.GetProjectBillingInfoRequest],
-            cloud_billing.ProjectBillingInfo]:
+    def get_project_billing_info(
+        self,
+    ) -> Callable[
+        [cloud_billing.GetProjectBillingInfoRequest], cloud_billing.ProjectBillingInfo
+    ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._GetProjectBillingInfo(self._session, self._host, self._interceptor) # type: ignore
+        return self._GetProjectBillingInfo(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_billing_accounts(self) -> Callable[
-            [cloud_billing.ListBillingAccountsRequest],
-            cloud_billing.ListBillingAccountsResponse]:
+    def list_billing_accounts(
+        self,
+    ) -> Callable[
+        [cloud_billing.ListBillingAccountsRequest],
+        cloud_billing.ListBillingAccountsResponse,
+    ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ListBillingAccounts(self._session, self._host, self._interceptor) # type: ignore
+        return self._ListBillingAccounts(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_project_billing_info(self) -> Callable[
-            [cloud_billing.ListProjectBillingInfoRequest],
-            cloud_billing.ListProjectBillingInfoResponse]:
+    def list_project_billing_info(
+        self,
+    ) -> Callable[
+        [cloud_billing.ListProjectBillingInfoRequest],
+        cloud_billing.ListProjectBillingInfoResponse,
+    ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ListProjectBillingInfo(self._session, self._host, self._interceptor) # type: ignore
+        return self._ListProjectBillingInfo(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def set_iam_policy(self) -> Callable[
-            [iam_policy_pb2.SetIamPolicyRequest],
-            policy_pb2.Policy]:
+    def set_iam_policy(
+        self,
+    ) -> Callable[[iam_policy_pb2.SetIamPolicyRequest], policy_pb2.Policy]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._SetIamPolicy(self._session, self._host, self._interceptor) # type: ignore
+        return self._SetIamPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def test_iam_permissions(self) -> Callable[
-            [iam_policy_pb2.TestIamPermissionsRequest],
-            iam_policy_pb2.TestIamPermissionsResponse]:
+    def test_iam_permissions(
+        self,
+    ) -> Callable[
+        [iam_policy_pb2.TestIamPermissionsRequest],
+        iam_policy_pb2.TestIamPermissionsResponse,
+    ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._TestIamPermissions(self._session, self._host, self._interceptor) # type: ignore
+        return self._TestIamPermissions(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_billing_account(self) -> Callable[
-            [cloud_billing.UpdateBillingAccountRequest],
-            cloud_billing.BillingAccount]:
+    def update_billing_account(
+        self,
+    ) -> Callable[
+        [cloud_billing.UpdateBillingAccountRequest], cloud_billing.BillingAccount
+    ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._UpdateBillingAccount(self._session, self._host, self._interceptor) # type: ignore
+        return self._UpdateBillingAccount(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_project_billing_info(self) -> Callable[
-            [cloud_billing.UpdateProjectBillingInfoRequest],
-            cloud_billing.ProjectBillingInfo]:
+    def update_project_billing_info(
+        self,
+    ) -> Callable[
+        [cloud_billing.UpdateProjectBillingInfoRequest],
+        cloud_billing.ProjectBillingInfo,
+    ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._UpdateProjectBillingInfo(self._session, self._host, self._interceptor) # type: ignore
+        return self._UpdateProjectBillingInfo(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def kind(self) -> str:
@@ -1483,6 +1666,4 @@ class CloudBillingRestTransport(CloudBillingTransport):
         self._session.close()
 
 
-__all__=(
-    'CloudBillingRestTransport',
-)
+__all__ = ("CloudBillingRestTransport",)
